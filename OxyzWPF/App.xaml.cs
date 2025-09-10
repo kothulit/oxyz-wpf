@@ -10,5 +10,4 @@ namespace OxyzWPF
     public partial class App : Application
     {
     }
-
 }

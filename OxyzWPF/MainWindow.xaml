@@ -3,10 +3,28 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:OxyzWPF"
+        xmlns:hx="http://helix-toolkit.org/wpf/SharpDX"
+        xmlns:vm="clr-namespace:OxyzWPF.UI.ViewModels"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="SharpDX Prototype"
+        Height="450"
+        Width="800">
     <Grid>
+        <hx:Viewport3DX x:Name="view1"
+                        ShowCoordinateSystem="True"
+                        IsRotationEnabled="True"
+                        IsPanEnabled="True"
+                        Background="White">
+            <hx:Viewport3DX.Camera>
+                <hx:PerspectiveCamera Position="5,5,5"
+                                      LookDirection="-5,-5,-5"
+                                      UpDirection="0,1,0" />
+            </hx:Viewport3DX.Camera>
 
+            <!-- Освещение (SharpDX-версия) -->
+            <hx:AmbientLight3D Color="White" />
+            <hx:DirectionalLight3D Direction="-0.5,-1,-0.2"
+                                   Color="White" />
+        </hx:Viewport3DX>
     </Grid>
 </Window>
