@@ -12,9 +12,11 @@
     <Grid>
         <hx:Viewport3DX x:Name="view1"
                         ShowCoordinateSystem="True"
-                        IsRotationEnabled="True"
                         IsPanEnabled="True"
+                        IsRotationEnabled="True"
+                        IsZoomEnabled="True"
                         Background="White">
+            
             <hx:Viewport3DX.Camera>
                 <hx:PerspectiveCamera Position="5,5,5"
                                       LookDirection="-5,-5,-5"
@@ -25,6 +27,11 @@
             <hx:AmbientLight3D Color="White" />
             <hx:DirectionalLight3D Direction="-0.5,-1,-0.2"
                                    Color="White" />
+
+            <!-- Куб с привязкой Transform -->
+            <hx:MeshGeometryModel3D x:Name="CubeModel"
+                                    Material="{x:Static hx:PhongMaterials.Green}"
+                                    Transform="{Binding CubeTransform}" />
         </hx:Viewport3DX>
     </Grid>
 </Window>
