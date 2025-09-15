@@ -33,6 +33,9 @@ namespace OxyzWPF
             // Инициализируем ECS
             InitializeECS();
 
+            // Передаем мир в ViewModel
+            _viewModel.SetWorld(_world);
+
             // Создаем сетку горизонтальной плоскости
             CreateGrid();
 
@@ -113,6 +116,16 @@ namespace OxyzWPF
 
             // Применяем геометрию к модели сетки
             GridModel.Geometry = gridBuilder.ToMeshGeometry3D();
+        }
+
+        private void Viewport3DX_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+            {
+                var position = e.GetPosition(view1);
+                var point2D = new Vector2((float)position.X, (float)position.Y);
+                _viewModel.OnMouseClick(point2D, view1);
+            }
         }
     }
 }

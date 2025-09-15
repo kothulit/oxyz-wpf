@@ -1,4 +1,4 @@
-﻿namespace OxyzWPF.Editor;
+﻿namespace OxyzWPF.Editor.States;
 
 public class EditorStateMachine
 {
