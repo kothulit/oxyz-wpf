@@ -15,11 +15,23 @@ internal class MainViewModel : ViewModelBase
         }
     }
 
-    private double _xCoordinate = 0.0;
+    private double _rotationAngle = 0.0;
 
     public void Update(double deltaTime)
     {
-        _xCoordinate += deltaTime; // Увеличиваем координату X со временем
-        CubeTransform = new TranslateTransform3D(_xCoordinate, 0, 0);
+        _rotationAngle += deltaTime * 45; // Поворачиваем на 1 градусов в секунду
+
+        // Создаем группу трансформаций для комбинирования поворотов
+        var transformGroup = new Transform3DGroup();
+
+        // Поворот вокруг оси Y (вертикальная ось)
+        transformGroup.Children.Add(new RotateTransform3D(
+            new AxisAngleRotation3D(new Vector3D(0, 1, 0), _rotationAngle)));
+
+        // Поворот вокруг оси X (горизонтальная ось) - медленнее
+        transformGroup.Children.Add(new RotateTransform3D(
+            new AxisAngleRotation3D(new Vector3D(1, 0, 0), _rotationAngle)));
+
+        CubeTransform = transformGroup;
     }
 }
