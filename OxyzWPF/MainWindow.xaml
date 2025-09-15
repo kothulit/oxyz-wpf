@@ -28,6 +28,10 @@
             <hx:DirectionalLight3D Direction="-0.5,-1,-0.2"
                                    Color="White" />
 
+            <!-- Сетка горизонтальной плоскости -->
+            <hx:MeshGeometryModel3D x:Name="GridModel"
+                                    Material="{x:Static hx:PhongMaterials.Gray}" />
+
             <!-- Куб с привязкой Transform -->
             <hx:MeshGeometryModel3D x:Name="CubeModel"
                                     Material="{x:Static hx:PhongMaterials.Green}"

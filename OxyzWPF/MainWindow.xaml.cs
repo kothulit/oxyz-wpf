@@ -25,6 +25,9 @@ namespace OxyzWPF
 
             view1.EffectsManager = new DefaultEffectsManager();
 
+            // Создаем сетку горизонтальной плоскости
+            CreateGrid();
+
             // Создаем куб через MeshBuilder
             var mb = new MeshBuilder();
             mb.AddBox(new Vector3(0, 0, 0), 1, 1, 1);
@@ -32,6 +35,41 @@ namespace OxyzWPF
 
             // Запускаем game loop
             _gameLoop = new GameLoop(_viewModel);
+        }
+
+        private void CreateGrid()
+        {
+            var gridBuilder = new MeshBuilder();
+
+            // Параметры сетки
+            int gridSize = 20; // Размер сетки (20x20)
+            float cellSize = 1.0f; // Размер одной ячейки
+            float halfSize = (gridSize * cellSize) / 2.0f;
+
+            // Создаем линии сетки
+            for (int i = 0; i <= gridSize; i++)
+            {
+                float pos = -halfSize + i * cellSize;
+
+                // Вертикальные линии (параллельные оси Z)
+                gridBuilder.AddCylinder(
+                    new Vector3(pos, 0, -halfSize),
+                    new Vector3(pos, 0, halfSize),
+                    0.01f, // Толщина линии
+                    8 // Количество сегментов
+                );
+
+                // Горизонтальные линии (параллельные оси X)
+                gridBuilder.AddCylinder(
+                    new Vector3(-halfSize, 0, pos),
+                    new Vector3(halfSize, 0, pos),
+                    0.01f, // Толщина линии
+                    8 // Количество сегментов
+                );
+            }
+
+            // Применяем геометрию к модели сетки
+            GridModel.Geometry = gridBuilder.ToMeshGeometry3D();
         }
     }
 }
