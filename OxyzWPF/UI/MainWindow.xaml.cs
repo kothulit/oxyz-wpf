@@ -21,11 +21,11 @@ namespace OxyzWPF
         private World _world;
         private RenderSystem _renderSystem;
 
-        public MainWindow()
+        public MainWindow(MainViewModel mainViewModel)
         {
             InitializeComponent();
 
-            _viewModel = new MainViewModel();
+            _viewModel = mainViewModel;
             DataContext = _viewModel;
 
             view1.EffectsManager = new DefaultEffectsManager();
