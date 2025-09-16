@@ -12,8 +12,4 @@
     <PackageReference Include="HelixToolkit.Wpf.SharpDX" Version="2.27.3" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="UIConnector\" />
-  </ItemGroup>
-
 </Project>
