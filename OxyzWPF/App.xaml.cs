@@ -23,7 +23,7 @@ public partial class App : Application
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<MainWindow>();
 
-        //Регистрация 
+        //Регистрация модели
         services.AddSingleton<IWorld, World>();
 
         _serviceProvider = services.BuildServiceProvider();

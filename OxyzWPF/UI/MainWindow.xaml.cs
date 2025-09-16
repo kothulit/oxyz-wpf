@@ -28,7 +28,7 @@ namespace OxyzWPF
             _viewModel = mainViewModel;
             DataContext = _viewModel;
 
-            view1.EffectsManager = new DefaultEffectsManager();
+            viewPort1.EffectsManager = new DefaultEffectsManager();
 
             // Инициализируем ECS
             InitializeECS();
@@ -54,7 +54,7 @@ namespace OxyzWPF
         private void InitializeECS()
         {
             _world = new World();
-            _renderSystem = new RenderSystem(_world, view1);
+            _renderSystem = new RenderSystem(_world, viewPort1);
             _world.AddSystem(_renderSystem);
         }
 
@@ -122,9 +122,9 @@ namespace OxyzWPF
         {
             if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
             {
-                var position = e.GetPosition(view1);
+                var position = e.GetPosition(viewPort1);
                 var point2D = new Vector2((float)position.X, (float)position.Y);
-                _viewModel.OnMouseClick(point2D, view1);
+                _viewModel.OnMouseClick(point2D, viewPort1);
             }
         }
     }
