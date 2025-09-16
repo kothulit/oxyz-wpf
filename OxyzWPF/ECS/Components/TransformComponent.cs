@@ -6,7 +6,7 @@ namespace OxyzWPF.ECS.Components;
 /// <summary>
 /// Компонент для позиции, поворота и масштаба объекта
 /// </summary>
-public class TransformComponent : IComponent
+public class TransformComponent : OxyzWPF.Contracts.ECS.IComponent
 {
     public Vector3 Position { get; set; } = Vector3.Zero;
     public Vector3 Rotation { get; set; } = Vector3.Zero; // В градусах

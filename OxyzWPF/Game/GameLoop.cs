@@ -1,10 +1,11 @@
-﻿using OxyzWPF.ECS;
+﻿using OxyzWPF.Contracts.Game;
+using OxyzWPF.ECS;
 using OxyzWPF.UI.ViewModels;
 using System.Windows.Media;
 
 namespace OxyzWPF.Game;
 
-internal class GameLoop
+internal class GameLoop : IGameLoop
 {
     private DateTime _lastFrameTime;
     private readonly MainViewModel _viewModel;
@@ -25,9 +26,9 @@ internal class GameLoop
         _lastFrameTime = currentTime;
 
         // Обновляем ViewModel (для анимации куба)
-        _viewModel.Update(deltaTime);
+        _viewModel?.Update(deltaTime);
 
         // Обновляем ECS мир
-        _world.Update(deltaTime);
+        _world?.Update(deltaTime);
     }
 }

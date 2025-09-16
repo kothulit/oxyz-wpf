@@ -1,4 +1,4 @@
-﻿namespace OxyzWPF.ECS
+﻿namespace OxyzWPF.Contracts.ECS
 {
     /// <summary>
     /// Базовый интерфейс для всех систем

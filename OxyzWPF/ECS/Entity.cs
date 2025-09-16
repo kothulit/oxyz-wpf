@@ -1,4 +1,6 @@
-﻿namespace OxyzWPF.ECS;
+﻿using OxyzWPF.Contracts.ECS;
+
+namespace OxyzWPF.ECS;
 
 /// <summary>
 /// Сущность - контейнер для компонентов с уникальным ID

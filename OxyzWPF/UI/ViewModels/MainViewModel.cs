@@ -5,6 +5,7 @@ using SharpDX;
 using OxyzWPF.ECS;
 using OxyzWPF.ECS.Components;
 using SharpDX.Mathematics.Interop;
+using System.ComponentModel;
 
 namespace OxyzWPF.UI.ViewModels;
 

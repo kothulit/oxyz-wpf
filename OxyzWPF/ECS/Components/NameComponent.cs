@@ -1,4 +1,6 @@
-﻿namespace OxyzWPF.ECS.Components;
+﻿using OxyzWPF.Contracts.ECS;
+
+namespace OxyzWPF.ECS.Components;
 
 /// <summary>
 /// Компонент для имени объекта
