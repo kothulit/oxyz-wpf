@@ -1,7 +1,10 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using HelixToolkit.Wpf.SharpDX;
+using Microsoft.Extensions.DependencyInjection;
 using OxyzWPF.Contracts.ECS;
 using OxyzWPF.ECS;
+using OxyzWPF.ECS.Systems;
 using OxyzWPF.UI.ViewModels;
+using System;
 using System.Windows;
 
 namespace OxyzWPF;
@@ -12,6 +15,7 @@ namespace OxyzWPF;
 public partial class App : Application
 {
     private ServiceProvider? _serviceProvider;
+    public ServiceProvider? Provider => _serviceProvider;
 
     protected override void OnStartup(StartupEventArgs e)
     {
@@ -22,11 +26,16 @@ public partial class App : Application
         //Регистрация UI зависимостей
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<MainWindow>();
+        services.AddSingleton<Viewport3DX>(s => s.GetRequiredService<MainWindow>().ViewPort);
 
-        //Регистрация модели
-        services.AddSingleton<IWorld, World>();
+        //Регистрация ECS
+        services.AddSingleton<World>();
+        services.AddSingleton<RenderSystem>();
+
 
         _serviceProvider = services.BuildServiceProvider();
+
+        _serviceProvider.GetRequiredService<World>().AddSystem(_serviceProvider.GetRequiredService<RenderSystem>());
 
         var mainWindow = _serviceProvider.GetService<MainWindow>();
         mainWindow.Show();

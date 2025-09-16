@@ -20,18 +20,19 @@ namespace OxyzWPF
         private GameLoop _gameLoop;
         private World _world;
         private RenderSystem _renderSystem;
+        public Viewport3DX ViewPort => viewPort1;
 
-        public MainWindow(MainViewModel mainViewModel)
+
+        public MainWindow(MainViewModel mainViewModel, World world)
         {
             InitializeComponent();
 
             _viewModel = mainViewModel;
             DataContext = _viewModel;
 
-            viewPort1.EffectsManager = new DefaultEffectsManager();
+            _world = world;
 
-            // Инициализируем ECS
-            InitializeECS();
+            viewPort1.EffectsManager = new DefaultEffectsManager();
 
             // Передаем мир в ViewModel
             _viewModel.SetWorld(_world);
@@ -49,13 +50,6 @@ namespace OxyzWPF
 
             // Запускаем game loop
             _gameLoop = new GameLoop(_viewModel, _world);
-        }
-
-        private void InitializeECS()
-        {
-            _world = new World();
-            _renderSystem = new RenderSystem(_world, viewPort1);
-            _world.AddSystem(_renderSystem);
         }
 
         private void CreateTestEntities()

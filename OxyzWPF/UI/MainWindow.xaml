@@ -38,6 +38,7 @@
                                     Material="{x:Static hx:PhongMaterials.Green}"
                                     Transform="{Binding CubeTransform}" />
         </hx:Viewport3DX>
+        
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
