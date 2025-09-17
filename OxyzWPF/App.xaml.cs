@@ -1,10 +1,8 @@
 ﻿using HelixToolkit.Wpf.SharpDX;
 using Microsoft.Extensions.DependencyInjection;
-using OxyzWPF.Contracts.ECS;
 using OxyzWPF.ECS;
 using OxyzWPF.ECS.Systems;
 using OxyzWPF.UI.ViewModels;
-using System;
 using System.Windows;
 
 namespace OxyzWPF;
