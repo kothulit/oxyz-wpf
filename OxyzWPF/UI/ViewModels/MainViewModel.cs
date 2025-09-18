@@ -10,7 +10,6 @@ namespace OxyzWPF.UI.ViewModels;
 public class MainViewModel : ViewModelBase
 {
     private FPSCubeVM _fPSCubeVM = new FPSCubeVM();
-
     private Transform3D _cubeTransform = Transform3D.Identity;
     public Transform3D CubeTransform
     {

@@ -127,7 +127,7 @@ internal class MessengerInternal
 }
 
 // One parameter
-static public class Messenger<T>
+public static class Messenger<T>
 {
     static public void AddListener(MessengerEvents eventType, Action<T> handler)
     {

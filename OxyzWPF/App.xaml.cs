@@ -2,6 +2,7 @@
 using Microsoft.Extensions.DependencyInjection;
 using OxyzWPF.ECS;
 using OxyzWPF.ECS.Systems;
+using OxyzWPF.Game.States;
 using OxyzWPF.UI.ViewModels;
 using System.Windows;
 
@@ -29,6 +30,9 @@ public partial class App : Application
         //Регистрация ECS
         services.AddSingleton<World>();
         services.AddSingleton<RenderSystem>();
+
+        //Состояния игры
+        services.AddSingleton<GameStateMachine>();
 
 
         _serviceProvider = services.BuildServiceProvider();

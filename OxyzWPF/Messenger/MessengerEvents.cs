@@ -2,6 +2,8 @@
 
 public enum MessengerEvents
 {
+    EditorStateChanged, //string //State
+
     //BasePointController
     BasePointTransformChanged, //Transform
                                //CameraController
