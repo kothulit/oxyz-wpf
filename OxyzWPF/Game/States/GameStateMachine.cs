@@ -5,24 +5,26 @@ namespace OxyzWPF.Game.States;
 public class GameStateMachine
 {
     private IEditorState _currentState;
-    private readonly Dictionary<string, IEditorState> _states;
+    private IEditorState _defaultState = new StateNavigation();
+    private Dictionary<string, IEditorState> _states;
 
     public GameStateMachine()
     {
         _states = new Dictionary<string, IEditorState>()
         {
-            { "Browse", new StateNavigation() },
+            { "Default", _defaultState },
+            { "Navigation", new StateNavigation() },
             { "Edit", new StateEdit() }
         };
-        _currentState = _states["Browse"];
+        _currentState = _states["Default"];
     }
 
     public IEditorState CurrentState => _currentState;
-    public string StateName => _currentState?.StateName ?? "None";
-    public bool IsEditingEnable => _currentState?.IsEditingEnable ?? false;
-    public bool IsViewPanEnable => _currentState?.IsEditingEnable ?? true;
-    public bool IsViewZoomEnable => _currentState?.IsEditingEnable ?? true;
-    public bool IsViewRotateEnable => _currentState?.IsEditingEnable ?? true;
+    public string StateName => _currentState.StateName;
+    public bool IsEditingEnable => _currentState.IsEditingEnable;
+    public bool IsViewPanEnable => _currentState.IsEditingEnable;
+    public bool IsViewZoomEnable => _currentState.IsEditingEnable;
+    public bool IsViewRotateEnable => _currentState.IsEditingEnable;
 
     public void ChangeState(string stateName)
     {
