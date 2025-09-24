@@ -7,13 +7,16 @@ using OxyzWPF.ECS.Components;
 using OxyzWPF.UI.Commands;
 using OxyzWPF.Contracts.ECS;
 using OxyzWPF.Contracts.Game.States;
+using System.Collections.ObjectModel;
+using OxyzWPF.Contracts.Editor;
 
 namespace OxyzWPF.UI.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
-    private IWorld? _world;
-    private IEditorState _editorState;
+    private readonly IWorld? _world;
+    private readonly IEditorState _editorState;
+    public ObservableCollection<ToolbarButtonViewModel> ToolbarButtons { get; private set; } = new ObservableCollection<ToolbarButtonViewModel>();
 
     private Vector3 _position = Vector3.Zero;
     public Vector3 Position => _position;
@@ -67,6 +70,7 @@ public class MainViewModel : ViewModelBase
     public MainViewModel(IWorld world, IEditorState editorState)
     {
         _world = world;
+        _editorState = editorState;
         AddCubeCommand = new RelayCommand(() => IsAddMode = !IsAddMode);
     }
 
@@ -104,6 +108,18 @@ public class MainViewModel : ViewModelBase
             {
                 _position = ray.Position + ray.Direction * distance;
             }
+        }
+    }
+
+    public void InitialiseToolbarButtons(Dictionary<string, IInstruction> instructions)
+    {
+        foreach (var instruction in instructions)
+        {
+            ToolbarButtons.Add(new ToolbarButtonViewModel()
+            {
+                Content = instruction.Key.ToString(),
+                Command = new RelayCommand(instruction.Value.Execute)
+            });
         }
     }
 }

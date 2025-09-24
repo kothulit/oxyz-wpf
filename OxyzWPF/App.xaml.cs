@@ -11,6 +11,7 @@ using OxyzWPF.UI.ViewModels;
 using OxyzWPF.Editor;
 using System.Windows;
 using OxyzWPF.Contracts.Game.States;
+using System;
 
 namespace OxyzWPF;
 
@@ -21,35 +22,30 @@ public partial class App : Application
 {
     private ServiceProvider? _serviceProvider;
     public ServiceProvider? Provider => _serviceProvider;
+    
+    public App()
+    {
+        var services = new ServiceCollection();
+
+        services.AddSingleton<IWorld, World>();
+        services.AddSingleton<IInstructor, Instructor>();
+        services.AddSingleton<MainViewModel>();
+        services.AddSingleton<MainWindow>();
+        services.AddSingleton<GameStateMachine>();
+        services.AddSingleton<IEditorState, StateEdit>();
+        services.AddSingleton<IGameLoop, GameLoop>();
+
+        _serviceProvider = services.BuildServiceProvider();
+    }
 
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
 
-        var services = new ServiceCollection();
-        //Регистрация ECS
-        services.AddSingleton<IWorld, World>();
+        var mainViewModel = _serviceProvider.GetRequiredService<MainViewModel>();
+        var instructions = _serviceProvider.GetRequiredService<IInstructor>().Instructions;
 
-        //Регистрация UI зависимостей
-        services.AddSingleton<MainViewModel>();
-        services.AddSingleton<MainWindow>();
-        services.AddSingleton(s => s.GetRequiredService<MainWindow>().ViewPort);
-
-        //Регистрация инструкций
-        services.AddSingleton<IInstructor, Instructor>();
-
-        //Состояния игры
-        services.AddSingleton<GameStateMachine>();
-
-        services.AddSingleton<IEditorState, StateEdit>();
-
-        //Регистрация игрового цикла
-        services.AddSingleton<IGameLoop, GameLoop>();
-
-        _serviceProvider = services.BuildServiceProvider();
-
-        //_serviceProvider.GetRequiredService<IWorld>().AddSystem(_serviceProvider.GetRequiredService<RenderSystem>());
-
+        mainViewModel.InitialiseToolbarButtons(instructions);
 
         var mainWindow = _serviceProvider.GetService<MainWindow>();
         mainWindow.Show();
