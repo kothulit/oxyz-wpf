@@ -1,13 +1,12 @@
-﻿namespace OxyzWPF.Contracts.ECS
+﻿namespace OxyzWPF.Contracts.ECS;
+
+/// <summary>
+/// Базовый интерфейс для всех систем
+/// </summary>
+public interface ISystem
 {
     /// <summary>
-    /// Базовый интерфейс для всех систем
+    /// Обновляет систему
     /// </summary>
-    public interface ISystem
-    {
-        /// <summary>
-        /// Обновляет систему
-        /// </summary>
-        void Update(double deltaTime);
-    }
+    void Update(double deltaTime);
 }

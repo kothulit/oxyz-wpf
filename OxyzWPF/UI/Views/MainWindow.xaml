@@ -10,7 +10,7 @@
         Height="450"
         Width="800">
     <Grid>
-        <hx:Viewport3DX x:Name="viewPort1"
+        <hx:Viewport3DX x:Name="viewPort"
                         ShowCoordinateSystem="True"
                         IsPanEnabled="{Binding IsPanEnabled}"
                         IsRotationEnabled="{Binding IsRotationEnabled}"

@@ -8,6 +8,7 @@ using OxyzWPF.Game;
 using OxyzWPF.ECS.Systems;
 using OxyzWPF.ECS;
 using OxyzWPF.ECS.Components;
+using OxyzWPF.Contracts.ECS;
 
 namespace OxyzWPF
 {
@@ -17,64 +18,24 @@ namespace OxyzWPF
     public partial class MainWindow : Window
     {
         private readonly MainViewModel _viewModel;
-        private GameLoop _gameLoop;
-        private World _world;
-        private RenderSystem _renderSystem;
-        public Viewport3DX ViewPort => viewPort1;
+        public Viewport3DX ViewPort => viewPort;
 
-
-        public MainWindow(MainViewModel mainViewModel, World world)
+        public MainWindow(MainViewModel mainViewModel)
         {
             InitializeComponent();
 
             _viewModel = mainViewModel;
             DataContext = _viewModel;
 
-            _world = world;
-
-            viewPort1.EffectsManager = new DefaultEffectsManager();
-
-            // Передаем мир в ViewModel
-            _viewModel.SetWorld(_world);
+            viewPort.EffectsManager = new DefaultEffectsManager();
 
             // Создаем сетку горизонтальной плоскости
             CreateGrid();
-
-            // Создаем тестовые объекты через ECS
-            CreateTestEntities();
 
             // Создаем куб через MeshBuilder
             var mb = new MeshBuilder();
             mb.AddBox(new Vector3(0, 0, 0), 1, 1, 1);
             CubeModel.Geometry = mb.ToMeshGeometry3D();
-
-            // Запускаем game loop
-            _gameLoop = new GameLoop(_viewModel, _world);
-        }
-
-        private void CreateTestEntities()
-        {
-            // Создаем куб через ECS
-            var cubeEntity = _world.CreateEntity("Test Cube");
-            var cubeTransform = cubeEntity.AddComponent<TransformComponent>();
-            cubeTransform.Position = new Vector3(0, 0.5f, 0); // Поднимаем куб над сеткой
-
-            var cubeMesh = cubeEntity.AddComponent<MeshComponent>();
-            var mb = new MeshBuilder();
-            mb.AddBox(new Vector3(0, 0, 0), 1, 1, 1);
-            cubeMesh.Geometry = mb.ToMeshGeometry3D();
-            cubeMesh.Material = PhongMaterials.Green;
-
-            // Создаем еще один объект
-            var sphereEntity = _world.CreateEntity("Test Sphere");
-            var sphereTransform = sphereEntity.AddComponent<TransformComponent>();
-            sphereTransform.Position = new Vector3(2, 0.5f, 0);
-
-            var sphereMesh = sphereEntity.AddComponent<MeshComponent>();
-            var sphereBuilder = new MeshBuilder();
-            sphereBuilder.AddSphere(new Vector3(0, 0, 0), 0.5f);
-            sphereMesh.Geometry = sphereBuilder.ToMeshGeometry3D();
-            sphereMesh.Material = PhongMaterials.Red;
         }
 
         private void CreateGrid()
@@ -116,9 +77,9 @@ namespace OxyzWPF
         {
             if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
             {
-                var position = e.GetPosition(viewPort1);
+                var position = e.GetPosition(viewPort);
                 var point2D = new Vector2((float)position.X, (float)position.Y);
-                _viewModel.OnMouseClick(point2D, viewPort1);
+                _viewModel.OnMouseClick(point2D, viewPort);
             }
         }
     }

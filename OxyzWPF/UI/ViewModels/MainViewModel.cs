@@ -4,13 +4,23 @@ using HelixToolkit.Wpf.SharpDX;
 using SharpDX;
 using OxyzWPF.ECS;
 using OxyzWPF.ECS.Components;
+using OxyzWPF.UI.Commands;
+using OxyzWPF.Contracts.ECS;
+using OxyzWPF.Contracts.Game.States;
 
 namespace OxyzWPF.UI.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
+    private IWorld? _world;
+    private IEditorState _editorState;
+
+    private Vector3 _position = Vector3.Zero;
+    public Vector3 Position => _position;
+
     private FPSCubeVM _fPSCubeVM = new FPSCubeVM();
     private Transform3D _cubeTransform = Transform3D.Identity;
+    //Transform для вращающегося куба
     public Transform3D CubeTransform
     {
         get => _cubeTransform;
@@ -21,9 +31,10 @@ public class MainViewModel : ViewModelBase
         }
     }
 
+
     private bool _isAddMode = false;
     private string _statusText = "Режим навигации";
-    private World? _world;
+    
 
     public bool IsAddMode
     {
@@ -53,16 +64,11 @@ public class MainViewModel : ViewModelBase
 
     public ICommand AddCubeCommand { get; }
 
-    public MainViewModel()
-    {
-        AddCubeCommand = new RelayCommand(() => IsAddMode = !IsAddMode);
-    }
-
-    public void SetWorld(World world)
+    public MainViewModel(IWorld world, IEditorState editorState)
     {
         _world = world;
+        AddCubeCommand = new RelayCommand(() => IsAddMode = !IsAddMode);
     }
-
 
     public void Update(double deltaTime)
     {
@@ -86,7 +92,6 @@ public class MainViewModel : ViewModelBase
             if (ray.Intersects(ref plane, out float distance))
             {
                 var worldPoint = ray.Position + ray.Direction * distance;
-                CreateCubeAtPosition(worldPoint);
             }
         }
         else
@@ -97,63 +102,8 @@ public class MainViewModel : ViewModelBase
 
             if (ray.Intersects(ref plane, out float distance))
             {
-                var worldPoint = ray.Position + ray.Direction * distance;
-                CreateCubeAtPosition(worldPoint);
+                _position = ray.Position + ray.Direction * distance;
             }
         }
-    }
-
-    private void CreateCubeAtPosition(Vector3 position)
-    {
-        if (_world == null) return;
-
-        // Создаем новую сущность куба
-        var cubeEntity = _world.CreateEntity($"Cube_{_world.EntityCount}");
-
-        // Добавляем компонент трансформации
-        var transform = cubeEntity.AddComponent<TransformComponent>();
-        transform.Position = new Vector3(position.X, 0.5f, position.Z); // Поднимаем куб над сеткой
-
-        // Добавляем компонент меша
-        var mesh = cubeEntity.AddComponent<MeshComponent>();
-        var mb = new MeshBuilder();
-        mb.AddBox(new Vector3(0, 0, 0), 1, 1, 1);
-        mesh.Geometry = mb.ToMeshGeometry3D();
-        mesh.Material = PhongMaterials.Blue; // Синий цвет для новых кубов
-
-        // Добавляем компонент имени
-        cubeEntity.AddComponent<NameComponent>(new NameComponent($"Cube_{_world.EntityCount}"));
-
-        StatusText = $"Создан куб в позиции ({position.X:F1}, {position.Z:F1})";
-    }
-
-}
-
-// Простая реализация RelayCommand
-public class RelayCommand : ICommand
-{
-    private readonly Action _execute;
-    private readonly Func<bool>? _canExecute;
-
-    public RelayCommand(Action execute, Func<bool>? canExecute = null)
-    {
-        _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-        _canExecute = canExecute;
-    }
-
-    public event EventHandler? CanExecuteChanged
-    {
-        add { CommandManager.RequerySuggested += value; }
-        remove { CommandManager.RequerySuggested -= value; }
-    }
-
-    public bool CanExecute(object? parameter)
-    {
-        return _canExecute?.Invoke() ?? true;
-    }
-
-    public void Execute(object? parameter)
-    {
-        _execute();
     }
 }

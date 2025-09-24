@@ -16,10 +16,6 @@
 
   <ItemGroup>
     <Folder Include="Contracts\UI\" />
-    <Folder Include="UI\Views\" />
-    <Folder Include="UI\Commands\" />
-    <Folder Include="Orders\" />
-    <Folder Include="Новая папка\" />
   </ItemGroup>
 
 </Project>
