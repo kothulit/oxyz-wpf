@@ -5,7 +5,7 @@ namespace OxyzWPF.EventBus;
 /// <summary>
 /// Обертка для асинхронного делегата
 /// </summary>
-internal class DelegateEventHandler<TEvent> : IEventHandler<TEvent> where TEvent : IEvent
+public class DelegateEventHandler<TEvent> : IEventHandler<TEvent> where TEvent : IEvent
 {
     private readonly Func<TEvent, Task> _handler;
 

@@ -28,14 +28,14 @@ public interface IEventBus
     void Unsubscribe<TEvent>(IEventHandler<TEvent> handler) where TEvent : IEvent;
 
     /// <summary>
-    /// Публикует событие
-    /// </summary>
-    Task PublishAsync<TEvent>(TEvent eventData) where TEvent : IEvent;
-
-    /// <summary>
     /// Публикует событие синхронно
     /// </summary>
     void Publish<TEvent>(TEvent eventData) where TEvent : IEvent;
+
+    /// <summary>
+    /// Публикует событие
+    /// </summary>
+    Task PublishAsync<TEvent>(TEvent eventData) where TEvent : IEvent;
 
     /// <summary>
     /// Публикует событие с отложенным выполнением
