@@ -1,7 +1,10 @@
 ﻿using HelixToolkit.Wpf.SharpDX;
+using Microsoft.Extensions.DependencyInjection;
 using OxyzWPF.Contracts.ECS;
 using OxyzWPF.Contracts.Editor;
+using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.ECS.Components;
+using OxyzWPF.Mailing;
 using OxyzWPF.UI.ViewModels;
 using SharpDX;
 
@@ -9,10 +12,12 @@ namespace OxyzWPF.Editor.Instrutions;
 
 internal class AddCube : IInstruction
 {
+    private readonly IMailer _mailer;
     private readonly IWorld _world;
     private readonly MainViewModel _mainViewModel;
-    public AddCube(IWorld world, MainViewModel mainViewModel)
+    public AddCube(IWorld world, MainViewModel mainViewModel, IMailer mailer)
     {
+        _mailer = mailer;
         _world = world;
         _mainViewModel = mainViewModel;
     }
@@ -31,6 +36,9 @@ internal class AddCube : IInstruction
         mesh.Geometry = mb.ToMeshGeometry3D();
         mesh.Material = PhongMaterials.Blue; // Синий цвет для новых кубов
 
+
         _mainViewModel.StatusText = $"Создан куб в позиции ({position.X:F1}, {position.Z:F1})";
+
+        _mailer.Publish("TestEvent");
     }
 }

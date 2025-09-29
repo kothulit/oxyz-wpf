@@ -1,17 +1,17 @@
-﻿using HelixToolkit.Wpf.SharpDX;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using OxyzWPF.Contracts.ECS;
 using OxyzWPF.Contracts.Game;
 using OxyzWPF.Contracts.Editor;
 using OxyzWPF.ECS;
-using OxyzWPF.ECS.Systems;
 using OxyzWPF.Game;
 using OxyzWPF.Game.States;
 using OxyzWPF.UI.ViewModels;
 using OxyzWPF.Editor;
 using System.Windows;
 using OxyzWPF.Contracts.Game.States;
-using System;
+using OxyzWPF.EventBus;
+using OxyzWPF.Contracts.Mailing;
+using OxyzWPF.Mailing;
 
 namespace OxyzWPF;
 
@@ -28,13 +28,15 @@ public partial class App : Application
         var services = new ServiceCollection();
 
         services.AddSingleton<IWorld, World>();
+        services.AddSingleton<IMailer, Mailer>();
         services.AddSingleton<IInstructor, Instructor>();
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<MainWindow>();
         services.AddSingleton<GameStateMachine>();
         services.AddSingleton<IEditorState, StateEdit>();
         services.AddSingleton<IGameLoop, GameLoop>();
-
+        services.AddSingleton<IEventBus, OxyzWPF.EventBus.EventBus>();
+        
         _serviceProvider = services.BuildServiceProvider();
     }
 
@@ -49,5 +51,7 @@ public partial class App : Application
 
         var mainWindow = _serviceProvider.GetService<MainWindow>();
         mainWindow.Show();
+
+        var gameLoop = _serviceProvider.GetRequiredService<IGameLoop>();
     }
 }

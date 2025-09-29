@@ -9,17 +9,39 @@ using OxyzWPF.Contracts.ECS;
 using OxyzWPF.Contracts.Game.States;
 using System.Collections.ObjectModel;
 using OxyzWPF.Contracts.Editor;
+using OxyzWPF.Contracts.Mailing;
+using OxyzWPF.Mailing;
 
 namespace OxyzWPF.UI.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
+    IMailer _mailer;
     private readonly IWorld? _world;
     private readonly IEditorState _editorState;
     public ObservableCollection<ToolbarButtonViewModel> ToolbarButtons { get; private set; } = new ObservableCollection<ToolbarButtonViewModel>();
 
     private Vector3 _position = Vector3.Zero;
     public Vector3 Position => _position;
+    
+    //Текст для теста mailer
+    private int _testNumber = 0;
+    private string _testText = "Test";
+    public string TestText
+    {
+        get => _testText;
+        set
+        {
+            _testText = value;
+            OnPropertyChanged();
+        }
+    }
+
+    public void OnTestEventInvoked()
+    {
+        _testNumber++;
+        TestText = "Test " + _testNumber;
+    }
 
     private FPSCubeVM _fPSCubeVM = new FPSCubeVM();
     private Transform3D _cubeTransform = Transform3D.Identity;
@@ -67,11 +89,13 @@ public class MainViewModel : ViewModelBase
 
     public ICommand AddCubeCommand { get; }
 
-    public MainViewModel(IWorld world, IEditorState editorState)
+    public MainViewModel(IWorld world, IEditorState editorState, IMailer mailer)
     {
+        _mailer = mailer;
         _world = world;
         _editorState = editorState;
         AddCubeCommand = new RelayCommand(() => IsAddMode = !IsAddMode);
+        _mailer.Subscribe("TestEvent", OnTestEventInvoked);
     }
 
     public void Update(double deltaTime)
