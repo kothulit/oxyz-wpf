@@ -12,6 +12,7 @@ using OxyzWPF.Contracts.Game.States;
 using OxyzWPF.EventBus;
 using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.Mailing;
+using OxyzWPF.ECS.Systems;
 
 namespace OxyzWPF;
 
@@ -36,13 +37,18 @@ public partial class App : Application
         services.AddSingleton<IEditorState, StateEdit>();
         services.AddSingleton<IGameLoop, GameLoop>();
         services.AddSingleton<IEventBus, OxyzWPF.EventBus.EventBus>();
-        
+        services.AddSingleton<RenderSystem>();
+        services.AddSingleton<RenderSystem>();
+
         _serviceProvider = services.BuildServiceProvider();
     }
 
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+
+        var world = _serviceProvider.GetService<IWorld>();
+        world.AddSystem(_serviceProvider.GetRequiredService<RenderSystem>());
 
         var mainViewModel = _serviceProvider.GetRequiredService<MainViewModel>();
         var instructions = _serviceProvider.GetRequiredService<IInstructor>().Instructions;

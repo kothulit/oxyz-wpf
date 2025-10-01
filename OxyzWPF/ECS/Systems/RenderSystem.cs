@@ -1,6 +1,8 @@
 ﻿using HelixToolkit.Wpf.SharpDX;
 using OxyzWPF.Contracts.ECS;
+using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.ECS.Components;
+using OxyzWPF.Mailing;
 
 namespace OxyzWPF.ECS.Systems
 {
@@ -9,14 +11,14 @@ namespace OxyzWPF.ECS.Systems
     /// </summary>
     public class RenderSystem : ISystem
     {
-        private readonly World _world;
-        private readonly Viewport3DX _viewport;
+        private readonly IWorld _world;
+        private readonly IMailer _mailer;
         private readonly Dictionary<int, MeshGeometryModel3D> _renderedObjects;
 
-        public RenderSystem(World world, Viewport3DX viewport)
+        public RenderSystem(IWorld world, IMailer mailer)
         {
             _world = world;
-            _viewport = viewport;
+            _mailer = mailer;
             _renderedObjects = new Dictionary<int, MeshGeometryModel3D>();
         }
 
@@ -53,7 +55,8 @@ namespace OxyzWPF.ECS.Systems
                     };
 
                     _renderedObjects[entity.Id] = newModel;
-                    _viewport.Items.Add(newModel);
+                    _mailer.Publish("Object3DAdded", newModel);
+                    
                 }
             }
 
@@ -66,7 +69,7 @@ namespace OxyzWPF.ECS.Systems
             {
                 if (_renderedObjects.TryGetValue(id, out var model))
                 {
-                    _viewport.Items.Remove(model);
+                    _mailer.Publish("Object3DRemoved", model);
                     _renderedObjects.Remove(id);
                 }
             }

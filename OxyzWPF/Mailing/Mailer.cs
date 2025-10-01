@@ -1,40 +1,58 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using OxyzWPF.Contracts.Mailing;
+﻿using OxyzWPF.Contracts.Mailing;
 
 namespace OxyzWPF.Mailing;
 
 class Mailer : IMailer
 {
-    Dictionary<string, Action> _eventSubscribers = new();
-    List<string> _publishedEvents = new();
+    Dictionary<string, Delegate> _eventTable = new();
+    Dictionary<string, List<object>> _publishedEvents = new();
 
-    public void Subscribe(string eventName, Action method)
+    public void Subscribe(string eventName, Action callback)
     {
-        if (_eventSubscribers.Keys.Contains(eventName))
+        if (_eventTable.Keys.Contains(eventName))
         {
-            _eventSubscribers[eventName] += method;
+            Action.Combine(_eventTable[eventName], callback);
         }
         else
         {
-            _eventSubscribers.Add(eventName, method);
+            _eventTable.Add(eventName, callback);
+        }
+    }
+
+    public void Subscribe<T>(string eventName, Action<T> callback)
+    {
+        if (_eventTable.Keys.Contains(eventName))
+        {
+            Action.Combine(_eventTable[eventName], callback);
+        }
+        else
+        {
+            _eventTable.Add(eventName, callback);
         }
     }
 
     public void Unsubscribe(string eventName, Action method)
     {
-        if (_eventSubscribers.Keys.Contains(eventName))
+        if (_eventTable.Keys.Contains(eventName))
         {
-            _eventSubscribers[eventName] -= method;
+            Action.Remove(_eventTable[eventName], method);
         }
     }
 
-    public void Publish(string eventName)
+    public void Publish(string eventName, object arg)
     {
-        foreach (var eventSubscriber in _eventSubscribers)
+        foreach (var eventSubscriber in _eventTable)
         {
             if (eventSubscriber.Key == eventName)
             {
-                _publishedEvents.Add(eventName);
+                if (_publishedEvents.ContainsKey(eventName))
+                {
+                    _publishedEvents[eventName].Add(arg);
+                }
+                else
+                {
+                    _publishedEvents.Add(eventName, new List<object>() { arg });
+                }
             }
         }
     }
@@ -43,7 +61,13 @@ class Mailer : IMailer
     {
         foreach (var eventName in _publishedEvents)
         {
-            _eventSubscribers[eventName]?.Invoke();
+            foreach(var eventArg in _publishedEvents[eventName.Key])
+            {
+                if (!(eventArg is null))
+                {
+                _eventTable[eventName.Key].DynamicInvoke(eventArg);
+                }
+            }
         }
         _publishedEvents.Clear();
     }

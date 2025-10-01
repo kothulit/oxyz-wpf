@@ -37,7 +37,7 @@ public class MainViewModel : ViewModelBase
         }
     }
 
-    public void OnTestEventInvoked()
+    public void OnTestEventInvoked(object arg)
     {
         _testNumber++;
         TestText = "Test " + _testNumber;
@@ -56,11 +56,9 @@ public class MainViewModel : ViewModelBase
         }
     }
 
-
     private bool _isAddMode = false;
     private string _statusText = "Режим навигации";
     
-
     public bool IsAddMode
     {
         get => _isAddMode;
@@ -95,7 +93,7 @@ public class MainViewModel : ViewModelBase
         _world = world;
         _editorState = editorState;
         AddCubeCommand = new RelayCommand(() => IsAddMode = !IsAddMode);
-        _mailer.Subscribe("TestEvent", OnTestEventInvoked);
+        _mailer.Subscribe<object>("TestEvent", OnTestEventInvoked);
     }
 
     public void Update(double deltaTime)

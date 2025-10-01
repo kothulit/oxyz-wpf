@@ -9,6 +9,7 @@ using OxyzWPF.ECS.Systems;
 using OxyzWPF.ECS;
 using OxyzWPF.ECS.Components;
 using OxyzWPF.Contracts.ECS;
+using OxyzWPF.Contracts.Mailing;
 
 namespace OxyzWPF
 {
@@ -18,12 +19,14 @@ namespace OxyzWPF
     public partial class MainWindow : Window
     {
         private readonly MainViewModel _viewModel;
+        private readonly IMailer _mailer;
         public Viewport3DX ViewPort => viewPort;
 
-        public MainWindow(MainViewModel mainViewModel)
+        public MainWindow(MainViewModel mainViewModel, IMailer mailer)
         {
             InitializeComponent();
 
+            _mailer = mailer;
             _viewModel = mainViewModel;
             DataContext = _viewModel;
 
@@ -36,6 +39,21 @@ namespace OxyzWPF
             var mb = new MeshBuilder();
             mb.AddBox(new Vector3(0, 0, 0), 1, 1, 1);
             CubeModel.Geometry = mb.ToMeshGeometry3D();
+
+            //Подписываемся на событие Object3DAdded
+            mailer.Subscribe<object>("Object3DAdded", Create3DObject);
+            mailer.Subscribe<object>("Object3DRemoved", Remove3DObject);
+        }
+
+        private void Create3DObject(object newModel)
+        {
+            var mgm = newModel as MeshGeometryModel3D;
+            viewPort.Items.Add(mgm);
+        }
+        private void Remove3DObject(object newModel)
+        {
+            var mgm = newModel as MeshGeometryModel3D;
+            viewPort.Items.Remove(mgm);
         }
 
         private void CreateGrid()
