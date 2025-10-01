@@ -2,7 +2,6 @@
 using OxyzWPF.Contracts.ECS;
 using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.ECS.Components;
-using OxyzWPF.Mailing;
 
 namespace OxyzWPF.ECS.Systems
 {

@@ -1,6 +1,4 @@
 ﻿using OxyzWPF.Contracts.ECS;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace OxyzWPF.ECS;
 

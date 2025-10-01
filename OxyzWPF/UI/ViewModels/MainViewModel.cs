@@ -2,15 +2,12 @@
 using System.Windows.Input;
 using HelixToolkit.Wpf.SharpDX;
 using SharpDX;
-using OxyzWPF.ECS;
-using OxyzWPF.ECS.Components;
 using OxyzWPF.UI.Commands;
 using OxyzWPF.Contracts.ECS;
 using OxyzWPF.Contracts.Game.States;
 using System.Collections.ObjectModel;
 using OxyzWPF.Contracts.Editor;
 using OxyzWPF.Contracts.Mailing;
-using OxyzWPF.Mailing;
 
 namespace OxyzWPF.UI.ViewModels;
 

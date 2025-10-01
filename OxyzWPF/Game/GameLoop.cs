@@ -1,8 +1,6 @@
 ﻿using OxyzWPF.Contracts.ECS;
 using OxyzWPF.Contracts.Game;
 using OxyzWPF.Contracts.Mailing;
-using OxyzWPF.ECS;
-using OxyzWPF.Mailing;
 using OxyzWPF.UI.ViewModels;
 using System.Windows.Media;
 

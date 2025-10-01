@@ -1,14 +1,7 @@
-﻿using System.ComponentModel;
-using System.Windows;
-using System.Windows.Media.Media3D;
+﻿using System.Windows;
 using HelixToolkit.Wpf.SharpDX;
 using SharpDX;
 using OxyzWPF.UI.ViewModels;
-using OxyzWPF.Game;
-using OxyzWPF.ECS.Systems;
-using OxyzWPF.ECS;
-using OxyzWPF.ECS.Components;
-using OxyzWPF.Contracts.ECS;
 using OxyzWPF.Contracts.Mailing;
 
 namespace OxyzWPF

@@ -3,7 +3,6 @@ using OxyzWPF.Contracts.ECS;
 using OxyzWPF.Contracts.Editor;
 using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.Editor.Instrutions;
-using OxyzWPF.Mailing;
 using OxyzWPF.UI.ViewModels;
 
 namespace OxyzWPF.Editor;
