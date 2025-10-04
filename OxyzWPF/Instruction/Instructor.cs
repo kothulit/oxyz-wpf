@@ -21,6 +21,6 @@ public class Instructor : IInstructor
         _world = world;
         _mainViewModel = mainViewModel;
         _instructions.Add("AddCube", new AddCube(_world, _mainViewModel, _mailer));
-        _instructions.Add("AddSphere", new AddSphere(_world, _mainViewModel));
+        _instructions.Add("AddSphere", new AddSphere(_world, _mainViewModel, _mailer));
     }
 }

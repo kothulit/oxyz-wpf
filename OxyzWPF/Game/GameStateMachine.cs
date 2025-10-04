@@ -20,6 +20,12 @@ public class GameStateMachine
             { "Edit", new StateEdit() }
         };
         _currentState = _states["Default"];
+        _mailer.Subscribe<object>(EventEnum.GameStateChangeRequest, OnStateChangeRequest);
+    }
+
+    private void OnStateChangeRequest(object stateName)
+    {
+        ChangeState((string)stateName);
     }
 
     public IGameState CurrentState => _currentState;

@@ -1,7 +1,9 @@
 ﻿using HelixToolkit.Wpf.SharpDX;
 using OxyzWPF.Contracts.ECS;
 using OxyzWPF.Contracts.Instruction;
+using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.ECS.Components;
+using OxyzWPF.Mailing;
 using OxyzWPF.UI.ViewModels;
 using SharpDX;
 
@@ -9,12 +11,18 @@ namespace OxyzWPF.Editor.Instrutions;
 
 internal class AddSphere : IInstruction
 {
+    private readonly IMailer _mailer;
     private readonly IWorld _world;
     private readonly MainViewModel _mainViewModel;
-    public AddSphere(IWorld world, MainViewModel mainViewModel)
+    public AddSphere(IWorld world, MainViewModel mainViewModel, IMailer mailer)
     {
         _world = world;
         _mainViewModel = mainViewModel;
+    }
+
+    public void OnStart()
+    {
+        _mailer.Publish(EventEnum.GameStateChangeRequest, "Add");
     }
 
     public void Execute(object args)
@@ -32,5 +40,10 @@ internal class AddSphere : IInstruction
         mesh.Material = PhongMaterials.Blue; // Синий цвет для новых элементов
 
         _mainViewModel.StatusText = $"Создана сфера в позиции ({position.X:F1}, {position.Z:F1})";
+    }
+
+    public void OnEnd()
+    {
+        _mailer.Publish(EventEnum.GameStateChangeRequest, "Navigation");
     }
 }

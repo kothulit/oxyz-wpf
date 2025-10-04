@@ -20,6 +20,11 @@ internal class AddCube : IInstruction
         _mainViewModel = mainViewModel;
     }
 
+    public void OnStart()
+    {
+        _mailer.Publish(EventEnum.GameStateChangeRequest, "Add");
+    }
+
     public void Execute(object args)
     {
         var cubeEntity = _world.CreateEntity($"Cube_{_world.EntityCount}");
@@ -37,5 +42,10 @@ internal class AddCube : IInstruction
         _mainViewModel.StatusText = $"Создан куб в позиции ({position.X:F1}, {position.Z:F1})";
 
         _mailer.Publish(EventEnum.TestEvent, "Test");
+    }
+
+    public void OnEnd()
+    {
+        _mailer.Publish(EventEnum.GameStateChangeRequest, "Navigation");
     }
 }
