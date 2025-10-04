@@ -10,10 +10,13 @@
 
   <ItemGroup>
     <PackageReference Include="HelixToolkit.Wpf.SharpDX" Version="2.27.3" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.9" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.9" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="UIConnector\" />
+    <Folder Include="Contracts\DTO\Geometry\" />
+    <Folder Include="Contracts\UI\" />
   </ItemGroup>
 
 </Project>

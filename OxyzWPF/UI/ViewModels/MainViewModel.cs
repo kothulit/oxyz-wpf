@@ -2,15 +2,53 @@
 using System.Windows.Input;
 using HelixToolkit.Wpf.SharpDX;
 using SharpDX;
-using OxyzWPF.ECS;
-using OxyzWPF.ECS.Components;
-using SharpDX.Mathematics.Interop;
+using OxyzWPF.UI.Commands;
+using OxyzWPF.Contracts.ECS;
+using OxyzWPF.Contracts.Game.States;
+using System.Collections.ObjectModel;
+using OxyzWPF.Contracts.Instruction;
+using OxyzWPF.Contracts.Mailing;
+using OxyzWPF.Game.States;
 
 namespace OxyzWPF.UI.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
+    private readonly IMailer _mailer;
+    private readonly IWorld? _world;
+    private readonly IGameState _gameState;
+    private int _testNumber = 0;
+    private Vector3 _position = Vector3.Zero;
+    private string _testText = "Test";
+    private FPSCubeVM _fPSCubeVM = new FPSCubeVM();
     private Transform3D _cubeTransform = Transform3D.Identity;
+    private bool _isAddMode = false;
+    private string _statusText;
+    private IInstruction _instruction;
+
+    public Vector3 Position => _position;
+    public ObservableCollection<ToolbarButtonViewModel> ToolbarButtons
+    {
+        get;
+        private set;
+    } = new ObservableCollection<ToolbarButtonViewModel>();
+    public ICommand OnMouseDowmCommand { get; }
+    //Текст для теста mailer
+    public string TestText
+    {
+        get => _testText;
+        set
+        {
+            _testText = value;
+            OnPropertyChanged();
+        }
+    }
+    public void OnTestEventInvoked(object arg)
+    {
+        _testNumber++;
+        TestText = "Test " + _testNumber;
+    }
+    //Transform для вращающегося куба
     public Transform3D CubeTransform
     {
         get => _cubeTransform;
@@ -20,28 +58,8 @@ public class MainViewModel : ViewModelBase
             OnPropertyChanged();
         }
     }
-
-    private double _rotationAngle = 0.0;
-    private bool _isAddMode = false;
-    private string _statusText = "Режим навигации";
-    private World? _world;
-
-    public bool IsAddMode
-    {
-        get => _isAddMode;
-        set
-        {
-            _isAddMode = value;
-            OnPropertyChanged();
-            OnPropertyChanged(nameof(IsPanEnabled));
-            OnPropertyChanged(nameof(IsRotationEnabled));
-            StatusText = _isAddMode ? "Режим добавления кубов - кликните на сетку" : "Режим навигации";
-        }
-    }
-
     public bool IsPanEnabled => !_isAddMode;
     public bool IsRotationEnabled => !_isAddMode;
-
     public string StatusText
     {
         get => _statusText;
@@ -51,48 +69,34 @@ public class MainViewModel : ViewModelBase
             OnPropertyChanged();
         }
     }
-
     public ICommand AddCubeCommand { get; }
 
-    public MainViewModel()
+    public MainViewModel(IWorld world, IMailer mailer)
     {
-        AddCubeCommand = new RelayCommand(() => IsAddMode = !IsAddMode);
-    }
-
-    public void SetWorld(World world)
-    {
+        _mailer = mailer;
         _world = world;
+        _gameState = new StateNavigation();
+        StatusText = _gameState.StateName;
+        _mailer.Subscribe<object>(EventEnum.TestEvent, OnTestEventInvoked);
+        _mailer.Subscribe<object>(EventEnum.GameStateChanged, OnStateChanged);
+        _mailer.Subscribe<object>(EventEnum.InstructionStart, OnInstrutionStart);
+        //OnMouseDowmCommand = new RelayCommand(OnMouseDowm);
     }
-
 
     public void Update(double deltaTime)
     {
-        _rotationAngle += deltaTime * 45; // Поворачиваем на 1 градусов в секунду
-
-        // Создаем группу трансформаций для комбинирования поворотов
-        var transformGroup = new Transform3DGroup();
-
-        // Сначала перемещаем куб в нужную позицию
-        transformGroup.Children.Add(new TranslateTransform3D(-5, 0, -5));
-
-        // Поворот вокруг оси Y (вертикальная ось)
-        transformGroup.Children.Add(new RotateTransform3D(
-            new AxisAngleRotation3D(new Vector3D(0, 1, 0), _rotationAngle), new Point3D(-5, 0, -5)));
-
-        // Поворот вокруг оси X (горизонтальная ось) - медленнее
-        transformGroup.Children.Add(new RotateTransform3D(
-            new AxisAngleRotation3D(new Vector3D(1, 0, 0), _rotationAngle), new Point3D(-5, 0, -5)));
-
-        CubeTransform = transformGroup;
+        _fPSCubeVM.Update(deltaTime);
+        CubeTransform = _fPSCubeVM.CubeTransform;
     }
-
+    public void OnStateChanged(object args)
+    {
+        var gameState = (IGameState)args;
+        StatusText = gameState.StateName;
+    }
     public void OnMouseClick(Vector2 screenPoint, Viewport3DX viewport)
     {
-        if (!_isAddMode || _world == null) return;
-
         // Преобразуем экранные координаты в 3D координаты на плоскости Y=0
         IList<HitTestResult> hitResult = viewport.FindHits(screenPoint);
-
         if (hitResult != null && hitResult.Count > 0)
         {
             // Ищем пересечение с плоскостью Y=0
@@ -102,7 +106,6 @@ public class MainViewModel : ViewModelBase
             if (ray.Intersects(ref plane, out float distance))
             {
                 var worldPoint = ray.Position + ray.Direction * distance;
-                CreateCubeAtPosition(worldPoint);
             }
         }
         else
@@ -113,63 +116,36 @@ public class MainViewModel : ViewModelBase
 
             if (ray.Intersects(ref plane, out float distance))
             {
-                var worldPoint = ray.Position + ray.Direction * distance;
-                CreateCubeAtPosition(worldPoint);
+                _position = ray.Position + ray.Direction * distance;
             }
+        }
+
+        switch (_statusText)
+        {
+            case "Add":
+                _instruction?.Execute(_position);
+                break;
         }
     }
 
-    private void CreateCubeAtPosition(Vector3 position)
+    public void InitialiseToolbarButtons(Dictionary<string, IInstruction> instructions)
     {
-        if (_world == null) return;
+        foreach (var instruction in instructions)
+        {
+            ToolbarButtons.Add(new ToolbarButtonViewModel()
+            {
+                Content = instruction.Key.ToString(),
+                Command = new RelayCommand(instruction.Value.OnStart)
+            });
+        }
+    }
+    public void OnButtonClick(object sender, EventArgs e)
+    {
 
-        // Создаем новую сущность куба
-        var cubeEntity = _world.CreateEntity($"Cube_{_world.EntityCount}");
-
-        // Добавляем компонент трансформации
-        var transform = cubeEntity.AddComponent<TransformComponent>();
-        transform.Position = new Vector3(position.X, 0.5f, position.Z); // Поднимаем куб над сеткой
-
-        // Добавляем компонент меша
-        var mesh = cubeEntity.AddComponent<MeshComponent>();
-        var mb = new MeshBuilder();
-        mb.AddBox(new Vector3(0, 0, 0), 1, 1, 1);
-        mesh.Geometry = mb.ToMeshGeometry3D();
-        mesh.Material = PhongMaterials.Blue; // Синий цвет для новых кубов
-
-        // Добавляем компонент имени
-        cubeEntity.AddComponent<NameComponent>(new NameComponent($"Cube_{_world.EntityCount}"));
-
-        StatusText = $"Создан куб в позиции ({position.X:F1}, {position.Z:F1})";
     }
 
-}
-
-// Простая реализация RelayCommand
-public class RelayCommand : ICommand
-{
-    private readonly Action _execute;
-    private readonly Func<bool>? _canExecute;
-
-    public RelayCommand(Action execute, Func<bool>? canExecute = null)
+    private void OnInstrutionStart(object instruction)
     {
-        _execute = execute ?? throw new ArgumentNullException(nameof(execute));
-        _canExecute = canExecute;
-    }
-
-    public event EventHandler? CanExecuteChanged
-    {
-        add { CommandManager.RequerySuggested += value; }
-        remove { CommandManager.RequerySuggested -= value; }
-    }
-
-    public bool CanExecute(object? parameter)
-    {
-        return _canExecute?.Invoke() ?? true;
-    }
-
-    public void Execute(object? parameter)
-    {
-        _execute();
+        _instruction = (IInstruction)instruction;
     }
 }

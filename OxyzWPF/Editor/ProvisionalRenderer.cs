@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OxyzWPF.Editor.Commands
+namespace OxyzWPF.Editor
 {
-    internal interface IEditorCommand
+    class ProvisionalRenderer
     {
-        void Execute();
-
     }
 }

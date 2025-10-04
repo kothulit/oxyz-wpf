@@ -1,12 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using OxyzWPF.Contracts.ECS;
 
 namespace OxyzWPF.ECS;
 
 /// <summary>
 /// Мир - контейнер для всех сущностей и систем
 /// </summary>
-public class World
+public class World : IWorld
 {
     private readonly List<Entity> _entities;
     private readonly List<ISystem> _systems;

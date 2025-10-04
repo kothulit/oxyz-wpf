@@ -1,4 +1,5 @@
 ﻿using HelixToolkit.Wpf.SharpDX;
+using OxyzWPF.Contracts.ECS;
 
 namespace OxyzWPF.ECS.Components;
 
