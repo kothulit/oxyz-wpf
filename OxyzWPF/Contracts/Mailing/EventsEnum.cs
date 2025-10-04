@@ -2,5 +2,6 @@
 
 public enum EventsEnum
 {
-    ButtonClicked
+    KeyPressed = 1,
+    MouseDown = 2,
 }

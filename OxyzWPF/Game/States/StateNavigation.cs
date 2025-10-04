@@ -3,7 +3,7 @@ using OxyzWPF.Messenger;
 
 namespace OxyzWPF.Game.States;
 
-public class StateNavigation : IEditorState
+public class StateNavigation : IGameState
 {
     public string StateName => "Browse";
     public bool IsEditingEnable => true;

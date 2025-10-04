@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Contracts\DTO\Geometry\" />
     <Folder Include="Contracts\UI\" />
   </ItemGroup>
 

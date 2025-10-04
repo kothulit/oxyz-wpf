@@ -1,6 +1,6 @@
 ﻿using HelixToolkit.Wpf.SharpDX;
 using OxyzWPF.Contracts.ECS;
-using OxyzWPF.Contracts.Editor;
+using OxyzWPF.Contracts.Instruction;
 using OxyzWPF.ECS.Components;
 using OxyzWPF.UI.ViewModels;
 using SharpDX;
@@ -17,7 +17,7 @@ internal class AddSphere : IInstruction
         _mainViewModel = mainViewModel;
     }
 
-    public void Execute()
+    public void Execute(object args)
     {
         var cubeEntity = _world.CreateEntity($"Sphere_{_world.EntityCount}");
 

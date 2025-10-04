@@ -84,13 +84,21 @@ namespace OxyzWPF
             GridModel.Geometry = gridBuilder.ToMeshGeometry3D();
         }
 
-        private void Viewport3DX_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void ViewPort_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
             {
                 var position = e.GetPosition(viewPort);
                 var point2D = new Vector2((float)position.X, (float)position.Y);
                 _viewModel.OnMouseClick(point2D, viewPort);
+            }
+        }
+
+        private void ViewPort_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+            {
+                
             }
         }
     }

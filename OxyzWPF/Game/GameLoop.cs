@@ -24,6 +24,10 @@ internal class GameLoop : IGameLoop
 
     public void OnRendering(object? sender, EventArgs e)
     {
+        //Для оптимизации здесь необходимо использовать RenderingTime
+        //https://evanl.wordpress.com/2009/12/06/efficient-optimal-per-frame-eventing-in-wpf/
+        //var args = (RenderingEventArgs)e;
+        //var renderingTime = args.RenderingTime; 
         var currentTime = DateTime.Now;
         var deltaTime = (currentTime - _lastFrameTime).TotalSeconds;
         _lastFrameTime = currentTime;

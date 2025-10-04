@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using OxyzWPF.Contracts.ECS;
-using OxyzWPF.Contracts.Editor;
+using OxyzWPF.Contracts.Instruction;
 using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.Editor.Instrutions;
 using OxyzWPF.UI.ViewModels;

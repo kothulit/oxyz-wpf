@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using OxyzWPF.Contracts.ECS;
 using OxyzWPF.Contracts.Game;
-using OxyzWPF.Contracts.Editor;
+using OxyzWPF.Contracts.Instruction;
 using OxyzWPF.ECS;
 using OxyzWPF.Game;
 using OxyzWPF.Game.States;
@@ -34,7 +34,7 @@ public partial class App : Application
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<MainWindow>();
         services.AddSingleton<GameStateMachine>();
-        services.AddSingleton<IEditorState, StateEdit>();
+        services.AddSingleton<IGameState, StateEdit>();
         services.AddSingleton<IGameLoop, GameLoop>();
         services.AddSingleton<IEventBus, OxyzWPF.EventBus.EventBus>();
         services.AddSingleton<RenderSystem>();

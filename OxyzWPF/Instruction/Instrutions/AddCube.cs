@@ -1,6 +1,6 @@
 ﻿using HelixToolkit.Wpf.SharpDX;
 using OxyzWPF.Contracts.ECS;
-using OxyzWPF.Contracts.Editor;
+using OxyzWPF.Contracts.Instruction;
 using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.ECS.Components;
 using OxyzWPF.UI.ViewModels;
@@ -20,7 +20,7 @@ internal class AddCube : IInstruction
         _mainViewModel = mainViewModel;
     }
 
-    public void Execute()
+    public void Execute(object args)
     {
         var cubeEntity = _world.CreateEntity($"Cube_{_world.EntityCount}");
 

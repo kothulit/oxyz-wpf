@@ -1,16 +1,19 @@
 ﻿using OxyzWPF.Contracts.Game.States;
+using OxyzWPF.Contracts.Mailing;
 
 namespace OxyzWPF.Game.States;
 
 public class GameStateMachine
 {
-    private IEditorState _currentState;
-    private IEditorState _defaultState = new StateNavigation();
-    private Dictionary<string, IEditorState> _states;
+    private IMailer _mailer;
+    private IGameState _currentState;
+    private IGameState _defaultState = new StateNavigation();
+    private Dictionary<string, IGameState> _states;
 
-    public GameStateMachine()
+    public GameStateMachine(IMailer mailer)
     {
-        _states = new Dictionary<string, IEditorState>()
+        _mailer = mailer;
+        _states = new Dictionary<string, IGameState>()
         {
             { "Default", _defaultState },
             { "Navigation", new StateNavigation() },
@@ -19,7 +22,7 @@ public class GameStateMachine
         _currentState = _states["Default"];
     }
 
-    public IEditorState CurrentState => _currentState;
+    public IGameState CurrentState => _currentState;
     public string StateName => _currentState.StateName;
     public bool IsEditingEnable => _currentState.IsEditingEnable;
     public bool IsViewPanEnable => _currentState.IsEditingEnable;
@@ -38,13 +41,18 @@ public class GameStateMachine
         }
     }
 
-    public void ChangeState(IEditorState newState)
+    public void ChangeState(IGameState newState)
     {
         _currentState?.Exit();
         _currentState = newState;
         _currentState?.Enter();
+        OnCangeState(newState);
     }
 
+    public void OnCangeState(IGameState gameState)
+    {
+        _mailer.Publish("StateChanged", gameState);
+    }
     public void Update(double deltaTime)
     {
         _currentState?.Update(deltaTime);
