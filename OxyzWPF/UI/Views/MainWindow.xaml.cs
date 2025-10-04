@@ -34,8 +34,8 @@ namespace OxyzWPF
             CubeModel.Geometry = mb.ToMeshGeometry3D();
 
             //Подписываемся на событие Object3DAdded
-            mailer.Subscribe<object>("Object3DAdded", Create3DObject);
-            mailer.Subscribe<object>("Object3DRemoved", Remove3DObject);
+            mailer.Subscribe<object>(EventEnum.ObjectAdded, Create3DObject);
+            mailer.Subscribe<object>(EventEnum.ObjectRemoved, Remove3DObject);
         }
 
         private void Create3DObject(object newModel)

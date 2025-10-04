@@ -76,8 +76,8 @@ public class MainViewModel : ViewModelBase
         _world = world;
         _gameState = new StateNavigation();
         StatusText = _gameState.StateName;
-        _mailer.Subscribe<object>("TestEvent", OnTestEventInvoked);
-        _mailer.Subscribe<object>("StateChanged", OnStateChanged);
+        _mailer.Subscribe<object>(EventEnum.TestEvent, OnTestEventInvoked);
+        _mailer.Subscribe<object>(EventEnum.GameStateChanged, OnStateChanged);
         //OnMouseDowmCommand = new RelayCommand(OnMouseDowm);
     }
 

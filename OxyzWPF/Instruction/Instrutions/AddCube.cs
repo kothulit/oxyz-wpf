@@ -36,6 +36,6 @@ internal class AddCube : IInstruction
 
         _mainViewModel.StatusText = $"Создан куб в позиции ({position.X:F1}, {position.Z:F1})";
 
-        _mailer.Publish("TestEvent", "Test");
+        _mailer.Publish(EventEnum.TestEvent, "Test");
     }
 }

@@ -51,7 +51,7 @@ public class GameStateMachine
 
     public void OnCangeState(IGameState gameState)
     {
-        _mailer.Publish("StateChanged", gameState);
+        _mailer.Publish(EventEnum.GameStateChanged, gameState);
     }
     public void Update(double deltaTime)
     {

@@ -4,10 +4,10 @@ namespace OxyzWPF.Mailing;
 
 class Mailer : IMailer
 {
-    Dictionary<string, Delegate> _eventTable = new();
-    Dictionary<string, List<object>> _publishedEvents = new();
+    Dictionary<EventEnum, Delegate> _eventTable = new();
+    Dictionary<EventEnum, List<object>> _publishedEvents = new();
 
-    public void Subscribe(string eventName, Action callback)
+    public void Subscribe(EventEnum eventName, Action callback)
     {
         if (_eventTable.Keys.Contains(eventName))
         {
@@ -19,7 +19,7 @@ class Mailer : IMailer
         }
     }
 
-    public void Subscribe<T>(string eventName, Action<T> callback)
+    public void Subscribe<T>(EventEnum eventName, Action<T> callback)
     {
         if (_eventTable.Keys.Contains(eventName))
         {
@@ -31,7 +31,7 @@ class Mailer : IMailer
         }
     }
 
-    public void Unsubscribe(string eventName, Action method)
+    public void Unsubscribe(EventEnum eventName, Action method)
     {
         if (_eventTable.Keys.Contains(eventName))
         {
@@ -39,7 +39,7 @@ class Mailer : IMailer
         }
     }
 
-    public void Publish(string eventName, object arg)
+    public void Publish(EventEnum eventName, object arg)
     {
         foreach (var eventSubscriber in _eventTable)
         {

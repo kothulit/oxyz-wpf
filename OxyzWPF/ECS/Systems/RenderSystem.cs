@@ -54,7 +54,7 @@ namespace OxyzWPF.ECS.Systems
                     };
 
                     _renderedObjects[entity.Id] = newModel;
-                    _mailer.Publish("Object3DAdded", newModel);
+                    _mailer.Publish(EventEnum.ObjectAdded, newModel);
                     
                 }
             }
@@ -68,7 +68,7 @@ namespace OxyzWPF.ECS.Systems
             {
                 if (_renderedObjects.TryGetValue(id, out var model))
                 {
-                    _mailer.Publish("Object3DRemoved", model);
+                    _mailer.Publish(EventEnum.ObjectRemoved, model);
                     _renderedObjects.Remove(id);
                 }
             }
