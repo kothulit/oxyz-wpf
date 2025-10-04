@@ -33,11 +33,9 @@ public partial class App : Application
         services.AddSingleton<IInstructor, Instructor>();
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<MainWindow>();
-        services.AddSingleton<GameStateMachine>();
+        services.AddSingleton<IGameStateMachine, GameStateMachine>();
         services.AddSingleton<IGameState, StateEdit>();
         services.AddSingleton<IGameLoop, GameLoop>();
-        services.AddSingleton<IEventBus, OxyzWPF.EventBus.EventBus>();
-        services.AddSingleton<RenderSystem>();
         services.AddSingleton<RenderSystem>();
 
         _serviceProvider = services.BuildServiceProvider();
@@ -47,7 +45,9 @@ public partial class App : Application
     {
         base.OnStartup(e);
 
+        
         var world = _serviceProvider.GetService<IWorld>();
+        var gameStateMachine = _serviceProvider.GetService<IGameStateMachine>();
         world.AddSystem(_serviceProvider.GetRequiredService<RenderSystem>());
 
         var mainViewModel = _serviceProvider.GetRequiredService<MainViewModel>();

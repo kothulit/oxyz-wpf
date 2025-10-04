@@ -4,8 +4,9 @@ namespace OxyzWPF.Mailing;
 
 class Mailer : IMailer
 {
-    Dictionary<EventEnum, Delegate> _eventTable = new();
-    Dictionary<EventEnum, List<object>> _publishedEvents = new();
+    private Dictionary<EventEnum, Delegate> _eventTable = new();
+    private Dictionary<EventEnum, List<object>> _publishedEvents = new();
+    private Dictionary<EventEnum, List<object>> _onUpdateEvents = new();
 
     public void Subscribe(EventEnum eventName, Action callback)
     {
@@ -59,9 +60,11 @@ class Mailer : IMailer
 
     public void Update(double deltaTime)
     {
-        foreach (var eventName in _publishedEvents)
+        _onUpdateEvents = new Dictionary<EventEnum, List<object>>(_publishedEvents);
+        _publishedEvents.Clear();
+        foreach (var eventName in _onUpdateEvents)
         {
-            foreach(var eventArg in _publishedEvents[eventName.Key])
+            foreach(var eventArg in _onUpdateEvents[eventName.Key])
             {
                 if (!(eventArg is null))
                 {
@@ -69,6 +72,5 @@ class Mailer : IMailer
                 }
             }
         }
-        _publishedEvents.Clear();
     }
 }

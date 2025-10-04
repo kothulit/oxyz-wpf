@@ -3,7 +3,6 @@ using OxyzWPF.Contracts.ECS;
 using OxyzWPF.Contracts.Instruction;
 using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.ECS.Components;
-using OxyzWPF.UI.ViewModels;
 using SharpDX;
 
 namespace OxyzWPF.Editor.Instrutions;
@@ -12,17 +11,16 @@ internal class AddCube : IInstruction
 {
     private readonly IMailer _mailer;
     private readonly IWorld _world;
-    private readonly MainViewModel _mainViewModel;
-    public AddCube(IWorld world, MainViewModel mainViewModel, IMailer mailer)
+    public AddCube(IWorld world , IMailer mailer)
     {
         _mailer = mailer;
         _world = world;
-        _mainViewModel = mainViewModel;
     }
 
-    public void OnStart()
+    public void OnStart(object args)
     {
         _mailer.Publish(EventEnum.GameStateChangeRequest, "Add");
+        _mailer.Publish(EventEnum.InstructionStart, this);
     }
 
     public void Execute(object args)
@@ -30,7 +28,7 @@ internal class AddCube : IInstruction
         var cubeEntity = _world.CreateEntity($"Cube_{_world.EntityCount}");
 
         var transform = cubeEntity.AddComponent<TransformComponent>();
-        var position = _mainViewModel.Position;
+        var position = (Vector3)args;
         transform.Position = new Vector3(position.X, 0.5f, position.Z); // Поднимаем куб над сеткой
 
         var mesh = cubeEntity.AddComponent<MeshComponent>();
@@ -39,9 +37,7 @@ internal class AddCube : IInstruction
         mesh.Geometry = mb.ToMeshGeometry3D();
         mesh.Material = PhongMaterials.Blue; // Синий цвет для новых кубов
 
-        _mainViewModel.StatusText = $"Создан куб в позиции ({position.X:F1}, {position.Z:F1})";
-
-        _mailer.Publish(EventEnum.TestEvent, "Test");
+        _mailer.Publish(EventEnum.TestEvent, $"Создан куб в позиции ({position.X:F1}, {position.Z:F1})");
     }
 
     public void OnEnd()

@@ -24,6 +24,7 @@ public class MainViewModel : ViewModelBase
     private Transform3D _cubeTransform = Transform3D.Identity;
     private bool _isAddMode = false;
     private string _statusText;
+    private IInstruction _instruction;
 
     public Vector3 Position => _position;
     public ObservableCollection<ToolbarButtonViewModel> ToolbarButtons
@@ -78,6 +79,7 @@ public class MainViewModel : ViewModelBase
         StatusText = _gameState.StateName;
         _mailer.Subscribe<object>(EventEnum.TestEvent, OnTestEventInvoked);
         _mailer.Subscribe<object>(EventEnum.GameStateChanged, OnStateChanged);
+        _mailer.Subscribe<object>(EventEnum.InstructionStart, OnInstrutionStart);
         //OnMouseDowmCommand = new RelayCommand(OnMouseDowm);
     }
 
@@ -93,36 +95,39 @@ public class MainViewModel : ViewModelBase
     }
     public void OnMouseClick(Vector2 screenPoint, Viewport3DX viewport)
     {
+        // Преобразуем экранные координаты в 3D координаты на плоскости Y=0
+        IList<HitTestResult> hitResult = viewport.FindHits(screenPoint);
+        if (hitResult != null && hitResult.Count > 0)
+        {
+            // Ищем пересечение с плоскостью Y=0
+            var ray = viewport.UnProject(screenPoint);
+            Plane plane = new Plane(new Vector3(0, 1, 0), 0); // Плоскость Y=0
+
+            if (ray.Intersects(ref plane, out float distance))
+            {
+                var worldPoint = ray.Position + ray.Direction * distance;
+            }
+        }
+        else
+        {
+            // Если не попали в объект, используем проекцию на плоскость
+            var ray = viewport.UnProject(screenPoint);
+            var plane = new Plane(new Vector3(0, 1, 0), 0);
+
+            if (ray.Intersects(ref plane, out float distance))
+            {
+                _position = ray.Position + ray.Direction * distance;
+            }
+        }
+
         switch (_statusText)
         {
             case "Add":
-                // Преобразуем экранные координаты в 3D координаты на плоскости Y=0
-                IList<HitTestResult> hitResult = viewport.FindHits(screenPoint);
-                if (hitResult != null && hitResult.Count > 0)
-                {
-                    // Ищем пересечение с плоскостью Y=0
-                    var ray = viewport.UnProject(screenPoint);
-                    Plane plane = new Plane(new Vector3(0, 1, 0), 0); // Плоскость Y=0
-
-                    if (ray.Intersects(ref plane, out float distance))
-                    {
-                        var worldPoint = ray.Position + ray.Direction * distance;
-                    }
-                }
-                else
-                {
-                    // Если не попали в объект, используем проекцию на плоскость
-                    var ray = viewport.UnProject(screenPoint);
-                    var plane = new Plane(new Vector3(0, 1, 0), 0);
-
-                    if (ray.Intersects(ref plane, out float distance))
-                    {
-                        _position = ray.Position + ray.Direction * distance;
-                    }
-                }
+                _instruction?.Execute(_position);
                 break;
         }
     }
+
     public void InitialiseToolbarButtons(Dictionary<string, IInstruction> instructions)
     {
         foreach (var instruction in instructions)
@@ -130,8 +135,17 @@ public class MainViewModel : ViewModelBase
             ToolbarButtons.Add(new ToolbarButtonViewModel()
             {
                 Content = instruction.Key.ToString(),
-                Command = new RelayCommand(instruction.Value.Execute)
+                Command = new RelayCommand(instruction.Value.OnStart)
             });
         }
+    }
+    public void OnButtonClick(object sender, EventArgs e)
+    {
+
+    }
+
+    private void OnInstrutionStart(object instruction)
+    {
+        _instruction = (IInstruction)instruction;
     }
 }

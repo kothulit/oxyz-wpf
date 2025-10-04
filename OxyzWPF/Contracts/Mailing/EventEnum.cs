@@ -9,4 +9,5 @@ public enum EventEnum
     ObjectRemoved = 4,
     GameStateChanged = 5,
     GameStateChangeRequest = 6,
+    InstructionStart = 7,
 }

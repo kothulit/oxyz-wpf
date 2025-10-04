@@ -1,9 +1,10 @@
-﻿using OxyzWPF.Contracts.Game.States;
+﻿using OxyzWPF.Contracts.Game;
+using OxyzWPF.Contracts.Game.States;
 using OxyzWPF.Contracts.Mailing;
 
 namespace OxyzWPF.Game.States;
 
-public class GameStateMachine
+public class GameStateMachine : IGameStateMachine
 {
     private IMailer _mailer;
     private IGameState _currentState;
@@ -17,7 +18,8 @@ public class GameStateMachine
         {
             { "Default", _defaultState },
             { "Navigation", new StateNavigation() },
-            { "Edit", new StateEdit() }
+            { "Edit", new StateEdit() },
+            { "Add", new StateAdd() }
         };
         _currentState = _states["Default"];
         _mailer.Subscribe<object>(EventEnum.GameStateChangeRequest, OnStateChangeRequest);
