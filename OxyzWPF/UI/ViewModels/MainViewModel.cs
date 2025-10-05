@@ -9,13 +9,14 @@ using System.Collections.ObjectModel;
 using OxyzWPF.Contracts.Instruction;
 using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.Game.States;
+using OxyzWPF.Contracts.Transponder;
 
 namespace OxyzWPF.UI.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
     private readonly IMailer _mailer;
-    private readonly IWorld? _world;
+    private readonly IInputTransponder _inputTransponder;
     private readonly IGameState _gameState;
     private int _testNumber = 0;
     private Vector3 _position = Vector3.Zero;
@@ -71,10 +72,10 @@ public class MainViewModel : ViewModelBase
     }
     public ICommand AddCubeCommand { get; }
 
-    public MainViewModel(IWorld world, IMailer mailer)
+    public MainViewModel(IMailer mailer, IInputTransponder inputTransponder)
     {
         _mailer = mailer;
-        _world = world;
+        _inputTransponder = inputTransponder;
         _gameState = new StateNavigation();
         StatusText = _gameState.StateName;
         _mailer.Subscribe<object>(EventEnum.TestEvent, OnTestEventInvoked);
@@ -142,6 +143,11 @@ public class MainViewModel : ViewModelBase
     public void OnButtonClick(object sender, EventArgs e)
     {
 
+    }
+
+    public void OnKeyDown(object args)
+    {
+        _inputTransponder.OnKeyDown(args);
     }
 
     private void OnInstrutionStart(object instruction)

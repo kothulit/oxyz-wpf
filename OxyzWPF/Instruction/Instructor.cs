@@ -10,7 +10,7 @@ public class Instructor : IInstructor
     private readonly IMailer _mailer;
     private readonly IWorld _world;
     private Dictionary<string, IInstruction> _instructions = new Dictionary<string, IInstruction>();
-    public IInstruction ActiveInstruction { get; private set; }
+    public IInstruction? ActiveInstruction { get; private set; }
     public Dictionary<string, IInstruction> Instructions => _instructions;
 
     public Instructor(IWorld world , IMailer mailer)
@@ -20,10 +20,17 @@ public class Instructor : IInstructor
         _instructions.Add("AddCube", new AddCube(_world, _mailer));
         _instructions.Add("AddSphere", new AddSphere(_world, _mailer));
         _mailer.Subscribe<object>(EventEnum.InstructionStart, OnInstructionStart);
+        _mailer.Subscribe<object>(EventEnum.InstructionCanseled, OnInstructionCanseled);
     }
 
     private void OnInstructionStart(object instruction)
     {
         ActiveInstruction = (IInstruction)instruction;
+    }
+
+    private void OnInstructionCanseled(object args)
+    {
+        ActiveInstruction?.OnEnd();
+        ActiveInstruction = null;
     }
 }

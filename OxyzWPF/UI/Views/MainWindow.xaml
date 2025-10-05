@@ -17,7 +17,8 @@
                         IsZoomEnabled="True"
                         Background="White"
                         MouseDown="ViewPort_MouseDown"
-                        MouseMove="ViewPort_MouseMove">
+                        MouseMove="ViewPort_MouseMove"
+                        KeyDown="viewPort_KeyDown">
 
             <hx:Viewport3DX.Camera>
                 <hx:PerspectiveCamera Position="5,5,5"

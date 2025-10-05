@@ -13,6 +13,8 @@ using OxyzWPF.EventBus;
 using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.Mailing;
 using OxyzWPF.ECS.Systems;
+using OxyzWPF.Transponder;
+using OxyzWPF.Contracts.Transponder;
 
 namespace OxyzWPF;
 
@@ -31,6 +33,7 @@ public partial class App : Application
         services.AddSingleton<IWorld, World>();
         services.AddSingleton<IMailer, Mailer>();
         services.AddSingleton<IInstructor, Instructor>();
+        services.AddSingleton<IInputTransponder, InputTransponder>();
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<MainWindow>();
         services.AddSingleton<IGameStateMachine, GameStateMachine>();

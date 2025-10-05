@@ -3,6 +3,7 @@ using HelixToolkit.Wpf.SharpDX;
 using SharpDX;
 using OxyzWPF.UI.ViewModels;
 using OxyzWPF.Contracts.Mailing;
+using System.Windows.Input;
 
 namespace OxyzWPF
 {
@@ -34,8 +35,8 @@ namespace OxyzWPF
             CubeModel.Geometry = mb.ToMeshGeometry3D();
 
             //Подписываемся на событие Object3DAdded
-            mailer.Subscribe<object>(EventEnum.ObjectAdded, Create3DObject);
-            mailer.Subscribe<object>(EventEnum.ObjectRemoved, Remove3DObject);
+            _mailer.Subscribe<object>(EventEnum.ObjectAdded, Create3DObject);
+            _mailer.Subscribe<object>(EventEnum.ObjectRemoved, Remove3DObject);
         }
 
         private void Create3DObject(object newModel)
@@ -94,12 +95,17 @@ namespace OxyzWPF
             }
         }
 
-        private void ViewPort_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        private void ViewPort_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
             {
                 
             }
+        }
+
+        private void viewPort_KeyDown(object sender, KeyEventArgs e)
+        {
+            _viewModel.OnKeyDown(e);
         }
     }
 }
