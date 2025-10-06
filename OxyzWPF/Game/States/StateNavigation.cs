@@ -1,4 +1,5 @@
 ﻿using OxyzWPF.Contracts.Game.States;
+using OxyzWPF.Mailing;
 using OxyzWPF.Messenger;
 
 namespace OxyzWPF.Game.States;
@@ -12,7 +13,7 @@ public class StateNavigation : IGameState
     public bool IsViewRotateEnable => true;
     public void Enter()
     {
-        Messenger<string>.Broadcast(MessengerEvents.EditorStateChanged, "Browse");
+        //Messenger<string>.Broadcast(MessengerEvents.EditorStateChanged, "Browse");
     }
     public void Exit() { }
     public void Update(double deltaTime) { /* Здесь можно обновлять камеру */ }

@@ -63,7 +63,7 @@ internal class MessengerInternal
             else if (d.GetType() != listenerBeingRemoved.GetType())
             {
                 throw new ListenerException(string.Format("Attempting to remove listener with inconsistent signature for event type {0}. " +
-                    "Current listeners have type {1} and listener being removed has type {2}", 
+                    "Current listeners have type {1} and listener being removed has type {2}",
                     eventType, d.GetType().Name, listenerBeingRemoved.GetType().Name));
             }
         }

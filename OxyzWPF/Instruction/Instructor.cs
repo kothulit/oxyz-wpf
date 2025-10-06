@@ -10,15 +10,15 @@ public class Instructor : IInstructor
     private readonly IMailer _mailer;
     private readonly IWorld _world;
     private Dictionary<string, IInstruction> _instructions = new Dictionary<string, IInstruction>();
-    public IInstruction? ActiveInstruction { get; private set; }
+    public IInstruction? ActiveInstruction { get; set; }
     public Dictionary<string, IInstruction> Instructions => _instructions;
 
     public Instructor(IWorld world , IMailer mailer)
     {
         _mailer = mailer;
         _world = world;
-        _instructions.Add("AddCube", new AddCube(_world, _mailer));
-        _instructions.Add("AddSphere", new AddSphere(_world, _mailer));
+        _instructions.Add("AddCube", new AddCube(_world, _mailer, this));
+        _instructions.Add("AddSphere", new AddSphere(_world, _mailer, this));
         _mailer.Subscribe<object>(EventEnum.InstructionStart, OnInstructionStart);
         _mailer.Subscribe<object>(EventEnum.InstructionCanseled, OnInstructionCanseled);
     }

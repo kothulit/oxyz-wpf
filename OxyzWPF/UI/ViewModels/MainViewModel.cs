@@ -10,45 +10,47 @@ using OxyzWPF.Contracts.Instruction;
 using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.Game.States;
 using OxyzWPF.Contracts.Transponder;
+using OxyzWPF.Contracts.Game;
+using OxyzWPF.Editor;
+using Accessibility;
 
 namespace OxyzWPF.UI.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
     private readonly IMailer _mailer;
+    private readonly IGameStateMachine _gameStateMachine;
+    private readonly IInstructor _instructor;
     private readonly IInputTransponder _inputTransponder;
-    private readonly IGameState _gameState;
-    private int _testNumber = 0;
+
+    private string _stateName;
+    public string StateName
+    {
+        get { return _stateName; }
+        set
+        {
+            if (_stateName != value)
+            {
+                _stateName = value;
+                OnPropertyChanged();
+            }
+        }
+    }
+
     private Vector3 _position = Vector3.Zero;
-    private string _testText = "Test";
+    public Vector3 Position => _position;
+
     private FPSCubeVM _fPSCubeVM = new FPSCubeVM();
     private Transform3D _cubeTransform = Transform3D.Identity;
-    private bool _isAddMode = false;
-    private string _statusText;
-    private IInstruction _instruction;
 
-    public Vector3 Position => _position;
+    
     public ObservableCollection<ToolbarButtonViewModel> ToolbarButtons
     {
         get;
         private set;
     } = new ObservableCollection<ToolbarButtonViewModel>();
     public ICommand OnMouseDowmCommand { get; }
-    //Текст для теста mailer
-    public string TestText
-    {
-        get => _testText;
-        set
-        {
-            _testText = value;
-            OnPropertyChanged();
-        }
-    }
-    public void OnTestEventInvoked(object arg)
-    {
-        _testNumber++;
-        TestText = "Test " + _testNumber;
-    }
+ 
     //Transform для вращающегося куба
     public Transform3D CubeTransform
     {
@@ -59,8 +61,8 @@ public class MainViewModel : ViewModelBase
             OnPropertyChanged();
         }
     }
-    public bool IsPanEnabled => !_isAddMode;
-    public bool IsRotationEnabled => !_isAddMode;
+
+    private string _statusText;
     public string StatusText
     {
         get => _statusText;
@@ -70,18 +72,19 @@ public class MainViewModel : ViewModelBase
             OnPropertyChanged();
         }
     }
-    public ICommand AddCubeCommand { get; }
 
-    public MainViewModel(IMailer mailer, IInputTransponder inputTransponder)
+    public MainViewModel(IMailer mailer, IGameStateMachine gameStateMachine, IInstructor instructor, IInputTransponder inputTransponder)
     {
         _mailer = mailer;
+        _gameStateMachine = gameStateMachine;
+        _instructor = instructor;
         _inputTransponder = inputTransponder;
-        _gameState = new StateNavigation();
-        StatusText = _gameState.StateName;
-        _mailer.Subscribe<object>(EventEnum.TestEvent, OnTestEventInvoked);
+
+        StatusText = _gameStateMachine.CurrentState.StateName;
+
         _mailer.Subscribe<object>(EventEnum.GameStateChanged, OnStateChanged);
         _mailer.Subscribe<object>(EventEnum.InstructionStart, OnInstrutionStart);
-        //OnMouseDowmCommand = new RelayCommand(OnMouseDowm);
+        _inputTransponder = inputTransponder;
     }
 
     public void Update(double deltaTime)
@@ -89,11 +92,12 @@ public class MainViewModel : ViewModelBase
         _fPSCubeVM.Update(deltaTime);
         CubeTransform = _fPSCubeVM.CubeTransform;
     }
+
     public void OnStateChanged(object args)
     {
-        var gameState = (IGameState)args;
-        StatusText = gameState.StateName;
+        StateName = _gameStateMachine.CurrentState.StateName;
     }
+
     public void OnMouseClick(Vector2 screenPoint, Viewport3DX viewport)
     {
         // Преобразуем экранные координаты в 3D координаты на плоскости Y=0
@@ -121,10 +125,10 @@ public class MainViewModel : ViewModelBase
             }
         }
 
-        switch (_statusText)
+        switch (_stateName)
         {
             case "Add":
-                _instruction?.Execute(_position);
+                _instructor.ActiveInstruction.Execute(_position);
                 break;
         }
     }
@@ -140,18 +144,14 @@ public class MainViewModel : ViewModelBase
             });
         }
     }
-    public void OnButtonClick(object sender, EventArgs e)
-    {
 
+    public void OnInstrutionStart(object args)
+    {
+        StateName = _gameStateMachine.CurrentState.StateName;
     }
 
     public void OnKeyDown(object args)
     {
         _inputTransponder.OnKeyDown(args);
-    }
-
-    private void OnInstrutionStart(object instruction)
-    {
-        _instruction = (IInstruction)instruction;
     }
 }

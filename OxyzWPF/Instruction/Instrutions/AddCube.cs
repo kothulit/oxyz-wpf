@@ -11,16 +11,19 @@ internal class AddCube : IInstruction
 {
     private readonly IMailer _mailer;
     private readonly IWorld _world;
-    public AddCube(IWorld world , IMailer mailer)
+    private readonly IInstructor _instructor;
+    public AddCube(IWorld world , IMailer mailer, IInstructor instructor)
     {
         _mailer = mailer;
         _world = world;
+        _instructor = instructor;
     }
 
     public void OnStart(object args)
     {
         _mailer.Publish(EventEnum.GameStateChangeRequest, "Add");
         _mailer.Publish(EventEnum.InstructionStart, this);
+        _instructor.ActiveInstruction = this;
     }
 
     public void Execute(object args)
@@ -43,5 +46,6 @@ internal class AddCube : IInstruction
     public void OnEnd()
     {
         _mailer.Publish(EventEnum.GameStateChangeRequest, "Navigation");
+        _instructor.ActiveInstruction = null;
     }
 }
