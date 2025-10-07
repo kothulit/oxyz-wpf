@@ -35,9 +35,6 @@ public class MainViewModel : ViewModelBase
     private Vector3 _position = Vector3.Zero;
     public Vector3 Position => _position;
 
-    private FPSCubeVM _fPSCubeVM = new FPSCubeVM();
-    private Transform3D _cubeTransform = Transform3D.Identity;
-
     private double _fps;
     public double FPS
     {
@@ -54,17 +51,6 @@ public class MainViewModel : ViewModelBase
         private set;
     } = new ObservableCollection<ToolbarButtonViewModel>();
     public ICommand OnMouseDowmCommand { get; }
-
-    //Transform для вращающегося куба
-    public Transform3D CubeTransform
-    {
-        get => _cubeTransform;
-        set
-        {
-            _cubeTransform = value;
-            OnPropertyChanged();
-        }
-    }
 
     private string _statusText;
     public string StatusText
@@ -93,8 +79,6 @@ public class MainViewModel : ViewModelBase
 
     public void Update(double deltaTime)
     {
-        _fPSCubeVM.Update(deltaTime);
-        CubeTransform = _fPSCubeVM.CubeTransform;
     }
 
     public void OnStateChanged(object args)
