@@ -79,6 +79,11 @@
                        Margin="10,0"
                        FontWeight="Bold"
                        Foreground="Red" />
+            <TextBlock Text="{Binding FPS,StringFormat={}{0:0}}"
+                       VerticalAlignment="Center"
+                       Margin="10,0"
+                       FontWeight="Bold"
+                       Foreground="Blue" />
         </StackPanel>
     </Grid>
 </Window>

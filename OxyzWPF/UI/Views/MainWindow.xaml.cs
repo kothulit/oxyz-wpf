@@ -4,6 +4,7 @@ using SharpDX;
 using OxyzWPF.UI.ViewModels;
 using OxyzWPF.Contracts.Mailing;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace OxyzWPF
 {
@@ -33,6 +34,12 @@ namespace OxyzWPF
             var mb = new MeshBuilder();
             mb.AddBox(new Vector3(0, 0, 0), 1, 1, 1);
             CubeModel.Geometry = mb.ToMeshGeometry3D();
+
+            CompositionTarget.Rendering += (s, e) =>
+            {
+                var fps = viewPort.RenderHost?.RenderStatistics?.FPSStatistics?.AverageValue ?? 0;
+                _viewModel.FPS = fps;
+            };
 
             //Подписываемся на событие Object3DAdded
             _mailer.Subscribe<object>(EventEnum.ObjectAdded, Create3DObject);

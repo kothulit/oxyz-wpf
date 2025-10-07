@@ -3,16 +3,11 @@ using System.Windows.Input;
 using HelixToolkit.Wpf.SharpDX;
 using SharpDX;
 using OxyzWPF.UI.Commands;
-using OxyzWPF.Contracts.ECS;
-using OxyzWPF.Contracts.Game.States;
 using System.Collections.ObjectModel;
 using OxyzWPF.Contracts.Instruction;
 using OxyzWPF.Contracts.Mailing;
-using OxyzWPF.Game.States;
 using OxyzWPF.Contracts.Transponder;
 using OxyzWPF.Contracts.Game;
-using OxyzWPF.Editor;
-using Accessibility;
 
 namespace OxyzWPF.UI.ViewModels;
 
@@ -43,14 +38,23 @@ public class MainViewModel : ViewModelBase
     private FPSCubeVM _fPSCubeVM = new FPSCubeVM();
     private Transform3D _cubeTransform = Transform3D.Identity;
 
-    
+    private double _fps;
+    public double FPS
+    {
+        get => _fps;
+        set
+        {
+            _fps = value;
+            OnPropertyChanged();
+        }
+    }
     public ObservableCollection<ToolbarButtonViewModel> ToolbarButtons
     {
         get;
         private set;
     } = new ObservableCollection<ToolbarButtonViewModel>();
     public ICommand OnMouseDowmCommand { get; }
- 
+
     //Transform для вращающегося куба
     public Transform3D CubeTransform
     {
@@ -154,4 +158,6 @@ public class MainViewModel : ViewModelBase
     {
         _inputTransponder.OnKeyDown(args);
     }
+
+    
 }
