@@ -30,11 +30,6 @@ namespace OxyzWPF
             // Создаем сетку горизонтальной плоскости
             CreateGrid();
 
-            // Создаем куб через MeshBuilder
-            var mb = new MeshBuilder();
-            mb.AddBox(new Vector3(0, 0, 0), 1, 1, 1);
-            CubeModel.Geometry = mb.ToMeshGeometry3D();
-
             CompositionTarget.Rendering += (s, e) =>
             {
                 var fps = viewPort.RenderHost?.RenderStatistics?.FPSStatistics?.AverageValue ?? 0;
