@@ -1,7 +1,9 @@
-﻿namespace OxyzWPF.ECS
+﻿using OxyzWPF.Contracts.ECS;
+
+namespace OxyzWPF.ECS
 {
     internal class RealWorld : World
     {
-        public RealWorld() : base() { }
+        public RealWorld(ISystemsSwitcher systemsStateMachine) : base(systemsStateMachine) { }
     }
 }

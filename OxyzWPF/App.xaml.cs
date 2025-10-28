@@ -40,6 +40,8 @@ public partial class App : Application
         services.AddSingleton<IGameState, StateEdit>();
         services.AddSingleton<IGameLoop, GameLoop>();
         services.AddSingleton<RenderSystem>();
+        services.AddSingleton<ISelection, Selection>();
+        services.AddSingleton<ISystemsSwitcher, SystemsSwitcher>();
 
         _serviceProvider = services.BuildServiceProvider();
     }

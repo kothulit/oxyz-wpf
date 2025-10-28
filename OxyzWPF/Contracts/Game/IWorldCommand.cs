@@ -1,6 +1,6 @@
 ﻿using OxyzWPF.Contracts.ECS;
 
-namespace OxyzWPF.Contracts.Editor;
+namespace OxyzWPF.Contracts.Game;
 
 internal interface IWorldCommand
 {

@@ -11,4 +11,5 @@ public enum EventEnum
     GameStateChangeRequest = 6,
     InstructionStart = 7,
     InstructionCanseled = 8,
+    SelectionChange = 9,
 }

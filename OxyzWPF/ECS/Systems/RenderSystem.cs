@@ -10,6 +10,8 @@ namespace OxyzWPF.ECS.Systems
     /// </summary>
     public class RenderSystem : ISystem
     {
+        public bool IsOn { get; set; } = false;
+
         private readonly IWorld _world;
         private readonly IMailer _mailer;
         private readonly Dictionary<int, MeshGeometryModel3D> _renderedObjects;
@@ -72,6 +74,8 @@ namespace OxyzWPF.ECS.Systems
                     _renderedObjects.Remove(id);
                 }
             }
+
+            IsOn = false;
         }
     }
 }

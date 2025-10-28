@@ -1,4 +1,4 @@
-﻿namespace OxyzWPF.Contracts.Editor;
+﻿namespace OxyzWPF.Contracts.Game;
 
 internal interface ITransaction
 {

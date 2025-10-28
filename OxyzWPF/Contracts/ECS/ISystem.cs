@@ -5,6 +5,7 @@
 /// </summary>
 public interface ISystem
 {
+    public bool IsOn { get; set; }
     /// <summary>
     /// Обновляет систему
     /// </summary>
