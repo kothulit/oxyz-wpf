@@ -1,5 +1,6 @@
 ﻿using HelixToolkit.Wpf.SharpDX;
 using OxyzWPF.Contracts.ECS;
+using OxyzWPF.Contracts.Game;
 using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.ECS.Components;
 
@@ -14,12 +15,14 @@ namespace OxyzWPF.ECS.Systems
 
         private readonly IWorld _world;
         private readonly IMailer _mailer;
+        private readonly ISelection _selection;
         private readonly Dictionary<int, MeshGeometryModel3D> _renderedObjects;
 
-        public RenderSystem(IWorld world, IMailer mailer)
+        public RenderSystem(IWorld world, IMailer mailer, ISelection selection)
         {
             _world = world;
             _mailer = mailer;
+            _selection = selection;
             _renderedObjects = new Dictionary<int, MeshGeometryModel3D>();
         }
 
@@ -39,11 +42,17 @@ namespace OxyzWPF.ECS.Systems
                     // Обновляем трансформацию
                     model.Transform = transform.GetTransform3D();
 
+                    
                     // Обновляем геометрию и материал если изменились
                     if (model.Geometry != mesh.Geometry)
                         model.Geometry = mesh.Geometry;
                     if (model.Material != mesh.Material)
                         model.Material = mesh.Material;
+
+                    if (_selection.SelectionIds.Contains(entity.Id))
+                    {
+                        model.Material = PhongMaterials.Indigo;
+                    }
                 }
                 else
                 {

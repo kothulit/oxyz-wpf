@@ -15,10 +15,9 @@ public class SystemsSwitcher : ISystemsSwitcher
         Toggles = new Dictionary<string, bool>()
         {
             { nameof(RenderSystem), false },
-            { nameof(SelectionSystem), false },
         };
 
-        _mailer.Subscribe(EventEnum.SelectionChange, OnSelectionChanged);
+        _mailer.Subscribe<object>(EventEnum.SelectionChange, OnSelectionChanged);
     }
 
     public void Update()
@@ -29,8 +28,8 @@ public class SystemsSwitcher : ISystemsSwitcher
         }
     }
 
-    private void OnSelectionChanged()
+    private void OnSelectionChanged(object args)
     {
-        Toggles[nameof(SelectionSystem)] = true;
+        Toggles[nameof(RenderSystem)] = true;
     }
 }

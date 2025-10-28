@@ -45,7 +45,7 @@ internal class AddCube : IInstruction
 
     public void OnEnd()
     {
-        _mailer.Publish(EventEnum.GameStateChangeRequest, "Navigation");
+        _mailer.Publish(EventEnum.GameStateChangeRequest, "Browse");
         _instructor.ActiveInstruction = null;
     }
 }

@@ -9,7 +9,6 @@ using OxyzWPF.UI.ViewModels;
 using OxyzWPF.Editor;
 using System.Windows;
 using OxyzWPF.Contracts.Game.States;
-using OxyzWPF.EventBus;
 using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.Mailing;
 using OxyzWPF.ECS.Systems;
@@ -49,8 +48,8 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+        var gameLoop = _serviceProvider.GetRequiredService<IGameLoop>();
 
-        
         var realWorld = _serviceProvider.GetService<IWorld>();
         var gameStateMachine = _serviceProvider.GetService<IGameStateMachine>();
         realWorld.AddSystem(_serviceProvider.GetRequiredService<RenderSystem>());
@@ -63,6 +62,6 @@ public partial class App : Application
         var mainWindow = _serviceProvider.GetService<MainWindow>();
         mainWindow.Show();
 
-        var gameLoop = _serviceProvider.GetRequiredService<IGameLoop>();
+        
     }
 }

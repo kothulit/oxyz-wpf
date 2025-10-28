@@ -1,13 +1,14 @@
-﻿using System.Windows.Media.Media3D;
-using System.Windows.Input;
-using HelixToolkit.Wpf.SharpDX;
-using SharpDX;
-using OxyzWPF.UI.Commands;
-using System.Collections.ObjectModel;
+﻿using HelixToolkit.Wpf.SharpDX;
+using OxyzWPF.Contracts.Game;
 using OxyzWPF.Contracts.Instruction;
 using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.Contracts.Transponder;
-using OxyzWPF.Contracts.Game;
+using OxyzWPF.Game.States;
+using OxyzWPF.UI.Commands;
+using SharpDX;
+using System.Collections.ObjectModel;
+using System.Windows.Input;
+using System.Windows.Media.Media3D;
 
 namespace OxyzWPF.UI.ViewModels;
 
@@ -74,7 +75,17 @@ public class MainViewModel : ViewModelBase
 
         _mailer.Subscribe<object>(EventEnum.GameStateChanged, OnStateChanged);
         _mailer.Subscribe<object>(EventEnum.InstructionStart, OnInstrutionStart);
-        _inputTransponder = inputTransponder;
+    }
+    public void InitialiseToolbarButtons(Dictionary<string, IInstruction> instructions)
+    {
+        foreach (var instruction in instructions)
+        {
+            ToolbarButtons.Add(new ToolbarButtonViewModel()
+            {
+                Content = instruction.Key.ToString(),
+                Command = new RelayCommand(instruction.Value.OnStart)
+            });
+        }
     }
 
     public void Update(double deltaTime)
@@ -92,13 +103,14 @@ public class MainViewModel : ViewModelBase
         IList<HitTestResult> hitResult = viewport.FindHits(screenPoint);
         if (hitResult != null && hitResult.Count > 0)
         {
-            // Ищем пересечение с плоскостью Y=0
-            var ray = viewport.UnProject(screenPoint);
-            Plane plane = new Plane(new Vector3(0, 1, 0), 0); // Плоскость Y=0
-
-            if (ray.Intersects(ref plane, out float distance))
+            // Если кликнули по объекту, обрабатываем выделение
+            var hitObject = hitResult[0].ModelHit as MeshGeometryModel3D;
+            if (hitObject != null)
             {
-                var worldPoint = ray.Position + ray.Direction * distance;
+                if (_gameStateMachine.CurrentState.StateName.Equals("Browse"))
+                {
+                    _mailer.Publish(EventEnum.HitToGeometryModel, hitObject);
+                }
             }
         }
         else
@@ -121,27 +133,13 @@ public class MainViewModel : ViewModelBase
         }
     }
 
-    public void InitialiseToolbarButtons(Dictionary<string, IInstruction> instructions)
-    {
-        foreach (var instruction in instructions)
-        {
-            ToolbarButtons.Add(new ToolbarButtonViewModel()
-            {
-                Content = instruction.Key.ToString(),
-                Command = new RelayCommand(instruction.Value.OnStart)
-            });
-        }
-    }
-
     public void OnInstrutionStart(object args)
     {
-        StateName = _gameStateMachine.CurrentState.StateName;
+        
     }
 
     public void OnKeyDown(object args)
     {
         _inputTransponder.OnKeyDown(args);
     }
-
-    
 }
