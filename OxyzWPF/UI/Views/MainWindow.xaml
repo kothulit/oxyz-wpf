@@ -40,7 +40,7 @@
                                     Material="{x:Static hx:PhongMaterials.Green}"
                                     Transform="{Binding CubeTransform}" />
         </hx:Viewport3DX>
-        
+
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Left"
                     VerticalAlignment="Top"
@@ -64,26 +64,28 @@
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>
-            <Button Content="Добавить куб"
-                    Command="{Binding AddCubeCommand}"
-                    Margin="5"
-                    Padding="10,5"
-                    Background="LightBlue"
-                    />
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Margin="10"
+            Background="LightGray"
+            Opacity="0.8">
             <TextBlock Text="{Binding StatusText}"
-                       VerticalAlignment="Center"
-                       Margin="10,0"
-                       FontWeight="Bold" />
+           VerticalAlignment="Center"
+           Margin="10,0"
+           FontWeight="Bold" />
             <TextBlock Text="{Binding StateName}"
-                       VerticalAlignment="Center"
-                       Margin="10,0"
-                       FontWeight="Bold"
-                       Foreground="Red" />
+           VerticalAlignment="Center"
+           Margin="10,0"
+           FontWeight="Bold"
+           Foreground="Red" />
             <TextBlock Text="{Binding FPS,StringFormat={}{0:0}}"
-                       VerticalAlignment="Center"
-                       Margin="10,0"
-                       FontWeight="Bold"
-                       Foreground="Blue" />
+           VerticalAlignment="Center"
+           Margin="10,0"
+           FontWeight="Bold"
+           Foreground="Blue" />
         </StackPanel>
     </Grid>
 </Window>

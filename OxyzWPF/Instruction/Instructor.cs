@@ -30,7 +30,7 @@ public class Instructor : IInstructor
 
     private void OnInstructionCanseled(object args)
     {
-        ActiveInstruction?.OnEnd();
+        ActiveInstruction?.OnEnd(nameof(ActiveInstruction));
         ActiveInstruction = null;
     }
 }
