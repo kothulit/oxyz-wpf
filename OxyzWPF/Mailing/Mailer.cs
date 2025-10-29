@@ -8,17 +8,17 @@ class Mailer : IMailer
     private Dictionary<EventEnum, List<object>> _publishedEvents = new();
     private Dictionary<EventEnum, List<object>> _onUpdateEvents = new();
 
-    public void Subscribe(EventEnum eventName, Action callback)
-    {
-        if (_eventTable.Keys.Contains(eventName))
-        {
-            Action.Combine(_eventTable[eventName], callback);
-        }
-        else
-        {
-            _eventTable.Add(eventName, callback);
-        }
-    }
+    //public void Subscribe(EventEnum eventName, Action callback)
+    //{
+    //    if (_eventTable.Keys.Contains(eventName))
+    //    {
+    //        Action.Combine(_eventTable[eventName], callback);
+    //    }
+    //    else
+    //    {
+    //        _eventTable.Add(eventName, callback);
+    //    }
+    //}
 
     public void Subscribe<T>(EventEnum eventName, Action<T> callback)
     {

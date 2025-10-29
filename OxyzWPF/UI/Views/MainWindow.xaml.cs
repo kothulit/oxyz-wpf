@@ -3,6 +3,8 @@ using HelixToolkit.Wpf.SharpDX;
 using SharpDX;
 using OxyzWPF.UI.ViewModels;
 using OxyzWPF.Contracts.Mailing;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace OxyzWPF
 {
@@ -28,14 +30,15 @@ namespace OxyzWPF
             // Создаем сетку горизонтальной плоскости
             CreateGrid();
 
-            // Создаем куб через MeshBuilder
-            var mb = new MeshBuilder();
-            mb.AddBox(new Vector3(0, 0, 0), 1, 1, 1);
-            CubeModel.Geometry = mb.ToMeshGeometry3D();
+            CompositionTarget.Rendering += (s, e) =>
+            {
+                var fps = viewPort.RenderHost?.RenderStatistics?.FPSStatistics?.AverageValue ?? 0;
+                _viewModel.FPS = fps;
+            };
 
             //Подписываемся на событие Object3DAdded
-            mailer.Subscribe<object>(EventEnum.ObjectAdded, Create3DObject);
-            mailer.Subscribe<object>(EventEnum.ObjectRemoved, Remove3DObject);
+            _mailer.Subscribe<object>(EventEnum.ObjectAdded, Create3DObject);
+            _mailer.Subscribe<object>(EventEnum.ObjectRemoved, Remove3DObject);
         }
 
         private void Create3DObject(object newModel)
@@ -94,12 +97,17 @@ namespace OxyzWPF
             }
         }
 
-        private void ViewPort_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
+        private void ViewPort_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
             {
                 
             }
+        }
+
+        private void viewPort_KeyDown(object sender, KeyEventArgs e)
+        {
+            _viewModel.OnKeyDown(e);
         }
     }
 }

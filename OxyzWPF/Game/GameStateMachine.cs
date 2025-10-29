@@ -8,7 +8,8 @@ public class GameStateMachine : IGameStateMachine
 {
     private IMailer _mailer;
     private IGameState _currentState;
-    private IGameState _defaultState = new StateNavigation();
+    public IGameState CurrentState => _currentState;
+    private IGameState _defaultState = new StateBrowse();
     private Dictionary<string, IGameState> _states;
 
     public GameStateMachine(IMailer mailer)
@@ -17,7 +18,7 @@ public class GameStateMachine : IGameStateMachine
         _states = new Dictionary<string, IGameState>()
         {
             { "Default", _defaultState },
-            { "Navigation", new StateNavigation() },
+            { "Browse", new StateBrowse() },
             { "Edit", new StateEdit() },
             { "Add", new StateAdd() }
         };
@@ -30,7 +31,6 @@ public class GameStateMachine : IGameStateMachine
         ChangeState((string)stateName);
     }
 
-    public IGameState CurrentState => _currentState;
     public string StateName => _currentState.StateName;
     public bool IsEditingEnable => _currentState.IsEditingEnable;
     public bool IsViewPanEnable => _currentState.IsEditingEnable;

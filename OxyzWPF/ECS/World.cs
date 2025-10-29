@@ -10,8 +10,11 @@ public class World : IWorld
     private readonly List<Entity> _entities;
     private readonly List<ISystem> _systems;
 
-    public World()
+    private readonly ISystemsSwitcher _systemsStateMachine;
+
+    public World(ISystemsSwitcher systemsStateMachine)
     {
+        _systemsStateMachine = systemsStateMachine;
         _entities = new List<Entity>();
         _systems = new List<ISystem>();
     }

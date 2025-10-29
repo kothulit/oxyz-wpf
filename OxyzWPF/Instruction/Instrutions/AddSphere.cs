@@ -3,24 +3,21 @@ using OxyzWPF.Contracts.ECS;
 using OxyzWPF.Contracts.Instruction;
 using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.ECS.Components;
+using OxyzWPF.Instruction.Instrutions;
 using SharpDX;
 
 namespace OxyzWPF.Editor.Instrutions;
 
-internal class AddSphere : IInstruction
+public class AddSphere : BaseInstruction, IInstruction
 {
-    private readonly IMailer _mailer;
-    private readonly IWorld _world;
-    public AddSphere(IWorld world, IMailer mailer)
-    {
-        _mailer = mailer;
-        _world = world;
-    }
+    public string Name { get; } = nameof(AddSphere);
+    public AddSphere(IWorld world, IMailer mailer, IInstructor instructor) : base(world, mailer, instructor) { }
 
     public void OnStart(object args)
     {
         _mailer.Publish(EventEnum.GameStateChangeRequest, "Add");
         _mailer.Publish(EventEnum.InstructionStart, this);
+        _instructor.ActiveInstruction = this;
     }
 
     public void Execute(object args)
@@ -40,8 +37,9 @@ internal class AddSphere : IInstruction
         _mailer.Publish(EventEnum.TestEvent, $"Создана сфера в позиции ({position.X:F1}, {position.Z:F1})");
     }
 
-    public void OnEnd()
+    public void OnEnd(object args)
     {
-        _mailer.Publish(EventEnum.GameStateChangeRequest, "Navigation");
+        _mailer.Publish(EventEnum.GameStateChangeRequest, "Browse");
+        _instructor.ActiveInstruction = null;
     }
 }

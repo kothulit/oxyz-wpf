@@ -9,10 +9,11 @@ using OxyzWPF.UI.ViewModels;
 using OxyzWPF.Editor;
 using System.Windows;
 using OxyzWPF.Contracts.Game.States;
-using OxyzWPF.EventBus;
 using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.Mailing;
 using OxyzWPF.ECS.Systems;
+using OxyzWPF.Transponder;
+using OxyzWPF.Contracts.Transponder;
 
 namespace OxyzWPF;
 
@@ -28,15 +29,18 @@ public partial class App : Application
     {
         var services = new ServiceCollection();
 
-        services.AddSingleton<IWorld, World>();
+        services.AddSingleton<IWorld, RealWorld>();
         services.AddSingleton<IMailer, Mailer>();
         services.AddSingleton<IInstructor, Instructor>();
+        services.AddSingleton<IInputTransponder, InputTransponder>();
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<MainWindow>();
         services.AddSingleton<IGameStateMachine, GameStateMachine>();
         services.AddSingleton<IGameState, StateEdit>();
         services.AddSingleton<IGameLoop, GameLoop>();
         services.AddSingleton<RenderSystem>();
+        services.AddSingleton<ISelection, Selection>();
+        services.AddSingleton<ISystemsSwitcher, SystemsSwitcher>();
 
         _serviceProvider = services.BuildServiceProvider();
     }
@@ -44,11 +48,11 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+        var gameLoop = _serviceProvider.GetRequiredService<IGameLoop>();
 
-        
-        var world = _serviceProvider.GetService<IWorld>();
+        var realWorld = _serviceProvider.GetService<IWorld>();
         var gameStateMachine = _serviceProvider.GetService<IGameStateMachine>();
-        world.AddSystem(_serviceProvider.GetRequiredService<RenderSystem>());
+        realWorld.AddSystem(_serviceProvider.GetRequiredService<RenderSystem>());
 
         var mainViewModel = _serviceProvider.GetRequiredService<MainViewModel>();
         var instructions = _serviceProvider.GetRequiredService<IInstructor>().Instructions;
@@ -58,6 +62,6 @@ public partial class App : Application
         var mainWindow = _serviceProvider.GetService<MainWindow>();
         mainWindow.Show();
 
-        var gameLoop = _serviceProvider.GetRequiredService<IGameLoop>();
+        
     }
 }
