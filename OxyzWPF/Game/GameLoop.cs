@@ -1,6 +1,7 @@
 ﻿using OxyzWPF.Contracts.ECS;
 using OxyzWPF.Contracts.Game;
 using OxyzWPF.Contracts.Mailing;
+using OxyzWPF.ECS;
 using OxyzWPF.UI.ViewModels;
 using System.Windows.Media;
 
@@ -11,12 +12,14 @@ internal class GameLoop : IGameLoop
     private DateTime _lastFrameTime;
     private readonly MainViewModel _viewModel;
     private readonly IWorld _world;
+    private readonly ProvisionalWorld _provisionalWorld;
     private IMailer _mailer;
 
-    public GameLoop(MainViewModel viewModel, IWorld world, IMailer mailer)
+    public GameLoop(MainViewModel viewModel, IWorld world, ProvisionalWorld provisionalWorld, IMailer mailer)
     {
         _viewModel = viewModel;
         _world = world;
+        _provisionalWorld = provisionalWorld;
         _mailer = mailer;
         _lastFrameTime = DateTime.Now;
         CompositionTarget.Rendering += OnRendering;
@@ -37,6 +40,7 @@ internal class GameLoop : IGameLoop
 
         // Обновляем ECS мир
         _world?.Update(deltaTime);
+        _provisionalWorld?.Update(deltaTime);
 
         _mailer?.Update(deltaTime);
     }

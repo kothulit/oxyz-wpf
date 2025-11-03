@@ -3,12 +3,10 @@ using OxyzWPF.Contracts.Game;
 using OxyzWPF.Contracts.Instruction;
 using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.Contracts.Transponder;
-using OxyzWPF.Game.States;
 using OxyzWPF.UI.Commands;
 using SharpDX;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
-using System.Windows.Media.Media3D;
 
 namespace OxyzWPF.UI.ViewModels;
 
@@ -53,7 +51,7 @@ public class MainViewModel : ViewModelBase
     } = new ObservableCollection<ToolbarButtonViewModel>();
     public ICommand OnMouseDowmCommand { get; }
 
-    private string _statusText;
+    private string _statusText = "Статус";
     public string StatusText
     {
         get => _statusText;
@@ -71,11 +69,12 @@ public class MainViewModel : ViewModelBase
         _instructor = instructor;
         _inputTransponder = inputTransponder;
 
-        StatusText = _gameStateMachine.CurrentState.StateName;
+        StateName = _gameStateMachine.CurrentState.StateName;
 
         _mailer.Subscribe<object>(EventEnum.GameStateChanged, OnStateChanged);
-        _mailer.Subscribe<object>(EventEnum.InstructionStart, OnInstrutionStart);
+        _mailer.Subscribe<object>(EventEnum.TestEvent, TestEventHandler);
     }
+
     public void InitialiseToolbarButtons(Dictionary<string, IInstruction> instructions)
     {
         foreach (var instruction in instructions)
@@ -130,16 +129,19 @@ public class MainViewModel : ViewModelBase
             case "Add":
                 _instructor.ActiveInstruction.Execute(_position);
                 break;
+            case "Edit":
+                _instructor.ActiveInstruction.Execute(_position);
+                break;
         }
-    }
-
-    public void OnInstrutionStart(object args)
-    {
-        
     }
 
     public void OnKeyDown(object args)
     {
         _inputTransponder.OnKeyDown(args);
+    }
+
+    public void TestEventHandler(object args)
+    {
+        StatusText = (string)args;
     }
 }

@@ -8,9 +8,24 @@ namespace OxyzWPF.ECS.Components;
 /// </summary>
 public class TransformComponent : OxyzWPF.Contracts.ECS.IComponent
 {
+    public string Name { get; } = nameof(TransformComponent);
     public Vector3 Position { get; set; } = Vector3.Zero;
     public Vector3 Rotation { get; set; } = Vector3.Zero; // В градусах
     public Vector3 Scale { get; set; } = Vector3.One;
+
+    public TransformComponent() { }
+
+    public TransformComponent(Vector3 position)
+    {
+        Position = position;
+    }
+
+    public TransformComponent(Vector3 position, Vector3 rotation, Vector3 scale)
+    {
+        Position = position;
+        Rotation = rotation;
+        Scale = scale;
+    }
 
     /// <summary>
     /// Получает матрицу трансформации

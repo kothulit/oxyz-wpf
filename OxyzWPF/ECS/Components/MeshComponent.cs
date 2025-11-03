@@ -8,12 +8,15 @@ namespace OxyzWPF.ECS.Components;
 /// </summary>
 public class MeshComponent : IComponent
 {
+    public Material DefaultMaterial = PhongMaterials.Gray;
+    public string Name { get; } = nameof(MeshComponent);
     public MeshGeometry3D? Geometry { get; set; }
     public Material? Material { get; set; }
     public string MeshName { get; set; } = "";
 
     public MeshComponent()
     {
+        Material = DefaultMaterial;
     }
 
     public MeshComponent(MeshGeometry3D geometry, Material? material = null, string meshName = "")

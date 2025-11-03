@@ -72,10 +72,6 @@
             Margin="10"
             Background="LightGray"
             Opacity="0.8">
-            <TextBlock Text="{Binding StatusText}"
-           VerticalAlignment="Center"
-           Margin="10,0"
-           FontWeight="Bold" />
             <TextBlock Text="{Binding StateName}"
            VerticalAlignment="Center"
            Margin="10,0"
@@ -86,6 +82,17 @@
            Margin="10,0"
            FontWeight="Bold"
            Foreground="Blue" />
+        </StackPanel>
+        
+        <StackPanel Orientation="Horizontal"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom"
+            Margin="10,10,10,100"   
+            Opacity="0.8">
+            <TextBlock Text="{Binding StatusText}"
+           VerticalAlignment="Center"
+           Margin="10,0"
+           FontWeight="Bold" />
         </StackPanel>
     </Grid>
 </Window>

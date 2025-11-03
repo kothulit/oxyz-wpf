@@ -30,7 +30,7 @@ public class AddSphere : BaseInstruction, IInstruction
 
         var mesh = sphereEntity.AddComponent<MeshComponent>();
         var mb = new MeshBuilder();
-        mb.AddSphere(new Vector3(0, 0, 0), 1.0f, 32, 16);
+        mb.AddSphere(new Vector3(0, 0, 0), 0.5f, 32, 16);
         mesh.Geometry = mb.ToMeshGeometry3D();
         mesh.Material = PhongMaterials.Blue; // Синий цвет для новых элементов
 
