@@ -40,9 +40,6 @@ public partial class App : Application
         services.AddSingleton<IGameStateMachine, GameStateMachine>();
         services.AddSingleton<IGameState, StateEdit>();
         services.AddSingleton<IGameLoop, GameLoop>();
-        services.AddScoped<RenderSystem>();
-        //services.AddSingleton<RenderSystem>();
-        //services.AddSingleton<CreateContourModel>();
         services.AddSingleton<ISelection, Selection>();
         services.AddSingleton<ISystemsSwitcher, SystemsSwitcher>();
 
@@ -54,19 +51,19 @@ public partial class App : Application
         base.OnStartup(e);
 
         var realWorld = _serviceProvider.GetService<IWorld>();
-        realWorld.AddSystem(_serviceProvider.GetRequiredService<RenderSystem>());
-
         var provisionalWorld = _serviceProvider.GetService<ProvisionalWorld>();
-        provisionalWorld.AddSystem(_serviceProvider.GetRequiredService<RenderSystem>());
-        //provisionalWorld.AddSystem(_serviceProvider.GetRequiredService<CreateContourModel>());
 
         var gameLoop = _serviceProvider.GetRequiredService<IGameLoop>();
-
         var gameStateMachine = _serviceProvider.GetService<IGameStateMachine>();
-        realWorld.AddSystem(_serviceProvider.GetRequiredService<RenderSystem>());
 
         var mainViewModel = _serviceProvider.GetRequiredService<MainViewModel>();
         var instructions = _serviceProvider.GetRequiredService<IInstructor>().Instructions;
+
+        IMailer mailer = _serviceProvider.GetRequiredService<IMailer>();
+        ISelection selection = _serviceProvider.GetRequiredService<ISelection>();
+
+        realWorld.AddSystem(new RenderSystem(realWorld, mailer, selection));
+        provisionalWorld.AddSystem(new RenderSystem(provisionalWorld, mailer, selection));
 
         mainViewModel.InitialiseToolbarButtons(instructions);
 

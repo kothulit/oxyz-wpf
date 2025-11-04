@@ -9,9 +9,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="3DCore\**" />
     <Compile Remove="Contracts\UI\**" />
+    <EmbeddedResource Remove="3DCore\**" />
     <EmbeddedResource Remove="Contracts\UI\**" />
+    <None Remove="3DCore\**" />
     <None Remove="Contracts\UI\**" />
+    <Page Remove="3DCore\**" />
     <Page Remove="Contracts\UI\**" />
   </ItemGroup>
 
@@ -19,10 +23,6 @@
     <PackageReference Include="HelixToolkit.Wpf.SharpDX" Version="2.27.3" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.9" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.9" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="3DCore\" />
   </ItemGroup>
 
 </Project>
