@@ -83,16 +83,16 @@
            FontWeight="Bold"
            Foreground="Blue" />
         </StackPanel>
-        
+
         <StackPanel Orientation="Horizontal"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"
             Margin="10,10,10,100"   
             Opacity="0.8">
-            <TextBlock Text="{Binding StatusText}"
-           VerticalAlignment="Center"
-           Margin="10,0"
-           FontWeight="Bold" />
+            <ListBox ItemsSource="{Binding Messages}"
+                     FontWeight="Bold"
+                     Background="Transparent"
+                     BorderBrush="Transparent"/>
         </StackPanel>
     </Grid>
 </Window>

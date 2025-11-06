@@ -16,6 +16,7 @@ public class MainViewModel : ViewModelBase
     private readonly IGameStateMachine _gameStateMachine;
     private readonly IInstructor _instructor;
     private readonly IInputTransponder _inputTransponder;
+    public ObservableCollection<string> Messages { get; private set; } = new ObservableCollection<string>();
 
     private string _stateName;
     public string StateName
@@ -59,6 +60,12 @@ public class MainViewModel : ViewModelBase
         {
             _statusText = value;
             OnPropertyChanged();
+            if (Messages.Count > 10)
+            {
+                Messages.RemoveAt(0);
+                Messages.Add(_statusText);
+            }
+            else Messages.Add(_statusText);
         }
     }
 

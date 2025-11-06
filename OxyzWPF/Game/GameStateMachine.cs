@@ -9,7 +9,6 @@ public class GameStateMachine : IGameStateMachine
     private IMailer _mailer;
     private IGameState _currentState;
     public IGameState CurrentState => _currentState;
-    private IGameState _defaultState = new StateBrowse();
     private Dictionary<string, IGameState> _states;
 
     public GameStateMachine(IMailer mailer)
@@ -17,12 +16,11 @@ public class GameStateMachine : IGameStateMachine
         _mailer = mailer;
         _states = new Dictionary<string, IGameState>()
         {
-            { "Default", _defaultState },
-            { "Browse", new StateBrowse() },
-            { "Edit", new StateEdit() },
-            { "Add", new StateAdd() }
+            { "Browse", new StateBrowse(_mailer) },
+            { "Edit", new StateEdit(_mailer) },
+            { "Add", new StateAdd(_mailer) }
         };
-        _currentState = _states["Default"];
+        _currentState = _states["Browse"];
         _mailer.Subscribe<object>(EventEnum.GameStateChangeRequest, OnStateChangeRequest);
     }
 
