@@ -1,13 +1,8 @@
 ﻿namespace OxyzWPF.Contracts.Mailing;
 public interface IMailer
 {
-    //void Subscribe(EventEnum eventName, Action callback);
-
-    void Subscribe<T>(EventEnum eventName, Action<T> callback);
-
-    void Unsubscribe(EventEnum eventName, Action method);
-
-    public void Publish(EventEnum eventName, object arg);
-
-    void Update(double deltaTime);
+    public void Subscribe<TEventArgs>(EventEnum eventName, EventHandler<TEventArgs> callback) where TEventArgs : EventArgs;
+    public void Unsubscribe(EventEnum eventName, EventHandler callback);
+    public void Publish(EventEnum eventName, object sender, EventArgs e);
+    public void Update(double deltaTime);
 }

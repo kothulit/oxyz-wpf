@@ -1,26 +1,15 @@
 ﻿using OxyzWPF.Contracts.Mailing;
+using System;
 
 namespace OxyzWPF.Mailing;
 
 class Mailer : IMailer
 {
     private Dictionary<EventEnum, Delegate> _eventTable = new();
-    private Dictionary<EventEnum, List<object>> _publishedEvents = new();
-    private Dictionary<EventEnum, List<object>> _onUpdateEvents = new();
+    private Dictionary<EventEnum, List<(object, EventArgs)>> _publishedEvents = new();
+    private Dictionary<EventEnum, List<(object, EventArgs)>> _onUpdateEvents = new();
 
-    //public void Subscribe(EventEnum eventName, Action callback)
-    //{
-    //    if (_eventTable.Keys.Contains(eventName))
-    //    {
-    //        Action.Combine(_eventTable[eventName], callback);
-    //    }
-    //    else
-    //    {
-    //        _eventTable.Add(eventName, callback);
-    //    }
-    //}
-
-    public void Subscribe<T>(EventEnum eventName, Action<T> callback)
+    public void Subscribe<TEventArgs>(EventEnum eventName, EventHandler<TEventArgs> callback) where TEventArgs : EventArgs
     {
         if (_eventTable.Keys.Contains(eventName))
         {
@@ -32,15 +21,15 @@ class Mailer : IMailer
         }
     }
 
-    public void Unsubscribe(EventEnum eventName, Action method)
+    public void Unsubscribe(EventEnum eventName, EventHandler callback)
     {
         if (_eventTable.Keys.Contains(eventName))
         {
-            Action.Remove(_eventTable[eventName], method);
+            EventHandler.Remove(_eventTable[eventName], callback);
         }
     }
 
-    public void Publish(EventEnum eventName, object arg)
+    public void Publish(EventEnum eventName, object sender, EventArgs e)
     {
         foreach (var eventSubscriber in _eventTable)
         {
@@ -48,11 +37,11 @@ class Mailer : IMailer
             {
                 if (_publishedEvents.ContainsKey(eventName))
                 {
-                    _publishedEvents[eventName].Add(arg);
+                    _publishedEvents[eventName].Add((sender, e));
                 }
                 else
                 {
-                    _publishedEvents.Add(eventName, new List<object>() { arg });
+                    _publishedEvents.Add(eventName, new List<(object, EventArgs)>() { (sender, e) });
                 }
             }
         }
@@ -60,15 +49,15 @@ class Mailer : IMailer
 
     public void Update(double deltaTime)
     {
-        _onUpdateEvents = new Dictionary<EventEnum, List<object>>(_publishedEvents);
+        _onUpdateEvents = new Dictionary<EventEnum, List<(object, EventArgs)>>(_publishedEvents);
         _publishedEvents.Clear();
         foreach (var eventName in _onUpdateEvents)
         {
-            foreach(var eventArg in _onUpdateEvents[eventName.Key])
+            foreach((object, EventArgs) eventArgs in _onUpdateEvents[eventName.Key])
             {
-                if (!(eventArg is null))
+                if (eventArgs.Item1 != null && eventArgs.Item2 != null)
                 {
-                _eventTable[eventName.Key].DynamicInvoke(eventArg);
+                _eventTable[eventName.Key].DynamicInvoke(eventArgs.Item1, eventArgs.Item2);
                 }
             }
         }

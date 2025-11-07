@@ -9,13 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="3DCore\**" />
     <Compile Remove="Contracts\UI\**" />
-    <EmbeddedResource Remove="3DCore\**" />
     <EmbeddedResource Remove="Contracts\UI\**" />
-    <None Remove="3DCore\**" />
     <None Remove="Contracts\UI\**" />
-    <Page Remove="3DCore\**" />
     <Page Remove="Contracts\UI\**" />
   </ItemGroup>
 

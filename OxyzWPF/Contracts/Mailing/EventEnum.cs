@@ -13,4 +13,5 @@ public enum EventEnum
     InstructionCanseled = 8,
     SelectionChange = 9,
     HitToGeometryModel = 10,
+    MouseMove = 11,
 }

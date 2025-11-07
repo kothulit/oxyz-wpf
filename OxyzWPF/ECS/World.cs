@@ -7,10 +7,10 @@ namespace OxyzWPF.ECS;
 /// </summary>
 public class World : IWorld
 {
-    private readonly List<Entity> _entities;
-    private readonly List<ISystem> _systems;
+    private List<Entity> _entities;
+    private List<ISystem> _systems;
 
-    private readonly ISystemsSwitcher _systemsStateMachine;
+    private ISystemsSwitcher _systemsStateMachine;
 
     public World(ISystemsSwitcher systemsStateMachine)
     {
@@ -116,6 +116,14 @@ public class World : IWorld
         {
             system.Update(deltaTime);
         }
+    }
+
+    /// <summary>
+    /// Ужаляет все Entity
+    /// </summary>
+    public void Clear()
+    {
+        _entities.Clear();
     }
 
     /// <summary>

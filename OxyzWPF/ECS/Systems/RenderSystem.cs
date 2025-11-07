@@ -2,6 +2,7 @@
 using OxyzWPF.Contracts.ECS;
 using OxyzWPF.Contracts.Game;
 using OxyzWPF.Contracts.Mailing;
+using OxyzWPF.Contracts.Mailing.Events;
 using OxyzWPF.ECS.Components;
 
 namespace OxyzWPF.ECS.Systems
@@ -65,7 +66,7 @@ namespace OxyzWPF.ECS.Systems
                     };
 
                     _renderedObjects[entity.Id] = newModel;
-                    _mailer.Publish(EventEnum.ObjectAdded, newModel);
+                    _mailer.Publish(EventEnum.ObjectAdded, this, new ObjectChangeEventArgs(newModel));
                     
                 }
             }
@@ -79,7 +80,7 @@ namespace OxyzWPF.ECS.Systems
             {
                 if (_renderedObjects.TryGetValue(id, out var model))
                 {
-                    _mailer.Publish(EventEnum.ObjectRemoved, model);
+                    _mailer.Publish(EventEnum.ObjectRemoved, this, new ObjectChangeEventArgs(model));
                     _renderedObjects.Remove(id);
                 }
             }

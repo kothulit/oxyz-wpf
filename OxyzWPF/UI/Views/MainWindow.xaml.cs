@@ -1,8 +1,10 @@
-﻿using System.Windows;
-using HelixToolkit.Wpf.SharpDX;
-using SharpDX;
-using OxyzWPF.UI.ViewModels;
+﻿using HelixToolkit.Wpf.SharpDX;
+using HelixToolkit.Wpf.SharpDX.Controls;
 using OxyzWPF.Contracts.Mailing;
+using OxyzWPF.UI.ViewModels;
+using SharpDX;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -99,10 +101,7 @@ namespace OxyzWPF
 
         private void ViewPort_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
-            {
-                
-            }
+            _viewModel.OnMouseClick(viewPort, e);
         }
 
         private void viewPort_KeyDown(object sender, KeyEventArgs e)
