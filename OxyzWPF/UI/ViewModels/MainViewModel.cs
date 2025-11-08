@@ -2,6 +2,7 @@
 using OxyzWPF.Contracts.Game;
 using OxyzWPF.Contracts.Instruction;
 using OxyzWPF.Contracts.Mailing;
+using OxyzWPF.Contracts.Mailing.Events;
 using OxyzWPF.Contracts.Transponder;
 using OxyzWPF.UI.Commands;
 using SharpDX;
@@ -13,7 +14,7 @@ namespace OxyzWPF.UI.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
-    private readonly IMailer _mailer;
+    private readonly IMessenger _messenger;
     private readonly IGameStateMachine _gameStateMachine;
     private readonly IInstructor _instructor;
     private readonly IInputTransponder _inputTransponder;
@@ -70,17 +71,17 @@ public class MainViewModel : ViewModelBase
         }
     }
 
-    public MainViewModel(IMailer mailer, IGameStateMachine gameStateMachine, IInstructor instructor, IInputTransponder inputTransponder)
+    public MainViewModel(IMessenger messenger, IGameStateMachine gameStateMachine, IInstructor instructor, IInputTransponder inputTransponder)
     {
-        _mailer = mailer;
+        _messenger = messenger;
         _gameStateMachine = gameStateMachine;
         _instructor = instructor;
         _inputTransponder = inputTransponder;
 
         StateName = _gameStateMachine.CurrentState.StateName;
 
-        _mailer.Subscribe<object>(EventEnum.GameStateChanged, OnStateChanged);
-        _mailer.Subscribe<object>(EventEnum.TestEvent, TestEventHandler);
+        _messenger.Subscribe<GameStateEventArgs>(EventEnum.GameStateChanged.ToString(), OnStateChanged);
+        _messenger.Subscribe<TestEventArgs>(EventEnum.TestEvent.ToString(), TestEventHandler);
     }
 
     public void InitialiseToolbarButtons(Dictionary<string, IInstruction> instructions)
@@ -99,9 +100,9 @@ public class MainViewModel : ViewModelBase
     {
     }
 
-    public void OnStateChanged(object args)
+    public void OnStateChanged(object sender, GameStateEventArgs e)
     {
-        StateName = _gameStateMachine.CurrentState.StateName;
+        StateName = e.CurrentState.StateName;
     }
 
     public void OnMouseClick(Vector2 screenPoint, Viewport3DX viewport)
@@ -116,7 +117,7 @@ public class MainViewModel : ViewModelBase
             {
                 if (_gameStateMachine.CurrentState.StateName.Equals("Browse"))
                 {
-                    _mailer.Publish(EventEnum.HitToGeometryModel, hitObject);
+                    _messenger.Publish(EventEnum.HitToGeometryModel.ToString(), this, new GeometryEventArgs(hitObject));
                 }
             }
         }
@@ -148,15 +149,15 @@ public class MainViewModel : ViewModelBase
         _inputTransponder.OnKeyDown(args);
     }
 
-    public void TestEventHandler(object args)
+    public void TestEventHandler(object sender, TestEventArgs e)
     {
-        StatusText = (string)args;
+        StatusText = e.Message;
     }
 
     public void OnMouseMove(Viewport3DX viewPort, MouseEventArgs e)
     {
         var position = e.GetPosition(viewPort);
         var point2D = new Vector2((float)position.X, (float)position.Y);
-        _mailer.Publish(EventEnum.MouseMove, point2D);
+        _messenger.Publish(EventEnum.MouseMove.ToString(), this, new MouseOxyzEventArgs(point2D));
     }
 }

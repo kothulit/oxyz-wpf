@@ -1,6 +1,7 @@
 ﻿using HelixToolkit.Wpf.SharpDX;
 using HelixToolkit.Wpf.SharpDX.Controls;
 using OxyzWPF.Contracts.Mailing;
+using OxyzWPF.Contracts.Mailing.Events;
 using OxyzWPF.UI.ViewModels;
 using SharpDX;
 using System.Windows;
@@ -16,14 +17,14 @@ namespace OxyzWPF
     public partial class MainWindow : Window
     {
         private readonly MainViewModel _viewModel;
-        private readonly IMailer _mailer;
+        private readonly IMessenger _messenger;
         public Viewport3DX ViewPort => viewPort;
 
-        public MainWindow(MainViewModel mainViewModel, IMailer mailer)
+        public MainWindow(MainViewModel mainViewModel, IMessenger messenger)
         {
             InitializeComponent();
 
-            _mailer = mailer;
+            _messenger = messenger;
             _viewModel = mainViewModel;
             DataContext = _viewModel;
 
@@ -38,19 +39,19 @@ namespace OxyzWPF
                 _viewModel.FPS = fps;
             };
 
-            //Подписываемся на событие Object3DAdded
-            _mailer.Subscribe<object>(EventEnum.ObjectAdded, Create3DObject);
-            _mailer.Subscribe<object>(EventEnum.ObjectRemoved, Remove3DObject);
+            //Подписываемся на событие
+            _messenger.Subscribe<GeometryEventArgs>(EventEnum.ElementAdded.ToString(), Create3DObject);
+            _messenger.Subscribe<GeometryEventArgs>(EventEnum.ElementRemoved.ToString(), Remove3DObject);
         }
 
-        private void Create3DObject(object newModel)
+        private void Create3DObject(object sender, GeometryEventArgs e)
         {
-            var mgm = newModel as MeshGeometryModel3D;
+            var mgm = e.GeometryModel;
             viewPort.Items.Add(mgm);
         }
-        private void Remove3DObject(object newModel)
+        private void Remove3DObject(object sender, GeometryEventArgs e)
         {
-            var mgm = newModel as MeshGeometryModel3D;
+            var mgm = e.GeometryModel;
             viewPort.Items.Remove(mgm);
         }
 
@@ -101,7 +102,9 @@ namespace OxyzWPF
 
         private void ViewPort_MouseMove(object sender, MouseEventArgs e)
         {
-            _viewModel.OnMouseClick(viewPort, e);
+            var position = e.GetPosition(viewPort);
+            var point2D = new Vector2((float)position.X, (float)position.Y);
+            _viewModel.OnMouseClick(point2D, viewPort);
         }
 
         private void viewPort_KeyDown(object sender, KeyEventArgs e)

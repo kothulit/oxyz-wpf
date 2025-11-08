@@ -12,14 +12,14 @@ public class CreateContourModel : ISystem
     public bool IsOn { get; set; } = false;
 
     private readonly IWorld _world;
-    private readonly IMailer _mailer;
+    private readonly IMessenger _messenger;
 
     private MeshBuilder meshBuilder = new MeshBuilder();
 
-    public CreateContourModel(IWorld world, IMailer mailer)
+    public CreateContourModel(IWorld world, IMessenger messenger)
     {
         _world = world;
-        _mailer = mailer;
+        _messenger = messenger;
     }
 
     public void Update(double deltaTime)

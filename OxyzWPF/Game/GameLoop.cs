@@ -13,14 +13,14 @@ internal class GameLoop : IGameLoop
     private readonly MainViewModel _viewModel;
     private readonly IWorld _world;
     private readonly ProvisionalWorld _provisionalWorld;
-    private IMailer _mailer;
+    private IMessenger _messenger;
 
-    public GameLoop(MainViewModel viewModel, IWorld world, ProvisionalWorld provisionalWorld, IMailer mailer)
+    public GameLoop(MainViewModel viewModel, IWorld world, ProvisionalWorld provisionalWorld, IMessenger messenger)
     {
         _viewModel = viewModel;
         _world = world;
         _provisionalWorld = provisionalWorld;
-        _mailer = mailer;
+        _messenger = messenger;
         _lastFrameTime = DateTime.Now;
         CompositionTarget.Rendering += OnRendering;
     }
@@ -42,6 +42,6 @@ internal class GameLoop : IGameLoop
         _world?.Update(deltaTime);
         _provisionalWorld?.Update(deltaTime);
 
-        _mailer?.Update(deltaTime);
+        _messenger?.Update(deltaTime);
     }
 }

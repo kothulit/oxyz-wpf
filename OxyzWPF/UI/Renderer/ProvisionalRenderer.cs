@@ -12,7 +12,7 @@ namespace OxyzWPF.UI.Renderer;
 
 public class ProvisionalRenderer
 {
-    private readonly IMailer _mailer;
+    private readonly IMessenger _messenger;
     private readonly ProvisionalWorld _provisionalWorld;
     public Vector2 _currentMousePosition;
     public Viewport _viewport;
@@ -21,15 +21,15 @@ public class ProvisionalRenderer
     private int _poinyEntityId = -1;
     private int _arrowEntityId = -1;
 
-    public ProvisionalRenderer(IMailer mailer, ProvisionalWorld provisionalWorld)
+    public ProvisionalRenderer(IMessenger messenger, ProvisionalWorld provisionalWorld)
     {
-        _mailer = mailer;
+        _messenger = messenger;
         _provisionalWorld = provisionalWorld;
 
-        _mailer.Subscribe<GameChangeEventArgs>(EventEnum.GameStateChanged, OnGameStatusChanged);
+        _messenger.Subscribe<GameStateEventArgs>(EventEnum.GameStateChanged.ToString(), OnGameStatusChanged);
     }
 
-    private void OnGameStatusChanged(object sender, GameChangeEventArgs e)
+    private void OnGameStatusChanged(object sender, GameStateEventArgs e)
     {
         IGameState state = e.CurrentState;
         _provisionalWorld.Clear();

@@ -2,12 +2,11 @@
 
 namespace OxyzWPF.Contracts.Mailing.Events;
 
-public sealed class ObjectChangeEventArgs : EventArgs
+public sealed class GeometryEventArgs : EventArgs
 {
-
     private readonly MeshGeometryModel3D _geometryModel;
 
-    public ObjectChangeEventArgs(MeshGeometryModel3D geometryModel)
+    public GeometryEventArgs(MeshGeometryModel3D geometryModel)
     {
         _geometryModel = geometryModel;
     }

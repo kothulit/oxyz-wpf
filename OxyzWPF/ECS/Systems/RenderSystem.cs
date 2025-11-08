@@ -15,14 +15,14 @@ namespace OxyzWPF.ECS.Systems
         public bool IsOn { get; set; } = false;
 
         private readonly IWorld _world;
-        private readonly IMailer _mailer;
+        private readonly IMessenger _messenger;
         private readonly ISelection _selection;
         private readonly Dictionary<int, MeshGeometryModel3D> _renderedObjects;
 
-        public RenderSystem(IWorld world, IMailer mailer, ISelection selection)
+        public RenderSystem(IWorld world, IMessenger messenger, ISelection selection)
         {
             _world = world;
-            _mailer = mailer;
+            _messenger = messenger;
             _selection = selection;
             _renderedObjects = new Dictionary<int, MeshGeometryModel3D>();
         }
@@ -66,7 +66,7 @@ namespace OxyzWPF.ECS.Systems
                     };
 
                     _renderedObjects[entity.Id] = newModel;
-                    _mailer.Publish(EventEnum.ObjectAdded, this, new ObjectChangeEventArgs(newModel));
+                    _messenger.Publish(EventEnum.ElementAdded.ToString(), this, new GeometryEventArgs(newModel));
                     
                 }
             }
@@ -80,7 +80,7 @@ namespace OxyzWPF.ECS.Systems
             {
                 if (_renderedObjects.TryGetValue(id, out var model))
                 {
-                    _mailer.Publish(EventEnum.ObjectRemoved, this, new ObjectChangeEventArgs(model));
+                    _messenger.Publish(EventEnum.ElementRemoved.ToString(), this, new GeometryEventArgs(model));
                     _renderedObjects.Remove(id);
                 }
             }

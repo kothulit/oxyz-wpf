@@ -1,8 +1,6 @@
 ﻿using OxyzWPF.Contracts.Game.States;
 using OxyzWPF.Contracts.Mailing;
-using OxyzWPF.Mailing;
-using System.Diagnostics;
-
+using OxyzWPF.Contracts.Mailing.Events;
 
 namespace OxyzWPF.Game.States;
 
@@ -14,9 +12,9 @@ public class StateAdd : BaseState, IGameState
     public bool IsViewZoomEnable => true;
     public bool IsViewRotateEnable => true;
 
-    public StateAdd(IMailer mailer) : base(mailer) { }
+    public StateAdd(IMessenger messenger) : base(messenger) { }
 
-    public void Enter() => _mailer.Publish(EventEnum.TestEvent, $"Включено состояние {StateName}");
-    public void Exit() => _mailer.Publish(EventEnum.TestEvent, $"Выключено состояние {StateName}");
+    public void Enter() => _messenger.Publish(EventEnum.TestEvent.ToString(), this, new TestEventArgs($"Включено состояние {StateName}"));
+    public void Exit() => _messenger.Publish(EventEnum.TestEvent.ToString(), this, new TestEventArgs($"Выключено состояние {StateName}"));
     public void Update(double deltaTime) { /* Здесь обновляем выделенные объекты */ }
 }

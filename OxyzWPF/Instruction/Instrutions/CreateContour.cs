@@ -1,6 +1,7 @@
 ﻿using OxyzWPF.Contracts.ECS;
 using OxyzWPF.Contracts.Instruction;
 using OxyzWPF.Contracts.Mailing;
+using OxyzWPF.Contracts.Mailing.Events;
 using OxyzWPF.ECS;
 using OxyzWPF.ECS.Components;
 using SharpDX;
@@ -16,29 +17,21 @@ public class CreateContour : BaseInstruction, IInstruction
     private bool _isPreviosPointEnable = false;
     private Vector3 _previosPoint;
 
-    public CreateContour(IWorld world, IMailer mailer, IInstructor instructor) : base(world, mailer, instructor) { }
+    public CreateContour(IWorld world, IMessenger messenger, IInstructor instructor) : base(world, messenger, instructor) { }
 
     public void OnStart(object args)
     {
-        _mailer.Publish(EventEnum.GameStateChangeRequest, "Edit");
-        _mailer.Publish(EventEnum.InstructionStart, this);
+        _messenger.Publish(EventEnum.GameStateChangeRequest.ToString(), this, new GameStateChangeRequestEventArgsy("Edit"));
+        _messenger.Publish(EventEnum.InstructionStart.ToString(), this, new InstructionEventArgs(this));
         _instructor.ActiveInstruction = this;
 
         _isCreating = true;
 
-        //_entity = _world.CreateEntity();
-        //_contour = _entity.AddComponent<ContourComponent>();
-
-        _mailer.Publish(EventEnum.TestEvent, "Режим создания контура.");
+        _messenger.Publish(EventEnum.TestEvent.ToString(), this, new TestEventArgs("Режим создания контура."));
     }
 
     public void Execute(object args)
     {
-        //if (!_isCreating) return;
-        //var position = (Vector3)args;
-        //var point2D = new Vector2(position.X, position.Z);
-        //_contour.ContourPoints.Add(point2D);
-
         Vector3 currentPoint = (Vector3)args;
 
         Factory.CreatePoint(_world, currentPoint);
@@ -47,13 +40,12 @@ public class CreateContour : BaseInstruction, IInstruction
         _previosPoint = currentPoint;
         _isPreviosPointEnable = true;
 
-        //_mailer.Publish(EventEnum.TestEvent, $"Добавлена точка {_contour.ContourPoints.Count}: ({point2D.X:F2}, {point2D.Y:F2})");
-        _mailer.Publish(EventEnum.TestEvent, $"Добавлена точка: ({((Vector3)args).X:F2}, {((Vector3)args).Y:F2})");
+        _messenger.Publish(EventEnum.TestEvent.ToString(), this, new TestEventArgs($"Добавлена точка: ({((Vector3)args).X:F2}, {((Vector3)args).Y:F2})"));
     }
 
     public void OnEnd(object args)
     {
-        _mailer.Publish(EventEnum.GameStateChangeRequest, "Browse");
+        _messenger.Publish(EventEnum.GameStateChangeRequest.ToString(), this, new GameStateChangeRequestEventArgsy("Browse"));
         _instructor.ActiveInstruction = null;
         _isPreviosPointEnable = false;
     }

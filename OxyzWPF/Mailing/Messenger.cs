@@ -1,15 +1,14 @@
 ﻿using OxyzWPF.Contracts.Mailing;
-using System;
 
 namespace OxyzWPF.Mailing;
 
-class Mailer : IMailer
+class Messenger : IMessenger
 {
-    private Dictionary<EventEnum, Delegate> _eventTable = new();
-    private Dictionary<EventEnum, List<(object, EventArgs)>> _publishedEvents = new();
-    private Dictionary<EventEnum, List<(object, EventArgs)>> _onUpdateEvents = new();
+    private Dictionary<string, Delegate> _eventTable = new();
+    private Dictionary<string, List<(object, EventArgs)>> _publishedEvents = new();
+    private Dictionary<string, List<(object, EventArgs)>> _onUpdateEvents = new();
 
-    public void Subscribe<TEventArgs>(EventEnum eventName, EventHandler<TEventArgs> callback) where TEventArgs : EventArgs
+    public void Subscribe<TEventArgs>(string eventName, EventHandler<TEventArgs> callback) where TEventArgs : EventArgs
     {
         if (_eventTable.Keys.Contains(eventName))
         {
@@ -21,7 +20,7 @@ class Mailer : IMailer
         }
     }
 
-    public void Unsubscribe(EventEnum eventName, EventHandler callback)
+    public void Unsubscribe(string eventName, EventHandler callback)
     {
         if (_eventTable.Keys.Contains(eventName))
         {
@@ -29,7 +28,7 @@ class Mailer : IMailer
         }
     }
 
-    public void Publish(EventEnum eventName, object sender, EventArgs e)
+    public void Publish(string eventName, object sender, EventArgs e)
     {
         foreach (var eventSubscriber in _eventTable)
         {
@@ -49,7 +48,7 @@ class Mailer : IMailer
 
     public void Update(double deltaTime)
     {
-        _onUpdateEvents = new Dictionary<EventEnum, List<(object, EventArgs)>>(_publishedEvents);
+        _onUpdateEvents = new Dictionary<string, List<(object, EventArgs)>>(_publishedEvents);
         _publishedEvents.Clear();
         foreach (var eventName in _onUpdateEvents)
         {

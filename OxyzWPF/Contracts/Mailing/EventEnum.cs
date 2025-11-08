@@ -2,16 +2,16 @@
 
 public enum EventEnum
 {
-    TestEvent = 0,
-    KeyPressed = 1,
-    MouseDown = 2,
-    ObjectAdded = 3,
-    ObjectRemoved = 4,
-    GameStateChanged = 5,
-    GameStateChangeRequest = 6,
-    InstructionStart = 7,
-    InstructionCanseled = 8,
-    SelectionChange = 9,
-    HitToGeometryModel = 10,
-    MouseMove = 11,
+    TestEvent = 0, // TestEventEventArgs
+    KeyPress = 1, // System.Windows.Input.KeyEventArgs 
+    MouseDown = 2, // MouseOxyzEventArgs
+    ElementAdded = 3, // GeometryEventArgs
+    ElementRemoved = 4, // GeometryEventArgs
+    GameStateChanged = 5, // GameStateEventArgs
+    GameStateChangeRequest = 6, // GameStateChangeRequestEventArgsy
+    InstructionStart = 7, // InstructionEventArgs
+    InstructionCanseled = 8, // EventArgs
+    SelectionChange = 9, // SelectionChangeEventArgs
+    HitToGeometryModel = 10, // GeometryChangeEventArgs
+    MouseMove = 11, // System.Windows.Input.MouseEventArgs
 }

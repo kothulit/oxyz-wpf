@@ -1,23 +1,24 @@
 ﻿using OxyzWPF.Contracts.ECS;
 using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.ECS.Systems;
+using System.Windows.Controls;
 
 namespace OxyzWPF.ECS;
 
 public class SystemsSwitcher : ISystemsSwitcher
 {
-    private IMailer _mailer;
+    private IMessenger _messenger;
     public Dictionary<string, bool> Toggles { get; private set; }
 
-    public SystemsSwitcher(IMailer mailer)
+    public SystemsSwitcher(IMessenger messenger)
     {
-        _mailer = mailer;
+        _messenger = messenger;
         Toggles = new Dictionary<string, bool>()
         {
             { nameof(RenderSystem), false },
         };
 
-        _mailer.Subscribe<object>(EventEnum.SelectionChange, OnSelectionChanged);
+        _messenger.Subscribe<SelectionChangedEventArgs>(EventEnum.SelectionChange.ToString(), OnSelectionChanged);
     }
 
     public void Update()
@@ -28,7 +29,7 @@ public class SystemsSwitcher : ISystemsSwitcher
         }
     }
 
-    private void OnSelectionChanged(object args)
+    private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
     {
         Toggles[nameof(RenderSystem)] = true;
     }

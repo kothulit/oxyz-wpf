@@ -32,7 +32,7 @@ public partial class App : Application
 
         services.AddSingleton<IWorld, RealWorld>();
         services.AddSingleton<ProvisionalWorld>();
-        services.AddSingleton<IMailer, Mailer>();
+        services.AddSingleton<IMessenger, Messenger>();
         services.AddSingleton<IInstructor, Instructor>();
         services.AddSingleton<IInputTransponder, InputTransponder>();
         services.AddSingleton<MainViewModel>();
@@ -59,11 +59,11 @@ public partial class App : Application
         var mainViewModel = _serviceProvider.GetRequiredService<MainViewModel>();
         var instructions = _serviceProvider.GetRequiredService<IInstructor>().Instructions;
 
-        IMailer mailer = _serviceProvider.GetRequiredService<IMailer>();
+        IMessenger messenger = _serviceProvider.GetRequiredService<IMessenger>();
         ISelection selection = _serviceProvider.GetRequiredService<ISelection>();
 
-        realWorld.AddSystem(new RenderSystem(realWorld, mailer, selection));
-        provisionalWorld.AddSystem(new RenderSystem(provisionalWorld, mailer, selection));
+        realWorld.AddSystem(new RenderSystem(realWorld, messenger, selection));
+        provisionalWorld.AddSystem(new RenderSystem(provisionalWorld, messenger, selection));
 
         mainViewModel.InitialiseToolbarButtons(instructions);
 

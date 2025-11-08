@@ -2,26 +2,27 @@
 using OxyzWPF.Contracts.ECS;
 using OxyzWPF.Contracts.Game;
 using OxyzWPF.Contracts.Mailing;
+using OxyzWPF.Contracts.Mailing.Events;
 using OxyzWPF.ECS.Components;
 
 namespace OxyzWPF.Game
 {
     public class Selection : ISelection
     {
-        private IMailer _mailer;
+        private IMessenger _maessenger;
         private IWorld _world;
         
         public List<int> SelectionIds {  get; private set; }
 
-        public Selection(IMailer mailer, IWorld world)
+        public Selection(IMessenger messenger, IWorld world)
         {
-            _mailer = mailer;
+            _maessenger = messenger;
             _world = world;
 
             SelectionIds = new List<int>();
 
-            _mailer.Subscribe<object>(EventEnum.HitToGeometryModel, OnHitToGeometryModel);
-            _mailer.Subscribe<object>(EventEnum.InstructionCanseled, OnCanceled);
+            _maessenger.Subscribe<GeometryEventArgs>(EventEnum.HitToGeometryModel.ToString(), OnHitToGeometryModel);
+            _maessenger.Subscribe<InstructionEventArgs>(EventEnum.InstructionCanseled.ToString(), OnCanceled);
         }
         public void Add(int id)
         {
@@ -43,12 +44,12 @@ namespace OxyzWPF.Game
 
         private void OnSelectionChange()
         {
-            _mailer.Publish(EventEnum.SelectionChange, SelectionIds);
+            _maessenger.Publish(EventEnum.SelectionChange.ToString(), this, new SelectionChangeEventArgs(SelectionIds));
         }
 
-        public void OnHitToGeometryModel(object args)
+        public void OnHitToGeometryModel(object sender, GeometryEventArgs e)
         {
-            var model = (args as MeshGeometryModel3D);
+            var model = e.GeometryModel;
 
             foreach (var entity  in _world.GetEntitiesWithComponents<MeshComponent>())
             {
@@ -60,7 +61,7 @@ namespace OxyzWPF.Game
             }
         }
 
-        public void OnCanceled(object args)
+        public void OnCanceled(object sender, InstructionEventArgs e)
         {
             Clear();
         }

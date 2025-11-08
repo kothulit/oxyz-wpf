@@ -6,12 +6,12 @@ namespace OxyzWPF.Instruction.Instrutions;
 
 public class BaseInstruction
 {
-    private protected readonly IMailer _mailer;
+    private protected readonly IMessenger _messenger;
     private protected readonly IWorld _world;
     private protected readonly IInstructor _instructor;
-    public BaseInstruction(IWorld world, IMailer mailer, IInstructor instructor)
+    public BaseInstruction(IWorld world, IMessenger messenger, IInstructor instructor)
     {
-        _mailer = mailer;
+        _messenger = messenger;
         _world = world;
         _instructor = instructor;
     }

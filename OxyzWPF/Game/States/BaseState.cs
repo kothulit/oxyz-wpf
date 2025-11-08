@@ -2,12 +2,12 @@
 
 namespace OxyzWPF.Game.States;
 
-public class BaseState
+public abstract class BaseState
 {
-    protected IMailer _mailer;
-    public string StateName => "Add";
-    public BaseState(IMailer mailer)
+    protected IMessenger _messenger;
+    public string StateName => "Base";
+    public BaseState(IMessenger messenger)
     {
-        _mailer = mailer;
+        _messenger = messenger;
     }
 }
