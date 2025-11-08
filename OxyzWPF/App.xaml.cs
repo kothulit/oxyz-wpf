@@ -23,8 +23,8 @@ namespace OxyzWPF;
 /// </summary>
 public partial class App : Application
 {
-    private ServiceProvider? _serviceProvider;
-    public ServiceProvider? Provider => _serviceProvider;
+    private ServiceProvider _serviceProvider;
+    public ServiceProvider Provider => _serviceProvider;
     
     public App()
     {
@@ -62,12 +62,12 @@ public partial class App : Application
         IMessenger messenger = _serviceProvider.GetRequiredService<IMessenger>();
         ISelection selection = _serviceProvider.GetRequiredService<ISelection>();
 
-        realWorld.AddSystem(new RenderSystem(realWorld, messenger, selection));
-        provisionalWorld.AddSystem(new RenderSystem(provisionalWorld, messenger, selection));
+        realWorld?.AddSystem(new RenderSystem(realWorld, messenger, selection));
+        provisionalWorld?.AddSystem(new RenderSystem(provisionalWorld, messenger, selection));
 
         mainViewModel.InitialiseToolbarButtons(instructions);
 
         var mainWindow = _serviceProvider.GetService<MainWindow>();
-        mainWindow.Show();
+        mainWindow?.Show();
     }
 }

@@ -6,7 +6,7 @@ namespace OxyzWPF.Game.States;
 
 public class StateAdd : BaseState, IGameState
 {
-    public string StateName => "Add";
+    public new string StateName => "Add";
     public bool IsEditingEnable => false;
     public bool IsViewPanEnable => true;
     public bool IsViewZoomEnable => true;

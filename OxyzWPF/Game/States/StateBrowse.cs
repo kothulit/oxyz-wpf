@@ -6,7 +6,7 @@ namespace OxyzWPF.Game.States;
 
 public class StateBrowse : BaseState, IGameState
 {
-    public string StateName => "Browse";
+    public new string StateName => "Browse";
     public bool IsEditingEnable => true;
     public bool IsViewPanEnable => true;
     public bool IsViewZoomEnable => true;

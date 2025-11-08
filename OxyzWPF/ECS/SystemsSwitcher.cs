@@ -29,7 +29,7 @@ public class SystemsSwitcher : ISystemsSwitcher
         }
     }
 
-    private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+    private void OnSelectionChanged(object? _, SelectionChangedEventArgs e)
     {
         Toggles[nameof(RenderSystem)] = true;
     }

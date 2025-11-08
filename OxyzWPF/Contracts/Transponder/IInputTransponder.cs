@@ -1,6 +1,8 @@
-﻿namespace OxyzWPF.Contracts.Transponder;
+﻿using System.Windows.Input;
+
+namespace OxyzWPF.Contracts.Transponder;
 
 public interface IInputTransponder
 {
-    void OnKeyDown(object args);
+    void OnKeyDown(object args, KeyEventArgs e);
 }

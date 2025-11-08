@@ -25,7 +25,7 @@ public class GameStateMachine : IGameStateMachine
         _messenger.Subscribe<GameStateChangeRequestEventArgsy>(EventEnum.GameStateChangeRequest.ToString(), OnStateChangeRequest);
     }
 
-    private void OnStateChangeRequest(object sneder, GameStateChangeRequestEventArgsy e)
+    private void OnStateChangeRequest(object? _, GameStateChangeRequestEventArgsy e)
     {
         ChangeState(e.NewStateName);
     }

@@ -29,7 +29,7 @@ public class ProvisionalRenderer
         _messenger.Subscribe<GameStateEventArgs>(EventEnum.GameStateChanged.ToString(), OnGameStatusChanged);
     }
 
-    private void OnGameStatusChanged(object sender, GameStateEventArgs e)
+    private void OnGameStatusChanged(object? sender, GameStateEventArgs e)
     {
         IGameState state = e.CurrentState;
         _provisionalWorld.Clear();
@@ -53,8 +53,8 @@ public class ProvisionalRenderer
     {
         if (_isPointRenderEnable)
         {
-            //Calculation.GetScreenPointOnZeroPlane()
-            //Factory.CreatePoint(_provisionalWorld, )
+            // Calculation.GetScreenPointOnZeroPlane()
+            // Factory.CreatePoint(_provisionalWorld, )
         }
     }
 

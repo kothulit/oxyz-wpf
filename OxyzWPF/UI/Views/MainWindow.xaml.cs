@@ -109,7 +109,7 @@ namespace OxyzWPF
 
         private void viewPort_KeyDown(object sender, KeyEventArgs e)
         {
-            _viewModel.OnKeyDown(e);
+            _viewModel.OnKeyDown(sender, e);
         }
     }
 }

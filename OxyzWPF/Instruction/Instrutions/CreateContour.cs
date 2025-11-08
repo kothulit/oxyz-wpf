@@ -11,9 +11,6 @@ namespace OxyzWPF.Instruction.Instrutions;
 public class CreateContour : BaseInstruction, IInstruction
 {
     public string Name { get; } = nameof(CreateContour);
-    private bool _isCreating = false;
-    private Entity _entity;
-    private ContourComponent _contour;
     private bool _isPreviosPointEnable = false;
     private Vector3 _previosPoint;
 
@@ -24,8 +21,6 @@ public class CreateContour : BaseInstruction, IInstruction
         _messenger.Publish(EventEnum.GameStateChangeRequest.ToString(), this, new GameStateChangeRequestEventArgsy("Edit"));
         _messenger.Publish(EventEnum.InstructionStart.ToString(), this, new InstructionEventArgs(this));
         _instructor.ActiveInstruction = this;
-
-        _isCreating = true;
 
         _messenger.Publish(EventEnum.TestEvent.ToString(), this, new TestEventArgs("Режим создания контура."));
     }

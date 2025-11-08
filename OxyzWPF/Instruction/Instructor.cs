@@ -31,12 +31,12 @@ public class Instructor : IInstructor
         _messenger.Subscribe<InstructionEventArgs>(EventEnum.InstructionCanseled.ToString(), OnInstructionCanseled);
     }
 
-    private void OnInstructionStart(object sender, InstructionEventArgs e)
+    private void OnInstructionStart(object? _, InstructionEventArgs e)
     {
         ActiveInstruction = e.Instruction;
     }
 
-    private void OnInstructionCanseled(object sender, InstructionEventArgs e)
+    private void OnInstructionCanseled(object? _, InstructionEventArgs e)
     {
         ActiveInstruction?.OnEnd(nameof(ActiveInstruction));
         ActiveInstruction = null;

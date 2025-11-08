@@ -35,8 +35,8 @@ public class CreateContourModel : ISystem
             if (TransformComponent is null) TransformComponent = entity.AddComponent<TransformComponent>();
 
             meshComponent.Material = PhongMaterials.Red;
-            var points3D = contourComponent.ContourPoints.Select(p => new Vector3(p.X, 0, p.Y)).ToList();
-            if (points3D.Count > 2) meshBuilder.AddPolygon(points3D);
+            var points3D = contourComponent?.ContourPoints.Select(p => new Vector3(p.X, 0, p.Y)).ToList();
+            if (points3D?.Count > 2) meshBuilder.AddPolygon(points3D);
             meshComponent.Geometry = meshBuilder.ToMeshGeometry3D();
             meshBuilder = new MeshBuilder();
         }

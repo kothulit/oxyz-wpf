@@ -47,7 +47,7 @@ namespace OxyzWPF.Game
             _maessenger.Publish(EventEnum.SelectionChange.ToString(), this, new SelectionChangeEventArgs(SelectionIds));
         }
 
-        public void OnHitToGeometryModel(object sender, GeometryEventArgs e)
+        public void OnHitToGeometryModel(object? _, GeometryEventArgs e)
         {
             var model = e.GeometryModel;
 
@@ -61,7 +61,7 @@ namespace OxyzWPF.Game
             }
         }
 
-        public void OnCanceled(object sender, InstructionEventArgs e)
+        public void OnCanceled(object? _, InstructionEventArgs e)
         {
             Clear();
         }

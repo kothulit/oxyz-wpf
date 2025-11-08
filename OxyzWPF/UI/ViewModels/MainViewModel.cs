@@ -144,9 +144,9 @@ public class MainViewModel : ViewModelBase
         }
     }
 
-    public void OnKeyDown(object args)
+    public void OnKeyDown(object sender, KeyEventArgs e)
     {
-        _inputTransponder.OnKeyDown(args);
+        _inputTransponder.OnKeyDown(sender,e);
     }
 
     public void TestEventHandler(object sender, TestEventArgs e)
