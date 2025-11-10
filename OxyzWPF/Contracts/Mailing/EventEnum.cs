@@ -4,7 +4,7 @@ public enum EventEnum
 {
     TestEvent = 0, // TestEventEventArgs
     KeyPress = 1, // System.Windows.Input.KeyEventArgs 
-    MouseDown = 2, // MouseOxyzEventArgs
+    MouseDown = 2, // MouseMovedEventArgs
     ElementAdded = 3, // GeometryEventArgs
     ElementRemoved = 4, // GeometryEventArgs
     GameStateChanged = 5, // GameStateEventArgs

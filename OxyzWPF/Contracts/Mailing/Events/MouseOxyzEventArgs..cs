@@ -4,9 +4,9 @@ using SharpDX;
 
 namespace OxyzWPF.Contracts.Mailing.Events;
 
-public sealed class MouseOxyzEventArgs : EventArgs
+public sealed class MouseMovedEventArgs : EventArgs
 {
-    public MouseOxyzEventArgs(Vector2 position)
+    public MouseMovedEventArgs(Vector2 position)
     {
         Position = position;
     }

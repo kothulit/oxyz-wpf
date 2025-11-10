@@ -1,5 +1,6 @@
 ﻿using HelixToolkit.Wpf.SharpDX;
 using SharpDX;
+using System.Windows.Input;
 
 namespace OxyzWPF._3DCore;
 
@@ -15,6 +16,19 @@ public static class Calculation
         {
             planePoint = ray.Position + ray.Direction * distance;
             isIntersects = true;
+        }
+        return isIntersects;
+    }
+
+    public static bool GetScreenPointOnZeroPlane(object? sender, MouseEventArgs e, out Vector3 planePoint)
+    {
+        bool isIntersects = false;
+        planePoint = Vector3.Zero;
+        if (sender is Viewport3DX viewport)
+        {
+            var position = e.GetPosition(viewport);
+            var point2D = new Vector2((float)position.X, (float)position.Y);
+            isIntersects = GetScreenPointOnZeroPlane(viewport, point2D, out planePoint);
         }
         return isIntersects;
     }

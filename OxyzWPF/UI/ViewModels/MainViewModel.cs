@@ -156,8 +156,6 @@ public class MainViewModel : ViewModelBase
 
     public void OnMouseMove(Viewport3DX viewPort, MouseEventArgs e)
     {
-        var position = e.GetPosition(viewPort);
-        var point2D = new Vector2((float)position.X, (float)position.Y);
-        _messenger.Publish(EventEnum.MouseMove.ToString(), this, new MouseOxyzEventArgs(point2D));
+        _messenger.Publish(EventEnum.MouseMove.ToString(), viewPort, e);
     }
 }
