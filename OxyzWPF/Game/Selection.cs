@@ -1,23 +1,22 @@
-﻿using HelixToolkit.Wpf.SharpDX;
-using OxyzWPF.Contracts.ECS;
-using OxyzWPF.Contracts.Game;
+﻿using OxyzWPF.Contracts.Game;
 using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.Contracts.Mailing.Events;
 using OxyzWPF.ECS.Components;
+using OxyzWPF.ECS;
 
 namespace OxyzWPF.Game
 {
     public class Selection : ISelection
     {
         private IMessenger _maessenger;
-        private IWorld _world;
+        private ProjectWorld _projectWorld;
         
         public List<int> SelectionIds {  get; private set; }
 
-        public Selection(IMessenger messenger, IWorld world)
+        public Selection(IMessenger messenger, ProjectWorld projectWorld)
         {
             _maessenger = messenger;
-            _world = world;
+            _projectWorld = projectWorld;
 
             SelectionIds = new List<int>();
 
@@ -51,7 +50,7 @@ namespace OxyzWPF.Game
         {
             var model = e.GeometryModel;
 
-            foreach (var entity  in _world.GetEntitiesWithComponents<MeshComponent>())
+            foreach (var entity  in _projectWorld.GetEntitiesWithComponents<MeshComponent>())
             {
                 var mesh = entity.GetComponent<MeshComponent>();
                 if (mesh?.Geometry == model.Geometry)

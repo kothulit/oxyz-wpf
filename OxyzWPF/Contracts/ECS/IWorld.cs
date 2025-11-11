@@ -21,4 +21,5 @@ public interface IWorld
     public void AddSystem(ISystem system);
     public bool RemoveSystem(ISystem system);
     public void Update(double deltaTime);
+    public void Clear();
 }

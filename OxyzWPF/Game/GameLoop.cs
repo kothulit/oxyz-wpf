@@ -11,15 +11,15 @@ internal class GameLoop : IGameLoop
 {
     private DateTime _lastFrameTime;
     private readonly MainViewModel _viewModel;
-    private readonly IWorld _world;
-    private readonly ProvisionalWorld _provisionalWorld;
+    private readonly ProjectWorld _projectWorld;
+    private readonly SupportWorld _supportWorld;
     private IMessenger _messenger;
 
-    public GameLoop(MainViewModel viewModel, IWorld world, ProvisionalWorld provisionalWorld, IMessenger messenger)
+    public GameLoop(MainViewModel viewModel, ProjectWorld projectWorld, SupportWorld supportWorld, IMessenger messenger)
     {
         _viewModel = viewModel;
-        _world = world;
-        _provisionalWorld = provisionalWorld;
+        _projectWorld = projectWorld;
+        _supportWorld = supportWorld;
         _messenger = messenger;
         _lastFrameTime = DateTime.Now;
         CompositionTarget.Rendering += OnRendering;
@@ -39,8 +39,8 @@ internal class GameLoop : IGameLoop
         _viewModel?.Update(deltaTime);
 
         // Обновляем ECS мир
-        _world?.Update(deltaTime);
-        _provisionalWorld?.Update(deltaTime);
+        _projectWorld?.Update(deltaTime);
+        _supportWorld?.Update(deltaTime);
 
         _messenger?.Update(deltaTime);
     }

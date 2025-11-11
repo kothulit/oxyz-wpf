@@ -11,21 +11,21 @@ namespace OxyzWPF.Editor;
 public class Instructor : IInstructor
 {
     private readonly IMessenger _messenger;
-    private readonly IWorld _world;
-    private readonly ProvisionalWorld _provisionalWorld;
+    private readonly ProjectWorld _projectWorld;
+    private readonly SupportWorld _supportWorld;
     private Dictionary<string, IInstruction> _instructions = new Dictionary<string, IInstruction>();
     public IInstruction? ActiveInstruction { get; set; }
     public Dictionary<string, IInstruction> Instructions => _instructions;
 
-    public Instructor(IWorld realWorld , ProvisionalWorld provisionalWorld, IMessenger messenger)
+    public Instructor(ProjectWorld projectWorld , SupportWorld supportWorld, IMessenger messenger)
     {
         _messenger = messenger;
-        _world = realWorld;
-        _provisionalWorld = provisionalWorld;
+        _projectWorld = projectWorld;
+        _supportWorld = supportWorld;
 
-        _instructions.Add("AddCube", new AddCube(_world, _messenger, this));
-        _instructions.Add("AddSphere", new AddSphere(_provisionalWorld, _messenger, this));
-        _instructions.Add("CreateContour", new CreateContour(_provisionalWorld, _messenger, this));
+        _instructions.Add("AddCube", new AddCube(_supportWorld, _messenger, this));
+        _instructions.Add("AddSphere", new AddSphere(_supportWorld, _messenger, this));
+        _instructions.Add("CreateContour", new CreateContour(_supportWorld, _messenger, this));
 
         _messenger.Subscribe<InstructionEventArgs>(EventEnum.InstructionStart.ToString(), OnInstructionStart);
         _messenger.Subscribe<InstructionEventArgs>(EventEnum.InstructionCanseled.ToString(), OnInstructionCanseled);

@@ -1,4 +1,5 @@
 ﻿using OxyzWPF.Contracts.ECS;
+using OxyzWPF.Contracts.Mailing;
 
 namespace OxyzWPF.ECS;
 
@@ -9,14 +10,13 @@ public class World : IWorld
 {
     private List<Entity> _entities;
     private List<ISystem> _systems;
+    private SystemManeger _systemManeger;
 
-    private ISystemsSwitcher _systemsStateMachine;
-
-    public World(ISystemsSwitcher systemsStateMachine)
+    public World(IMessenger messenger)
     {
-        _systemsStateMachine = systemsStateMachine;
         _entities = new List<Entity>();
         _systems = new List<ISystem>();
+        _systemManeger = new SystemManeger(messenger, _systems);
     }
 
     /// <summary>
@@ -97,6 +97,7 @@ public class World : IWorld
     public void AddSystem(ISystem system)
     {
         _systems.Add(system);
+        _systemManeger.Systems = _systems;
     }
 
     /// <summary>
@@ -104,7 +105,9 @@ public class World : IWorld
     /// </summary>
     public bool RemoveSystem(ISystem system)
     {
-        return _systems.Remove(system);
+        var result = _systems.Remove(system);
+        _systemManeger.Systems = _systems;
+        return result;
     }
 
     /// <summary>
@@ -114,7 +117,7 @@ public class World : IWorld
     {
         foreach (var system in _systems)
         {
-            system.Update(deltaTime);
+            if (system.IsEnable) system.Update(deltaTime);
         }
     }
 

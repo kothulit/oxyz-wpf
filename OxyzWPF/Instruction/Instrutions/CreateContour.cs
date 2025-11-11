@@ -14,7 +14,7 @@ public class CreateContour : BaseInstruction, IInstruction
     private bool _isPreviosPointEnable = false;
     private Vector3 _previosPoint;
 
-    public CreateContour(IWorld world, IMessenger messenger, IInstructor instructor) : base(world, messenger, instructor) { }
+    public CreateContour(World world, IMessenger messenger, IInstructor instructor) : base(world, messenger, instructor) { }
 
     public void OnStart(object args)
     {

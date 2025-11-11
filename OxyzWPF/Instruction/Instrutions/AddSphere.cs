@@ -3,6 +3,7 @@ using OxyzWPF.Contracts.ECS;
 using OxyzWPF.Contracts.Instruction;
 using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.Contracts.Mailing.Events;
+using OxyzWPF.ECS;
 using OxyzWPF.ECS.Components;
 using OxyzWPF.Instruction.Instrutions;
 using SharpDX;
@@ -12,7 +13,7 @@ namespace OxyzWPF.Editor.Instrutions;
 public class AddSphere : BaseInstruction, IInstruction
 {
     public string Name { get; } = nameof(AddSphere);
-    public AddSphere(IWorld world, IMessenger messenger, IInstructor instructor) : base(world, messenger, instructor) { }
+    public AddSphere(World world, IMessenger messenger, IInstructor instructor) : base(world, messenger, instructor) { }
 
     public void OnStart(object args)
     {

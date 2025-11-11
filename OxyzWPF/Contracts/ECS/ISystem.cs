@@ -1,11 +1,14 @@
-﻿namespace OxyzWPF.Contracts.ECS;
+﻿using OxyzWPF.ECS.Systems;
+
+namespace OxyzWPF.Contracts.ECS;
 
 /// <summary>
 /// Базовый интерфейс для всех систем
 /// </summary>
 public interface ISystem
 {
-    public bool IsOn { get; set; }
+    public string Name { get; }
+    public bool IsEnable { get; set; }
     /// <summary>
     /// Обновляет систему
     /// </summary>

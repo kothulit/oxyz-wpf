@@ -12,14 +12,15 @@ namespace OxyzWPF.ECS.Systems
     /// </summary>
     public class RenderSystem : ISystem
     {
-        public bool IsOn { get; set; } = false;
+        public string Name => typeof(RenderSystem).Name;
+        public bool IsEnable { get; set; } = false;
 
-        private readonly IWorld _world;
+        private readonly World _world;
         private readonly IMessenger _messenger;
         private readonly ISelection _selection;
         private readonly Dictionary<int, MeshGeometryModel3D> _renderedObjects;
 
-        public RenderSystem(IWorld world, IMessenger messenger, ISelection selection)
+        public RenderSystem(World world, IMessenger messenger, ISelection selection)
         {
             _world = world;
             _messenger = messenger;
@@ -85,7 +86,7 @@ namespace OxyzWPF.ECS.Systems
                 }
             }
 
-            IsOn = false;
+            IsEnable = false;
         }
     }
 }

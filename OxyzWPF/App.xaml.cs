@@ -30,8 +30,8 @@ public partial class App : Application
     {
         var services = new ServiceCollection();
 
-        services.AddSingleton<IWorld, RealWorld>();
-        services.AddSingleton<ProvisionalWorld>();
+        services.AddSingleton<ProjectWorld>();
+        services.AddSingleton<SupportWorld>();
         services.AddSingleton<IMessenger, Messenger>();
         services.AddSingleton<IInstructor, Instructor>();
         services.AddSingleton<IInputTransponder, InputTransponder>();
@@ -41,7 +41,6 @@ public partial class App : Application
         services.AddSingleton<IGameState, StateEdit>();
         services.AddSingleton<IGameLoop, GameLoop>();
         services.AddSingleton<ISelection, Selection>();
-        services.AddSingleton<ISystemsSwitcher, SystemsSwitcher>();
 
         _serviceProvider = services.BuildServiceProvider();
     }
@@ -49,9 +48,10 @@ public partial class App : Application
     protected override void OnStartup(StartupEventArgs e)
     {
         base.OnStartup(e);
+        var messenger = _serviceProvider.GetRequiredService<IMessenger>();
 
-        var realWorld = _serviceProvider.GetService<IWorld>();
-        var provisionalWorld = _serviceProvider.GetService<ProvisionalWorld>();
+        var projectWorld = _serviceProvider.GetService<ProjectWorld>();
+        var supportWorld = _serviceProvider.GetService<SupportWorld>();
 
         var gameLoop = _serviceProvider.GetRequiredService<IGameLoop>();
         var gameStateMachine = _serviceProvider.GetService<IGameStateMachine>();
@@ -59,11 +59,10 @@ public partial class App : Application
         var mainViewModel = _serviceProvider.GetRequiredService<MainViewModel>();
         var instructions = _serviceProvider.GetRequiredService<IInstructor>().Instructions;
 
-        IMessenger messenger = _serviceProvider.GetRequiredService<IMessenger>();
         ISelection selection = _serviceProvider.GetRequiredService<ISelection>();
 
-        realWorld?.AddSystem(new RenderSystem(realWorld, messenger, selection));
-        provisionalWorld?.AddSystem(new RenderSystem(provisionalWorld, messenger, selection));
+        projectWorld?.AddSystem(new RenderSystem(projectWorld, messenger, selection));
+        supportWorld?.AddSystem(new RenderSystem(supportWorld, messenger, selection));
 
         mainViewModel.InitialiseToolbarButtons(instructions);
 
