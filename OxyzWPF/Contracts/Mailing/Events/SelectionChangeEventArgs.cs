@@ -1,6 +1,4 @@
-﻿using OxyzWPF.Contracts.Game.States;
-
-namespace OxyzWPF.Contracts.Mailing.Events;
+﻿namespace OxyzWPF.Contracts.Mailing.Events;
 
 public sealed class SelectionChangeEventArgs : EventArgs
 {

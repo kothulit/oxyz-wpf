@@ -1,5 +1,4 @@
 ﻿using OxyzWPF.Contracts.Game.States;
-using OxyzWPF.Game.States;
 
 namespace OxyzWPF.Contracts.Mailing.Events;
 
