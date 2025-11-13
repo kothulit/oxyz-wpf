@@ -107,7 +107,7 @@ namespace OxyzWPF
             _viewModel.OnMouseClick(point2D, viewPort);
         }
 
-        private void viewPort_KeyDown(object sender, KeyEventArgs e)
+        private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             _viewModel.OnKeyDown(sender, e);
         }

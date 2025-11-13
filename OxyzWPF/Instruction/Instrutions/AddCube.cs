@@ -36,7 +36,7 @@ public class AddCube : BaseInstruction, IInstruction
         mesh.Geometry = mb.ToMeshGeometry3D();
         mesh.Material = PhongMaterials.Blue; // Синий цвет для новых кубов
 
-        _messenger.Publish(EventEnum.TestEvent.ToString(), this, new TestEventArgs($"Создан куб в позиции ({position.X:F1}, {position.Z:F1})"));
+        _messenger.Publish(EventEnum.StatusChangedEvent.ToString(), this, new StatusEventArgs($"Создан куб в позиции ({position.X:F1}, {position.Z:F1})"));
     }
 
     public void OnEnd(object args)

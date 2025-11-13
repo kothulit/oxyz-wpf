@@ -12,7 +12,7 @@ class Messenger : IMessenger
     {
         if (_eventTable.Keys.Contains(eventName))
         {
-            Action.Combine(_eventTable[eventName], callback);
+            EventHandler.Combine(_eventTable[eventName], callback);
         }
         else
         {

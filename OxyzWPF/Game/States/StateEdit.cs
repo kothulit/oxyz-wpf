@@ -13,7 +13,7 @@ public class StateEdit : BaseState, IGameState
     public bool IsViewRotateEnable => true;
     public StateEdit(IMessenger messenger) : base(messenger) { }
 
-    public void Enter() => _messenger.Publish(EventEnum.TestEvent.ToString(), this, new TestEventArgs($"Включено состояние {StateName}"));
-    public void Exit() => _messenger.Publish(EventEnum.TestEvent.ToString(), this, new TestEventArgs($"Выключено состояние {StateName}"));
+    public void Enter() => _messenger.Publish(EventEnum.StatusChangedEvent.ToString(), this, new StatusEventArgs($"Включено состояние {StateName}"));
+    public void Exit() => _messenger.Publish(EventEnum.StatusChangedEvent.ToString(), this, new StatusEventArgs($"Выключено состояние {StateName}"));
     public void Update(double deltaTime) { /* Здесь обновляем выделенные объекты */ }
 }

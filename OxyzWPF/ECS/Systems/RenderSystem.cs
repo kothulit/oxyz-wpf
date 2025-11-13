@@ -7,13 +7,10 @@ using OxyzWPF.ECS.Components;
 
 namespace OxyzWPF.ECS.Systems
 {
-    /// <summary>
-    /// Система для рендеринга 3D объектов
-    /// </summary>
     public class RenderSystem : ISystem
     {
         public string Name => typeof(RenderSystem).Name;
-        public bool IsEnable { get; set; } = false;
+        public bool IsEnable { get; set; } = true;
 
         private readonly World _world;
         private readonly IMessenger _messenger;
@@ -85,8 +82,6 @@ namespace OxyzWPF.ECS.Systems
                     _renderedObjects.Remove(id);
                 }
             }
-
-            IsEnable = false;
         }
     }
 }

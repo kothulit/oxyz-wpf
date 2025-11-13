@@ -36,7 +36,7 @@ public class AddSphere : BaseInstruction, IInstruction
         mesh.Geometry = mb.ToMeshGeometry3D();
         mesh.Material = PhongMaterials.Blue; // Синий цвет для новых элементов
 
-        _messenger.Publish(EventEnum.TestEvent.ToString(), this, new TestEventArgs($"Создана сфера в позиции ({position.X:F1}, {position.Z:F1})"));
+        _messenger.Publish(EventEnum.StatusChangedEvent.ToString(), this, new StatusEventArgs($"Создана сфера в позиции ({position.X:F1}, {position.Z:F1})"));
     }
 
     public void OnEnd(object args)

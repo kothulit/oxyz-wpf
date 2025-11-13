@@ -1,5 +1,6 @@
 ﻿using OxyzWPF.Contracts.Game;
 using OxyzWPF.Contracts.Mailing;
+using OxyzWPF.Contracts.Mailing.Events;
 using OxyzWPF.Contracts.Transponder;
 using System.Windows.Input;
 
@@ -13,6 +14,8 @@ public class InputTransponder : IInputTransponder
     {
         _gameStateMachine = gameStateMachine;
         _messenger = messenger;
+
+        _messenger.Subscribe<KeyEventArgs>(EventEnum.KeyPress.ToString(), OnKeyDown);
     }
 
     public void OnKeyDown(object? _, KeyEventArgs e)
@@ -20,7 +23,7 @@ public class InputTransponder : IInputTransponder
         switch (e.Key)
         {
             case Key.Escape:
-                _messenger.Publish(EventEnum.InstructionCanseled.ToString(), this, new EventArgs());
+                _messenger.Publish(EventEnum.Сancellation.ToString(), this, new EventArgs());
                 break;
             default:
                 break;

@@ -22,7 +22,7 @@ public class CreateContour : BaseInstruction, IInstruction
         _messenger.Publish(EventEnum.InstructionStart.ToString(), this, new InstructionEventArgs(this));
         _instructor.ActiveInstruction = this;
 
-        _messenger.Publish(EventEnum.TestEvent.ToString(), this, new TestEventArgs("Режим создания контура."));
+        _messenger.Publish(EventEnum.StatusChangedEvent.ToString(), this, new StatusEventArgs("Режим создания контура."));
     }
 
     public void Execute(object args)
@@ -35,7 +35,7 @@ public class CreateContour : BaseInstruction, IInstruction
         _previosPoint = currentPoint;
         _isPreviosPointEnable = true;
 
-        _messenger.Publish(EventEnum.TestEvent.ToString(), this, new TestEventArgs($"Добавлена точка: ({((Vector3)args).X:F2}, {((Vector3)args).Y:F2})"));
+        _messenger.Publish(EventEnum.StatusChangedEvent.ToString(), this, new StatusEventArgs($"Добавлена точка: ({((Vector3)args).X:F2}, {((Vector3)args).Y:F2})"));
     }
 
     public void OnEnd(object args)

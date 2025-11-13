@@ -28,7 +28,7 @@ public class Instructor : IInstructor
         _instructions.Add("CreateContour", new CreateContour(_supportWorld, _messenger, this));
 
         _messenger.Subscribe<InstructionEventArgs>(EventEnum.InstructionStart.ToString(), OnInstructionStart);
-        _messenger.Subscribe<InstructionEventArgs>(EventEnum.InstructionCanseled.ToString(), OnInstructionCanseled);
+        _messenger.Subscribe<EventArgs>(EventEnum.Сancellation.ToString(), OnInstructionCanseled);
     }
 
     private void OnInstructionStart(object? _, InstructionEventArgs e)
@@ -36,9 +36,9 @@ public class Instructor : IInstructor
         ActiveInstruction = e.Instruction;
     }
 
-    private void OnInstructionCanseled(object? _, InstructionEventArgs e)
+    private void OnInstructionCanseled(object? _, EventArgs e)
     {
         ActiveInstruction?.OnEnd(nameof(ActiveInstruction));
-        ActiveInstruction = null;
+        ActiveInstruction = new NoneInstruction();
     }
 }

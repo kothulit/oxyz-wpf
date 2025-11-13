@@ -10,17 +10,15 @@ namespace OxyzWPF.ECS.Systems;
 public class CreateContourModel : ISystem
 {
     public string Name => typeof(CreateContourModel).Name;
-    public bool IsEnable { get; set; } = false;
+    public bool IsEnable { get; set; } = true;
 
     private readonly World _world;
-    private readonly IMessenger _messenger;
 
     private MeshBuilder meshBuilder = new MeshBuilder();
 
-    public CreateContourModel(World world, IMessenger messenger)
+    public CreateContourModel(World world)
     {
         _world = world;
-        _messenger = messenger;
     }
 
     public void Update(double deltaTime)

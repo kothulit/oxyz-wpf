@@ -2,11 +2,11 @@
 
 namespace OxyzWPF.Contracts.Mailing.Events;
 
-public sealed class TestEventArgs : EventArgs
+public sealed class StatusEventArgs : EventArgs
 {
     private readonly string _message;
 
-    public TestEventArgs(string message)
+    public StatusEventArgs(string message)
     {
         _message = message;
     }

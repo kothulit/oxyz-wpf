@@ -1,7 +1,14 @@
-﻿namespace OxyzWPF.ECS.Systems;
+﻿using OxyzWPF.Contracts.ECS;
 
-public class SelectionSystem
+namespace OxyzWPF.ECS.Systems;
+
+public class SelectionSystem : ISystem
 {
     public string Name => typeof(SelectionSystem).Name;
-    public bool IsEnable { get; set; } = false;
+    public bool IsEnable { get; set; } = true;
+
+    public void Update(double deltaTime)
+    {
+        throw new NotImplementedException();
+    }
 }
