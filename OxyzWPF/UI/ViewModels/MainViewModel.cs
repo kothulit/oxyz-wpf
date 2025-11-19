@@ -81,7 +81,7 @@ public class MainViewModel : ViewModelBase
         StateName = _gameStateMachine.CurrentState.StateName;
 
         _messenger.Subscribe<GameStateEventArgs>(EventEnum.GameStateChanged.ToString(), OnStateChanged);
-        _messenger.Subscribe<StatusEventArgs>(EventEnum.StatusChangedEvent.ToString(), TestEventHandler);
+        _messenger.Subscribe<StatusEventArgs>(EventEnum.StatusChangedEvent.ToString(), StatusEventHandler);
     }
 
     public void InitialiseToolbarButtons(Dictionary<string, IInstruction> instructions)
@@ -149,7 +149,7 @@ public class MainViewModel : ViewModelBase
         _messenger.Publish(EventEnum.KeyPress.ToString(), sender, e);
     }
 
-    public void TestEventHandler(object sender, StatusEventArgs e)
+    public void StatusEventHandler(object sender, StatusEventArgs e)
     {
         StatusText = e.Message;
     }

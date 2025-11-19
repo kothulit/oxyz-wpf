@@ -2,7 +2,6 @@
 public interface IGameState
 {
     string StateName { get; }
-    bool IsEditingEnable { get; }
     bool IsViewPanEnable { get; }
     bool IsViewZoomEnable { get; }
     bool IsViewRotateEnable { get; }

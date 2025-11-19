@@ -23,6 +23,7 @@ namespace OxyzWPF.Game
             _maessenger.Subscribe<GeometryEventArgs>(EventEnum.HitToGeometryModel.ToString(), OnHitToGeometryModel);
             _maessenger.Subscribe<EventArgs>(EventEnum.Сancellation.ToString(), OnCanceled);
         }
+
         public void Add(int id)
         {
             SelectionIds.Add(id);

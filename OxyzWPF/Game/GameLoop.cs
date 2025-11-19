@@ -42,8 +42,6 @@ internal class GameLoop : IGameLoop
         _projectWorld?.Update(deltaTime);
         _supportWorld?.Update(deltaTime);
 
-        _supportWorld?.Clear();
-
         _messenger?.Update(deltaTime);
     }
 }

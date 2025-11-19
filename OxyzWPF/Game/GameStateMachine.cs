@@ -9,8 +9,14 @@ public class GameStateMachine : IGameStateMachine
 {
     private IMessenger _messenger;
     private IGameState _currentState;
+
     public IGameState CurrentState => _currentState;
     private Dictionary<string, IGameState> _states;
+
+    public string StateName => _currentState.StateName;
+    public bool IsViewPanEnable => _currentState.IsViewPanEnable;
+    public bool IsViewZoomEnable => _currentState.IsViewZoomEnable;
+    public bool IsViewRotateEnable => _currentState.IsViewRotateEnable;
 
     public GameStateMachine(IMessenger messenger)
     {
@@ -29,12 +35,6 @@ public class GameStateMachine : IGameStateMachine
     {
         ChangeState(e.NewStateName);
     }
-
-    public string StateName => _currentState.StateName;
-    public bool IsEditingEnable => _currentState.IsEditingEnable;
-    public bool IsViewPanEnable => _currentState.IsEditingEnable;
-    public bool IsViewZoomEnable => _currentState.IsEditingEnable;
-    public bool IsViewRotateEnable => _currentState.IsEditingEnable;
 
     public void ChangeState(string stateName)
     {
@@ -60,6 +60,7 @@ public class GameStateMachine : IGameStateMachine
     {
         _messenger.Publish(EventEnum.GameStateChanged.ToString(), this, new GameStateEventArgs(gameState));
     }
+
     public void Update(double deltaTime)
     {
         _currentState?.Update(deltaTime);

@@ -7,14 +7,12 @@ namespace OxyzWPF.Game.States;
 public class StateAdd : BaseState, IGameState
 {
     public new string StateName => "Add";
-    public bool IsEditingEnable => false;
     public bool IsViewPanEnable => true;
     public bool IsViewZoomEnable => true;
     public bool IsViewRotateEnable => true;
-
     public StateAdd(IMessenger messenger) : base(messenger) { }
 
-    public void Enter() => _messenger.Publish(EventEnum.StatusChangedEvent.ToString(), this, new StatusEventArgs($"Включено состояние {StateName}"));
-    public void Exit() => _messenger.Publish(EventEnum.StatusChangedEvent.ToString(), this, new StatusEventArgs($"Выключено состояние {StateName}"));
-    public void Update(double deltaTime) { /* Здесь обновляем выделенные объекты */ }
+    public void Enter() { }
+    public void Exit() { }
+    public void Update(double deltaTime) { }
 }

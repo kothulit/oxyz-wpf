@@ -7,12 +7,12 @@ namespace OxyzWPF.Game.States;
 public class StateBrowse : BaseState, IGameState
 {
     public new string StateName => "Browse";
-    public bool IsEditingEnable => true;
     public bool IsViewPanEnable => true;
     public bool IsViewZoomEnable => true;
     public bool IsViewRotateEnable => true;
     public StateBrowse(IMessenger messenger) : base (messenger) { }
-    public void Enter() => _messenger.Publish(EventEnum.StatusChangedEvent.ToString(), this, new StatusEventArgs($"Включено состояние {StateName}"));
-    public void Exit() => _messenger.Publish(EventEnum.StatusChangedEvent.ToString(), this, new StatusEventArgs($"Выключено состояние {StateName}"));
-    public void Update(double deltaTime) { /* Здесь можно обновлять камеру */ }
+
+    public void Enter() { }
+    public void Exit() { }
+    public void Update(double deltaTime) { }
 }
