@@ -2,5 +2,5 @@
 public interface IInstructor
 {
     public IInstruction? ActiveInstruction { get; set; }
-    public Dictionary<string, IInstruction> Instructions { get; }
+    public Dictionary<int, IInstruction> Instructions { get; }
 }

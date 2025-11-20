@@ -84,7 +84,7 @@ public class MainViewModel : ViewModelBase
         _messenger.Subscribe<StatusEventArgs>(EventEnum.StatusChangedEvent.ToString(), StatusEventHandler);
     }
 
-    public void InitialiseToolbarButtons(Dictionary<string, IInstruction> instructions)
+    public void InitialiseToolbarButtons(Dictionary<int, IInstruction> instructions)
     {
         foreach (var instruction in instructions)
         {

@@ -18,7 +18,7 @@ public class AddCube : BaseInstruction, IInstruction
     public void OnStart(object args)
     {
         _messenger.Publish(EventEnum.GameStateChangeRequest.ToString(), this, new GameStateChangeRequestEventArgsy("Add"));
-        _messenger.Publish(EventEnum.InstructionStart.ToString(), this, new InstructionEventArgs(this));
+        //_messenger.Publish(EventEnum.InstructionStart.ToString(), this, new InstructionEventArgs(this));
         _instructor.ActiveInstruction = this;
     }
 

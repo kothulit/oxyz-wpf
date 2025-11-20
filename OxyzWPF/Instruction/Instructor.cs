@@ -13,9 +13,9 @@ public class Instructor : IInstructor
     private readonly IMessenger _messenger;
     private readonly ProjectWorld _projectWorld;
     private readonly SupportWorld _supportWorld;
-    private Dictionary<string, IInstruction> _instructions = new Dictionary<string, IInstruction>();
+    private Dictionary<int, IInstruction> _instructions = new Dictionary<int, IInstruction>();
     public IInstruction? ActiveInstruction { get; set; }
-    public Dictionary<string, IInstruction> Instructions => _instructions;
+    public Dictionary<int, IInstruction> Instructions => _instructions;
 
     public Instructor(ProjectWorld projectWorld , SupportWorld supportWorld, IMessenger messenger)
     {
@@ -23,9 +23,9 @@ public class Instructor : IInstructor
         _projectWorld = projectWorld;
         _supportWorld = supportWorld;
 
-        _instructions.Add("AddCube", new AddCube(_supportWorld, _messenger, this));
-        _instructions.Add("AddSphere", new AddSphere(_supportWorld, _messenger, this));
-        _instructions.Add("CreateContour", new CreateContour(_supportWorld, _messenger, this));
+        _instructions.Add(1, new AddCube(_supportWorld, _messenger, this));
+        _instructions.Add(2, new AddSphere(_supportWorld, _messenger, this));
+        _instructions.Add(3, new CreateContour(_supportWorld, _messenger, this));
 
         _messenger.Subscribe<InstructionEventArgs>(EventEnum.InstructionStart.ToString(), OnInstructionStart);
         _messenger.Subscribe<EventArgs>(EventEnum.Сancellation.ToString(), OnInstructionCanseled);
@@ -33,7 +33,8 @@ public class Instructor : IInstructor
 
     private void OnInstructionStart(object? _, InstructionEventArgs e)
     {
-        ActiveInstruction = e.Instruction;
+        ActiveInstruction = _instructions[e.NumberOfInstruction];
+        _messenger.Publish(EventEnum.GameStateChangeRequest.ToString(), this, new GameStateChangeRequestEventArgsy("Add"));
     }
 
     private void OnInstructionCanseled(object? _, EventArgs e)

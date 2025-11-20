@@ -53,4 +53,12 @@ public enum EventEnum
     /// MouseEventArgs - тип аргументов события.
     /// </summary>
     MouseMove = 11,
+    /// <summary>
+    /// EventArgs - тип аргументов события.
+    /// </summary>
+    ActionWithElement = 12,
+    /// <summary>
+    /// EventArgs - тип аргументов события.
+    /// </summary>
+    InstructionCall
 }

@@ -19,7 +19,7 @@ public class CreateContour : BaseInstruction, IInstruction
     public void OnStart(object args)
     {
         _messenger.Publish(EventEnum.GameStateChangeRequest.ToString(), this, new GameStateChangeRequestEventArgsy("Edit"));
-        _messenger.Publish(EventEnum.InstructionStart.ToString(), this, new InstructionEventArgs(this));
+        //_messenger.Publish(EventEnum.InstructionStart.ToString(), this, new InstructionEventArgs(this));
         _instructor.ActiveInstruction = this;
 
         _messenger.Publish(EventEnum.StatusChangedEvent.ToString(), this, new StatusEventArgs("Режим создания контура."));
