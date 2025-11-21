@@ -35,10 +35,7 @@ internal class GameLoop : IGameLoop
         var deltaTime = (currentTime - _lastFrameTime).TotalSeconds;
         _lastFrameTime = currentTime;
 
-        // Обновляем ViewModel (для анимации куба)
-        _viewModel?.Update(deltaTime);
-
-        // Обновляем ECS мир
+        // Обновляем ECS миры
         _projectWorld?.Update(deltaTime);
         _supportWorld?.Update(deltaTime);
 

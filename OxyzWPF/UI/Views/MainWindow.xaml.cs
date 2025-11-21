@@ -104,7 +104,7 @@ namespace OxyzWPF
         {
             var position = e.GetPosition(viewPort);
             var point2D = new Vector2((float)position.X, (float)position.Y);
-            _viewModel.OnMouseClick(point2D, viewPort);
+            _viewModel.ScreenPoint = point2D;
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)

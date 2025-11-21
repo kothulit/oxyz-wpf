@@ -37,6 +37,13 @@ public class MainViewModel : ViewModelBase
     private Vector3 _position = Vector3.Zero;
     public Vector3 Position => _position;
 
+    private Vector2 _screenPoint = Vector2.Zero;
+    public Vector2 ScreenPoint
+    {
+        get { return _screenPoint; }
+        set { _screenPoint = value; }
+    }
+
     private double _fps;
     public double FPS
     {
