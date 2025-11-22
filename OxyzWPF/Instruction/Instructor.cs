@@ -28,6 +28,7 @@ public class Instructor : IInstructor
         _instructions.Add(3, new CreateContour(_supportWorld, _messenger, this));
 
         _messenger.Subscribe<InstructionEventArgs>(EventEnum.InstructionStart.ToString(), OnInstructionStart);
+        _messenger.Subscribe<InstructionCallEventArgs>(EventEnum.InstructionExecuteCall.ToString(), OnActiveInstructionCall);
         _messenger.Subscribe<EventArgs>(EventEnum.Сancellation.ToString(), OnInstructionCanseled);
     }
 
@@ -36,10 +37,14 @@ public class Instructor : IInstructor
         ActiveInstruction = _instructions[e.NumberOfInstruction];
         _messenger.Publish(EventEnum.GameStateChangeRequest.ToString(), this, new GameStateChangeRequestEventArgsy("Add"));
     }
-
+    private void OnActiveInstructionCall(object _, InstructionCallEventArgs e)
+    {
+        ActiveInstruction.Execute(e.ScenePoint);
+    }
     private void OnInstructionCanseled(object? _, EventArgs e)
     {
         ActiveInstruction?.OnEnd(nameof(ActiveInstruction));
         ActiveInstruction = new NoneInstruction();
     }
+
 }

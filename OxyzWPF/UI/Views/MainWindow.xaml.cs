@@ -90,9 +90,9 @@ namespace OxyzWPF
             GridModel.Geometry = gridBuilder.ToMeshGeometry3D();
         }
 
-        private void ViewPort_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        private void ViewPort_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (e.LeftButton == System.Windows.Input.MouseButtonState.Pressed)
+            if (e.LeftButton == MouseButtonState.Pressed)
             {
                 var position = e.GetPosition(viewPort);
                 var point2D = new Vector2((float)position.X, (float)position.Y);
@@ -100,7 +100,7 @@ namespace OxyzWPF
             }
         }
 
-        private void ViewPort_MouseMove(object sender, MouseEventArgs e)
+        private void ViewPort_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
         {
             var position = e.GetPosition(viewPort);
             var point2D = new Vector2((float)position.X, (float)position.Y);

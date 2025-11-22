@@ -6,13 +6,13 @@ using System.Windows.Input;
 
 namespace OxyzWPF.Transponder;
 
-public class InputTransponder : IInputTransponder
+public class KeyInputTransponder : IKeyInputTransponder
 {
     private readonly IGameStateMachine _gameStateMachine;
     private readonly IMessenger _messenger;
     private KeyBindings _keyBindings;
 
-    public InputTransponder(IMessenger messenger, IGameStateMachine gameStateMachine)
+    public KeyInputTransponder(IMessenger messenger, IGameStateMachine gameStateMachine)
     {
         _gameStateMachine = gameStateMachine;
         _messenger = messenger;

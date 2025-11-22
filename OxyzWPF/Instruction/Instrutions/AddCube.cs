@@ -29,11 +29,11 @@ public class AddCube : BaseInstruction, IInstruction
         var position = (Vector3)args;
         transform.Position = new Vector3(position.X, 0.5f, position.Z); // Поднимаем куб над сеткой
 
-        var mesh = cubeEntity.AddComponent<MeshComponent>();
+        var meshComponeent = cubeEntity.AddComponent<MeshComponent>();
         var mb = new MeshBuilder();
         mb.AddBox(new Vector3(0, 0, 0), 1, 1, 1);
-        mesh.Geometry = mb.ToMeshGeometry3D();
-        mesh.Material = PhongMaterials.Blue; // Синий цвет для новых кубов
+        meshComponeent.Geometry = mb.ToMeshGeometry3D();
+        meshComponeent.Material = PhongMaterials.Blue; // Синий цвет для новых кубов
 
         _messenger.Publish(EventEnum.StatusChangedEvent.ToString(), this, new StatusEventArgs($"Создан куб в позиции ({position.X:F1}, {position.Z:F1})"));
     }

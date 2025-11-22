@@ -58,7 +58,7 @@ public enum EventEnum
     /// </summary>
     ActionWithElement = 12,
     /// <summary>
-    /// EventArgs - тип аргументов события.
+    /// InstructionCallEventArgs - тип аргументов события.
     /// </summary>
-    InstructionCall
+    InstructionExecuteCall = 13,
 }

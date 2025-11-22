@@ -34,7 +34,8 @@ public partial class App : Application
         services.AddSingleton<SupportWorld>();
         services.AddSingleton<IMessenger, Messenger>();
         services.AddSingleton<IInstructor, Instructor>();
-        services.AddSingleton<IInputTransponder, InputTransponder>();
+        services.AddSingleton<IKeyInputTransponder, KeyInputTransponder>();
+        services.AddSingleton<IMouseInputTransponder, MouseInputTransponder>();
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<MainWindow>();
         services.AddSingleton<IGameStateMachine, GameState>();

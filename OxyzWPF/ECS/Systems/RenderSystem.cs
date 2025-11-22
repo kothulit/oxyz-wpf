@@ -60,6 +60,7 @@ namespace OxyzWPF.ECS.Systems
                     {
                         Geometry = mesh.Geometry,
                         Material = mesh.Material,
+                        Tag = entity.Id,
                         Transform = transform.GetTransform3D()
                     };
 

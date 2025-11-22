@@ -1,12 +1,13 @@
 ﻿using HelixToolkit.Wpf.SharpDX;
 using OxyzWPF.Contracts.ECS;
+using SharpDX;
 
 namespace OxyzWPF.ECS.Components;
 
 /// <summary>
 /// Компонент для 3D геометрии объекта
 /// </summary>
-public class MeshComponent : IComponent
+public class MeshComponent : Contracts.ECS.IComponent
 {
     public Material DefaultMaterial = PhongMaterials.Gray;
     public string Name { get; } = nameof(MeshComponent);

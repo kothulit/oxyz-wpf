@@ -4,6 +4,7 @@ using OxyzWPF.Contracts.Instruction;
 using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.Contracts.Mailing.Events;
 using OxyzWPF.Contracts.Transponder;
+using OxyzWPF.Transponder;
 using OxyzWPF.UI.Commands;
 using SharpDX;
 using System.Collections.ObjectModel;
@@ -17,7 +18,8 @@ public class MainViewModel : ViewModelBase
     private readonly IMessenger _messenger;
     private readonly IGameStateMachine _gameStateMachine;
     private readonly IInstructor _instructor;
-    private readonly IInputTransponder _inputTransponder;
+    private readonly IKeyInputTransponder _keyInputTransponder;
+    private readonly IMouseInputTransponder _mouseInputTransponder;
     public ObservableCollection<string> Messages { get; private set; } = new ObservableCollection<string>();
 
     private string _stateName;
@@ -78,12 +80,17 @@ public class MainViewModel : ViewModelBase
         }
     }
 
-    public MainViewModel(IMessenger messenger, IGameStateMachine gameStateMachine, IInstructor instructor, IInputTransponder inputTransponder)
+    public MainViewModel(IMessenger messenger,
+        IGameStateMachine gameStateMachine,
+        IInstructor instructor,
+        IKeyInputTransponder keyInputTransponder,
+        IMouseInputTransponder mouseInputTransponder)
     {
         _messenger = messenger;
         _gameStateMachine = gameStateMachine;
         _instructor = instructor;
-        _inputTransponder = inputTransponder;
+        _keyInputTransponder = keyInputTransponder;
+        _mouseInputTransponder = mouseInputTransponder;
 
         StateName = _gameStateMachine.CurrentState.StateName;
 
@@ -114,40 +121,28 @@ public class MainViewModel : ViewModelBase
 
     public void OnMouseClick(Vector2 screenPoint, Viewport3DX viewport)
     {
-        // Преобразуем экранные координаты в 3D координаты на плоскости Y=0
+        //Пока определяем точку только на нулевой плоскости
+        _position = GetNullPlaneIntersection(screenPoint, viewport);
+
+        //Ищем пересечение с объектами
         IList<HitTestResult> hitResult = viewport.FindHits(screenPoint);
         if (hitResult != null && hitResult.Count > 0)
         {
+            var hitElementIds = new List<int>();
             // Если кликнули по объекту, обрабатываем выделение
-            var hitObject = hitResult[0].ModelHit as MeshGeometryModel3D;
-            if (hitObject != null)
+            foreach (var hit in hitResult)
             {
-                if (_gameStateMachine.CurrentState.StateName.Equals("Browse"))
+                var modelHit = hit.ModelHit as MeshGeometryModel3D;
+                if (modelHit != null)
                 {
-                    _messenger.Publish(EventEnum.HitToGeometryModel.ToString(), this, new GeometryEventArgs(hitObject));
+                    hitElementIds.Add((int)modelHit.Tag);
                 }
             }
+            _messenger.Publish(EventEnum.MouseDown.ToString(), this, new OxyzMouseEventArgs(screenPoint, _position, hitElementIds));
         }
         else
         {
-            // Если не попали в объект, используем проекцию на плоскость
-            var ray = viewport.UnProject(screenPoint);
-            var plane = new Plane(new Vector3(0, 1, 0), 0);
-
-            if (ray.Intersects(ref plane, out float distance))
-            {
-                _position = ray.Position + ray.Direction * distance;
-            }
-        }
-
-        switch (_stateName)
-        {
-            case "Add":
-                _instructor.ActiveInstruction.Execute(_position);
-                break;
-            case "Edit":
-                _instructor.ActiveInstruction.Execute(_position);
-                break;
+            _messenger.Publish(EventEnum.MouseDown.ToString(), this, new OxyzMouseEventArgs(screenPoint, _position));
         }
     }
 
@@ -161,8 +156,23 @@ public class MainViewModel : ViewModelBase
         StatusText = e.Message;
     }
 
-    public void OnMouseMove(Viewport3DX viewPort, MouseEventArgs e)
+    public void OnMouseMove(Viewport3DX viewPort, System.Windows.Input.MouseEventArgs e)
     {
         _messenger.Publish(EventEnum.MouseMove.ToString(), viewPort, e);
     }
+
+    private Vector3 GetNullPlaneIntersection(Vector2 screenPoint, Viewport3DX viewport)
+    {
+        var position = new Vector3();
+        var ray = viewport.UnProject(screenPoint);
+        var plane = new Plane(new Vector3(0, 1, 0), 0);
+
+        if (ray.Intersects(ref plane, out float distance))
+        {
+            position = ray.Position + ray.Direction * distance;
+        }
+
+        return position;
+    }
+
 }
