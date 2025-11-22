@@ -5,7 +5,7 @@ using OxyzWPF.Contracts.Mailing.Events;
 
 namespace OxyzWPF.Game.States;
 
-public class GameStateMachine : IGameStateMachine
+public class GameState : IGameStateMachine
 {
     private IMessenger _messenger;
     private IGameState _currentState;
@@ -18,7 +18,7 @@ public class GameStateMachine : IGameStateMachine
     public bool IsViewZoomEnable => _currentState.IsViewZoomEnable;
     public bool IsViewRotateEnable => _currentState.IsViewRotateEnable;
 
-    public GameStateMachine(IMessenger messenger)
+    public GameState(IMessenger messenger)
     {
         _messenger = messenger;
         _states = new Dictionary<string, IGameState>()

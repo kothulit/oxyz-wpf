@@ -37,7 +37,7 @@ public partial class App : Application
         services.AddSingleton<IInputTransponder, InputTransponder>();
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<MainWindow>();
-        services.AddSingleton<IGameStateMachine, GameStateMachine>();
+        services.AddSingleton<IGameStateMachine, GameState>();
         services.AddSingleton<IGameState, StateEdit>();
         services.AddSingleton<IGameLoop, GameLoop>();
         services.AddSingleton<ISelection, Selection>();
