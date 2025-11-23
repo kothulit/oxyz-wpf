@@ -133,7 +133,7 @@ public class MainViewModel : ViewModelBase
             foreach (var hit in hitResult)
             {
                 var modelHit = hit.ModelHit as MeshGeometryModel3D;
-                if (modelHit != null)
+                if (modelHit.Tag != null)
                 {
                     hitElementIds.Add((int)modelHit.Tag);
                 }

@@ -23,6 +23,7 @@ public class MouseInputTransponder : IMouseInputTransponder
             { "ElementAddingState", new ElementAddingState(_messenger) }
         };
         _messenger.Subscribe<GameStateEventArgs>(EventEnum.GameStateChanged.ToString(), ChandgeState);
+        _messenger.Subscribe<OxyzMouseEventArgs>(EventEnum.MouseDown.ToString(), OnMouseClick);
     }
 
     public void ChandgeState(object _, GameStateEventArgs e)
