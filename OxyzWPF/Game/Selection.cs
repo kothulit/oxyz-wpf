@@ -20,50 +20,18 @@ namespace OxyzWPF.Game
 
             SelectionIds = new List<int>();
 
-            _maessenger.Subscribe<GeometryEventArgs>(EventEnum.HitToGeometryModel.ToString(), OnHitToGeometryModel);
             _maessenger.Subscribe<EventArgs>(EventEnum.Сancellation.ToString(), OnCanceled);
+            _maessenger.Subscribe<SelectionChangeEventArgs>(EventEnum.SelectionChange.ToString(), OnSelectionChange);
         }
 
-        public void Add(int id)
+        private void OnSelectionChange(object? _, SelectionChangeEventArgs e)
         {
-            SelectionIds.Add(id);
-            OnSelectionChange();
-        }
-
-        public void Remove(int id)
-        {
-            SelectionIds.Remove(id);
-            OnSelectionChange();
-        }
-
-        public void Clear()
-        {
-            SelectionIds.Clear();
-            OnSelectionChange();
-        }
-
-        private void OnSelectionChange()
-        {
-            _maessenger.Publish(EventEnum.SelectionChange.ToString(), this, new SelectionChangeEventArgs(SelectionIds));
-        }
-
-        public void OnHitToGeometryModel(object? _, GeometryEventArgs e)
-        {
-            var model = e.GeometryModel;
-
-            foreach (var entity  in _projectWorld.GetEntitiesWithComponents<MeshComponent>())
-            {
-                var mesh = entity.GetComponent<MeshComponent>();
-                if (mesh?.Geometry == model.Geometry)
-                {
-                    Add(entity.Id);
-                }
-            }
+            SelectionIds = e.SelectionIds;
         }
 
         public void OnCanceled(object? _, EventArgs e)
         {
-            Clear();
+            SelectionIds.Clear();
         }
     }
 }

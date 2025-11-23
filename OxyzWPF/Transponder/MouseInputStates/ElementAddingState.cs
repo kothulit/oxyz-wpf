@@ -22,6 +22,7 @@ public class ElementAddingState : IMouseInputState
     {
         var instructionCallargs = new InstructionCallEventArgs();
         instructionCallargs.ScenePoint = e.ScenePoint;
+        instructionCallargs.SelectedElementsIds = e.HitEntityesIds;
         _messenger.Publish(EventEnum.InstructionExecuteCall.ToString(), this, instructionCallargs);
     }
 

@@ -2,7 +2,8 @@
 
 namespace OxyzWPF.Contracts.Mailing.Events;
 
-internal class InstructionCallEventArgs : EventArgs
+public class InstructionCallEventArgs : EventArgs
 {
+    public List<int> SelectedElementsIds {  get; set; } = new List<int>();
     public Vector3 ScenePoint { get; set; }
 }

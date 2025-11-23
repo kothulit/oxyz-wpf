@@ -33,24 +33,27 @@ namespace OxyzWPF.ECS.Systems
             // Обновляем существующие объекты
             foreach (var entity in entitiesToRender)
             {
-                var transform = entity.GetComponent<TransformComponent>()!;
-                var mesh = entity.GetComponent<MeshComponent>()!;
+                var transformComponent = entity.GetComponent<TransformComponent>()!;
+                var meshComponent = entity.GetComponent<MeshComponent>()!;
+                var selectionComponent = entity.GetComponent<SelectionComponent>();
 
                 if (_renderedObjects.TryGetValue(entity.Id, out var model))
                 {
                     // Обновляем трансформацию
-                    model.Transform = transform.GetTransform3D();
+                    model.Transform = transformComponent.GetTransform3D();
 
-                    
                     // Обновляем геометрию и материал если изменились
-                    if (model.Geometry != mesh.Geometry)
-                        model.Geometry = mesh.Geometry;
-                    if (model.Material != mesh.Material)
-                        model.Material = mesh.Material;
+                    if (model.Geometry != meshComponent.Geometry)
+                        model.Geometry = meshComponent.Geometry;
+                    if (model.Material != meshComponent.Material)
+                        model.Material = meshComponent.Material;
 
-                    if (_selection.SelectionIds.Contains(entity.Id))
+                    if (selectionComponent != null)
                     {
-                        model.Material = PhongMaterials.Indigo;
+                        if (selectionComponent.IsSelected == true)
+                        {
+                            model.Material = PhongMaterials.Indigo;
+                        }
                     }
                 }
                 else
@@ -58,15 +61,14 @@ namespace OxyzWPF.ECS.Systems
                     // Создаем новый объект для рендеринга
                     var newModel = new MeshGeometryModel3D
                     {
-                        Geometry = mesh.Geometry,
-                        Material = mesh.Material,
+                        Geometry = meshComponent.Geometry,
+                        Material = meshComponent.Material,
                         Tag = entity.Id,
-                        Transform = transform.GetTransform3D()
+                        Transform = transformComponent.GetTransform3D()
                     };
 
                     _renderedObjects[entity.Id] = newModel;
                     _messenger.Publish(EventEnum.ElementAdded.ToString(), this, new GeometryEventArgs(newModel));
-                    
                 }
             }
 

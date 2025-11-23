@@ -24,9 +24,11 @@ public class AddSphere : BaseInstruction, IInstruction
     public void Execute(object args)
     {
         var sphereEntity = _world.CreateEntity($"Sphere_{_world.EntityCount}");
+        var selection = sphereEntity.AddComponent<SelectionComponent>();
+        selection.IsSelected = false;
 
         var transform = sphereEntity.AddComponent<TransformComponent>();
-        var position = (Vector3)args;
+        var position = (args as InstructionCallEventArgs).ScenePoint;
         transform.Position = new Vector3(position.X, 0.5f, position.Z); // Поднимаем сферу над сеткой
 
         var mesh = sphereEntity.AddComponent<MeshComponent>();
@@ -41,6 +43,5 @@ public class AddSphere : BaseInstruction, IInstruction
     public void OnEnd(object args)
     {
         _messenger.Publish(EventEnum.GameStateChangeRequest.ToString(), this, new GameStateChangeRequestEventArgsy("Browse"));
-        _instructor.ActiveInstruction = null;
     }
 }

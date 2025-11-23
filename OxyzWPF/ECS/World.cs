@@ -39,26 +39,31 @@ public class World : IWorld
         return _entities.FirstOrDefault(e => e.Id == entityId);
     }
 
+    public List<Entity> GetEntities(List<int> entityId)
+    {
+        return _entities.Where(e => entityId.Contains(e.Id)).ToList();
+    }
+
     public IEnumerable<Entity> GetAllEntities()
     {
         return _entities;
     }
-    public IEnumerable<Entity> GetEntitiesWithComponents<T1>() where T1 : class, IComponent
+    public IEnumerable<Entity> GetEntitiesWithComponents<T1>() where T1 : class, IOxyzComponent
     {
         return _entities.Where(e => e.HasComponent<T1>());
     }
 
     public IEnumerable<Entity> GetEntitiesWithComponents<T1, T2>()
-        where T1 : class, IComponent
-        where T2 : class, IComponent
+        where T1 : class, IOxyzComponent
+        where T2 : class, IOxyzComponent
     {
         return _entities.Where(e => e.HasComponent<T1>() && e.HasComponent<T2>());
     }
 
     public IEnumerable<Entity> GetEntitiesWithComponents<T1, T2, T3>()
-        where T1 : class, IComponent
-        where T2 : class, IComponent
-        where T3 : class, IComponent
+        where T1 : class, IOxyzComponent
+        where T2 : class, IOxyzComponent
+        where T3 : class, IOxyzComponent
     {
         return _entities.Where(e => e.HasComponent<T1>() && e.HasComponent<T2>() && e.HasComponent<T3>());
     }

@@ -63,7 +63,9 @@ public partial class App : Application
         ISelection selection = _serviceProvider.GetRequiredService<ISelection>();
 
         projectWorld?.AddSystem(new RenderSystem(projectWorld, messenger, selection));
+        projectWorld?.AddSystem(new SelectionSystem(projectWorld, messenger, selection));
         supportWorld?.AddSystem(new RenderSystem(supportWorld, messenger, selection));
+        supportWorld?.AddSystem(new SelectionSystem(supportWorld, messenger, selection));
 
         mainViewModel.InitialiseToolbarButtons(instructions);
 

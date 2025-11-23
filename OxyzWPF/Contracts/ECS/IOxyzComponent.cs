@@ -1,6 +1,6 @@
 ﻿namespace OxyzWPF.Contracts.ECS;
 
-public interface IComponent
+public interface IOxyzComponent
 {
     string Name { get; }
 }

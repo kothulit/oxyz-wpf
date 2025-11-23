@@ -2,7 +2,7 @@
 
 namespace OxyzWPF.ECS.Components;
 
-public class SpaceComponent : OxyzWPF.Contracts.ECS.IComponent
+public class SpaceComponent : OxyzWPF.Contracts.ECS.IOxyzComponent
 {
     public string Name { get; } = nameof(SpaceComponent);
     public List<Vector2> Contour { get; set; } = new List<Vector2>();

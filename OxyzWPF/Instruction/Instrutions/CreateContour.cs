@@ -26,7 +26,7 @@ public class CreateContour : BaseInstruction, IInstruction
 
     public void Execute(object args)
     {
-        Vector3 currentPoint = (Vector3)args;
+        Vector3 currentPoint = (args as InstructionCallEventArgs).ScenePoint;
 
         Factory.CreatePoint(_world, currentPoint);
         if (_isPreviosPointEnable) Factory.CreateLine(_world, currentPoint, _previosPoint);
@@ -40,7 +40,6 @@ public class CreateContour : BaseInstruction, IInstruction
     public void OnEnd(object args)
     {
         _messenger.Publish(EventEnum.GameStateChangeRequest.ToString(), this, new GameStateChangeRequestEventArgsy("Browse"));
-        _instructor.ActiveInstruction = null;
         _isPreviosPointEnable = false;
     }
 }

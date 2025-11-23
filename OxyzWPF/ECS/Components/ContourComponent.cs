@@ -3,7 +3,7 @@ using SharpDX;
 
 namespace OxyzWPF.ECS.Components;
 
-public class ContourComponent : OxyzWPF.Contracts.ECS.IComponent
+public class ContourComponent : OxyzWPF.Contracts.ECS.IOxyzComponent
 {
     public string Name { get; } = nameof(ContourComponent);
 

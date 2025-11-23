@@ -11,19 +11,19 @@ public class Entity
 
     public int Id { get; }
     public string Name { get; set; }
-    private readonly Dictionary<Type, IComponent> _components;
+    private readonly Dictionary<Type, IOxyzComponent> _components;
 
     public Entity(string name = "")
     {
         Id = _nextId++;
         Name = string.IsNullOrEmpty(name) ? $"Entity_{Id}" : name;
-        _components = new Dictionary<Type, IComponent>();
+        _components = new Dictionary<Type, IOxyzComponent>();
     }
 
     /// <summary>
     /// Добавляет компонент к сущности
     /// </summary>
-    public T AddComponent<T>() where T : class, IComponent, new()
+    public T AddComponent<T>() where T : class, IOxyzComponent, new()
     {
         var component = new T();
         _components[typeof(T)] = component;
@@ -33,7 +33,7 @@ public class Entity
     /// <summary>
     /// Добавляет существующий компонент к сущности
     /// </summary>
-    public void AddComponent<T>(T component) where T : class, IComponent
+    public void AddComponent<T>(T component) where T : class, IOxyzComponent
     {
         _components[typeof(T)] = component;
     }
@@ -41,7 +41,7 @@ public class Entity
     /// <summary>
     /// Получает компонент по типу
     /// </summary>
-    public T? GetComponent<T>() where T : class, IComponent
+    public T? GetComponent<T>() where T : class, IOxyzComponent
     {
         return _components.TryGetValue(typeof(T), out var component) ? component as T : null;
     }
@@ -49,7 +49,7 @@ public class Entity
     /// <summary>
     /// Проверяет наличие компонента
     /// </summary>
-    public bool HasComponent<T>() where T : class, IComponent
+    public bool HasComponent<T>() where T : class, IOxyzComponent
     {
         return _components.ContainsKey(typeof(T));
     }
@@ -57,7 +57,7 @@ public class Entity
     /// <summary>
     /// Удаляет компонент
     /// </summary>
-    public bool RemoveComponent<T>() where T : class, IComponent
+    public bool RemoveComponent<T>() where T : class, IOxyzComponent
     {
         return _components.Remove(typeof(T));
     }
@@ -65,7 +65,7 @@ public class Entity
     /// <summary>
     /// Получает все компоненты сущности
     /// </summary>
-    public IEnumerable<IComponent> GetAllComponents()
+    public IEnumerable<IOxyzComponent> GetAllComponents()
     {
         return _components.Values;
     }

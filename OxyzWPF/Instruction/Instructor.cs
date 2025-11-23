@@ -14,6 +14,7 @@ public class Instructor : IInstructor
     private readonly ProjectWorld _projectWorld;
     private readonly SupportWorld _supportWorld;
     private Dictionary<int, IInstruction> _instructions = new Dictionary<int, IInstruction>();
+    private readonly IInstruction _defaultInstruction;
     public IInstruction? ActiveInstruction { get; set; }
     public Dictionary<int, IInstruction> Instructions => _instructions;
 
@@ -22,6 +23,8 @@ public class Instructor : IInstructor
         _messenger = messenger;
         _projectWorld = projectWorld;
         _supportWorld = supportWorld;
+        _defaultInstruction = new SelectionInstruction(projectWorld, messenger, this);
+        ActiveInstruction = _defaultInstruction;
 
         _instructions.Add(1, new AddCube(_supportWorld, _messenger, this));
         _instructions.Add(2, new AddSphere(_supportWorld, _messenger, this));
@@ -39,12 +42,12 @@ public class Instructor : IInstructor
     }
     private void OnActiveInstructionCall(object _, InstructionCallEventArgs e)
     {
-        ActiveInstruction.Execute(e.ScenePoint);
+        ActiveInstruction.Execute(e);
     }
     private void OnInstructionCanseled(object? _, EventArgs e)
     {
         ActiveInstruction?.OnEnd(nameof(ActiveInstruction));
-        ActiveInstruction = new NoneInstruction();
+        ActiveInstruction = _defaultInstruction;
     }
 
 }

@@ -24,9 +24,11 @@ public class AddCube : BaseInstruction, IInstruction
     public void Execute(object args)
     {
         var cubeEntity = _world.CreateEntity($"Cube_{_world.EntityCount}");
+        var selection = cubeEntity.AddComponent<SelectionComponent>();
+        selection.IsSelected = false;
 
         var transform = cubeEntity.AddComponent<TransformComponent>();
-        var position = (Vector3)args;
+        var position = (args as InstructionCallEventArgs).ScenePoint;
         transform.Position = new Vector3(position.X, 0.5f, position.Z); // Поднимаем куб над сеткой
 
         var meshComponeent = cubeEntity.AddComponent<MeshComponent>();
@@ -41,6 +43,5 @@ public class AddCube : BaseInstruction, IInstruction
     public void OnEnd(object args)
     {
         _messenger.Publish(EventEnum.GameStateChangeRequest.ToString(), this, new GameStateChangeRequestEventArgsy("Browse"));
-        _instructor.ActiveInstruction = null;
     }
 }

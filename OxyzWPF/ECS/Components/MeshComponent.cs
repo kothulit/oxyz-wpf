@@ -7,7 +7,7 @@ namespace OxyzWPF.ECS.Components;
 /// <summary>
 /// Компонент для 3D геометрии объекта
 /// </summary>
-public class MeshComponent : Contracts.ECS.IComponent
+public class MeshComponent : Contracts.ECS.IOxyzComponent
 {
     public Material DefaultMaterial = PhongMaterials.Gray;
     public string Name { get; } = nameof(MeshComponent);
