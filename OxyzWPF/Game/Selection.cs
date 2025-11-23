@@ -21,12 +21,12 @@ namespace OxyzWPF.Game
             SelectionIds = new List<int>();
 
             _maessenger.Subscribe<EventArgs>(EventEnum.Сancellation.ToString(), OnCanceled);
-            _maessenger.Subscribe<SelectionChangeEventArgs>(EventEnum.SelectionChange.ToString(), OnSelectionChange);
+            _maessenger.Subscribe<SelectionChangeCallEventArgs>(EventEnum.SelectionChangeCall.ToString(), OnSelectionChange);
         }
 
-        private void OnSelectionChange(object? _, SelectionChangeEventArgs e)
+        private void OnSelectionChange(object? _, SelectionChangeCallEventArgs e)
         {
-            SelectionIds = e.SelectionIds;
+            SelectionIds = e.SelectedElementsIds;
         }
 
         public void OnCanceled(object? _, EventArgs e)

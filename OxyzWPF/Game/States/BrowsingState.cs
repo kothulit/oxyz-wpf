@@ -4,13 +4,13 @@ using OxyzWPF.Contracts.Mailing.Events;
 
 namespace OxyzWPF.Game.States;
 
-public class StateEdit : BaseState, IGameState
+public class BrowsingState : BaseState, IGameState
 {
-    public new string StateName => "Edit";
+    public new string StateName => typeof(BrowsingState).ToString();
     public bool IsViewPanEnable => true;
     public bool IsViewZoomEnable => true;
     public bool IsViewRotateEnable => true;
-    public StateEdit(IMessenger messenger) : base(messenger) { }
+    public BrowsingState(IMessenger messenger) : base (messenger) { }
 
     public void Enter() { }
     public void Exit() { }

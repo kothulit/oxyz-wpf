@@ -39,7 +39,6 @@ public partial class App : Application
         services.AddSingleton<MainViewModel>();
         services.AddSingleton<MainWindow>();
         services.AddSingleton<IGameStateMachine, GameState>();
-        services.AddSingleton<IGameState, StateEdit>();
         services.AddSingleton<IGameLoop, GameLoop>();
         services.AddSingleton<ISelection, Selection>();
 
@@ -64,6 +63,7 @@ public partial class App : Application
 
         projectWorld?.AddSystem(new RenderSystem(projectWorld, messenger, selection));
         projectWorld?.AddSystem(new SelectionSystem(projectWorld, messenger, selection));
+        projectWorld?.AddSystem(new ExtrudeContourSystem(projectWorld));
         supportWorld?.AddSystem(new RenderSystem(supportWorld, messenger, selection));
         supportWorld?.AddSystem(new SelectionSystem(supportWorld, messenger, selection));
 

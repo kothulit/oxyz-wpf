@@ -23,11 +23,10 @@ public class GameState : IGameStateMachine
         _messenger = messenger;
         _states = new Dictionary<string, IGameState>()
         {
-            { "Browse", new StateBrowse(_messenger) },
-            { "Edit", new StateEdit(_messenger) },
-            { "Add", new StateAdd(_messenger) }
+            { GameStateEnum.Browsing.ToString(), new BrowsingState(_messenger) },
+            { GameStateEnum.EntityAdding.ToString(), new ElementAddingState(_messenger) }
         };
-        _currentState = _states["Browse"];
+        _currentState = _states[GameStateEnum.Browsing.ToString()];
         _messenger.Subscribe<GameStateChangeRequestEventArgsy>(EventEnum.GameStateChangeRequest.ToString(), OnStateChangeRequest);
     }
 

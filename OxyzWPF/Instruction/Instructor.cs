@@ -1,4 +1,5 @@
 ﻿using OxyzWPF.Contracts.ECS;
+using OxyzWPF.Contracts.Game;
 using OxyzWPF.Contracts.Instruction;
 using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.Contracts.Mailing.Events;
@@ -23,12 +24,13 @@ public class Instructor : IInstructor
         _messenger = messenger;
         _projectWorld = projectWorld;
         _supportWorld = supportWorld;
-        _defaultInstruction = new SelectionInstruction(projectWorld, messenger, this);
+        _defaultInstruction = new NoneInstruction();
         ActiveInstruction = _defaultInstruction;
 
         _instructions.Add(1, new AddCube(_supportWorld, _messenger, this));
         _instructions.Add(2, new AddSphere(_supportWorld, _messenger, this));
         _instructions.Add(3, new CreateContour(_supportWorld, _messenger, this));
+        _instructions.Add(4, new ExtrudeContour(_supportWorld, _messenger, this));
 
         _messenger.Subscribe<InstructionEventArgs>(EventEnum.InstructionStart.ToString(), OnInstructionStart);
         _messenger.Subscribe<InstructionCallEventArgs>(EventEnum.InstructionExecuteCall.ToString(), OnActiveInstructionCall);
@@ -38,7 +40,7 @@ public class Instructor : IInstructor
     private void OnInstructionStart(object? _, InstructionEventArgs e)
     {
         ActiveInstruction = _instructions[e.NumberOfInstruction];
-        _messenger.Publish(EventEnum.GameStateChangeRequest.ToString(), this, new GameStateChangeRequestEventArgsy("Add"));
+        _messenger.Publish(EventEnum.GameStateChangeRequest.ToString(),this, new GameStateChangeRequestEventArgsy(GameStateEnum.EntityAdding.ToString()));
     }
     private void OnActiveInstructionCall(object _, InstructionCallEventArgs e)
     {

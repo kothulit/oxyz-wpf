@@ -4,13 +4,13 @@ using OxyzWPF.Contracts.Mailing.Events;
 
 namespace OxyzWPF.Game.States;
 
-public class StateAdd : BaseState, IGameState
+public class ElementAddingState : BaseState, IGameState
 {
-    public new string StateName => "Add";
+    public new string StateName => typeof(ElementAddingState).ToString();
     public bool IsViewPanEnable => true;
     public bool IsViewZoomEnable => true;
     public bool IsViewRotateEnable => true;
-    public StateAdd(IMessenger messenger) : base(messenger) { }
+    public ElementAddingState(IMessenger messenger) : base(messenger) { }
 
     public void Enter() { }
     public void Exit() { }

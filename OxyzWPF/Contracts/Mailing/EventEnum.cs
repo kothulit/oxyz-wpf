@@ -44,7 +44,7 @@ public enum EventEnum
     /// <summary>
     /// SelectionChangeEventArgs - тип аргументов события.
     /// </summary>
-    SelectionChange = 9,
+    SelectionChanged = 9,
     /// <summary>
     /// GeometryChangeEventArgs - тип аргументов события.
     /// </summary>
@@ -61,4 +61,8 @@ public enum EventEnum
     /// InstructionCallEventArgs - тип аргументов события.
     /// </summary>
     InstructionExecuteCall = 13,
+    /// <summary>
+    /// SelectionChangeEventArgs - тип аргументов события.
+    /// </summary>
+    SelectionChangeCall = 14,
 }

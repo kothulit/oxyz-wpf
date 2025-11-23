@@ -96,6 +96,7 @@ public class MainViewModel : ViewModelBase
 
         _messenger.Subscribe<GameStateEventArgs>(EventEnum.GameStateChanged.ToString(), OnStateChanged);
         _messenger.Subscribe<StatusEventArgs>(EventEnum.StatusChangedEvent.ToString(), StatusEventHandler);
+        _messenger.Subscribe<GameStateEventArgs>(EventEnum.GameStateChanged.ToString(), OnStateChanged);
     }
 
     public void InitialiseToolbarButtons(Dictionary<int, IInstruction> instructions)
@@ -114,7 +115,7 @@ public class MainViewModel : ViewModelBase
     {
     }
 
-    public void OnStateChanged(object? _, GameStateEventArgs e)
+    private void OnStateChanged(object? _, GameStateEventArgs e)
     {
         StateName = e.CurrentState.StateName;
     }
@@ -174,5 +175,4 @@ public class MainViewModel : ViewModelBase
 
         return position;
     }
-
 }

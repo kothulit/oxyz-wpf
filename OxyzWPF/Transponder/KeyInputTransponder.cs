@@ -52,12 +52,4 @@ public class KeyInputTransponder : IKeyInputTransponder
                 break;
         }
     }
-
-
-
-
-    private void PublishInstruction(string instruction)
-    {
-        _messenger.Publish(instruction, this, new EventArgs());
-    }
 }

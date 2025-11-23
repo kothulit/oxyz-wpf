@@ -1,4 +1,5 @@
 ﻿using OxyzWPF.Contracts.ECS;
+using OxyzWPF.Contracts.Game;
 using OxyzWPF.Contracts.Instruction;
 using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.Contracts.Mailing.Events;
@@ -18,7 +19,7 @@ public class CreateContour : BaseInstruction, IInstruction
 
     public void OnStart(object args)
     {
-        _messenger.Publish(EventEnum.GameStateChangeRequest.ToString(), this, new GameStateChangeRequestEventArgsy("Edit"));
+        _messenger.Publish(EventEnum.GameStateChangeRequest.ToString(), this, new GameStateChangeRequestEventArgsy(GameStateEnum.EntityAdding.ToString()));
         _instructor.ActiveInstruction = this;
 
         _messenger.Publish(EventEnum.StatusChangedEvent.ToString(), this, new StatusEventArgs("Режим создания контура."));
@@ -34,12 +35,12 @@ public class CreateContour : BaseInstruction, IInstruction
         _previosPoint = currentPoint;
         _isPreviosPointEnable = true;
 
-        _messenger.Publish(EventEnum.StatusChangedEvent.ToString(), this, new StatusEventArgs($"Добавлена точка: ({((Vector3)args).X:F2}, {((Vector3)args).Y:F2})"));
+        _messenger.Publish(EventEnum.StatusChangedEvent.ToString(), this, new StatusEventArgs($"Добавлена точка: ({currentPoint.X:F2}, {currentPoint.Y:F2})"));
     }
 
     public void OnEnd(object args)
     {
-        _messenger.Publish(EventEnum.GameStateChangeRequest.ToString(), this, new GameStateChangeRequestEventArgsy("Browse"));
+        _messenger.Publish(EventEnum.GameStateChangeRequest.ToString(), this, new GameStateChangeRequestEventArgsy(GameStateEnum.Browsing.ToString()));
         _isPreviosPointEnable = false;
     }
 }

@@ -1,10 +1,10 @@
 ﻿namespace OxyzWPF.Contracts.Mailing.Events;
 
-public sealed class SelectionChangeEventArgs : EventArgs
+public sealed class SelectionChangedEventArgs : EventArgs
 {
     private List<int> _selectionIds;
 
-    public SelectionChangeEventArgs(List<int> selectionIds)
+    public SelectionChangedEventArgs(List<int> selectionIds)
     {
         _selectionIds = selectionIds;
     }

@@ -1,11 +1,7 @@
-﻿using HelixToolkit.Wpf.SharpDX;
-using Leopotam.Ecs;
-using OxyzWPF.Contracts.ECS;
+﻿using OxyzWPF.Contracts.ECS;
 using OxyzWPF.Contracts.Game;
 using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.ECS.Components;
-using OxyzWPF.Game;
-using static HelixToolkit.Wpf.SharpDX.Model.Metadata;
 
 namespace OxyzWPF.ECS.Systems;
 

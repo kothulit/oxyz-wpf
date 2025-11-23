@@ -1,5 +1,6 @@
 ﻿using HelixToolkit.Wpf.SharpDX;
 using OxyzWPF.Contracts.ECS;
+using OxyzWPF.Contracts.Game;
 using OxyzWPF.Contracts.Instruction;
 using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.Contracts.Mailing.Events;
@@ -17,7 +18,7 @@ public class AddSphere : BaseInstruction, IInstruction
 
     public void OnStart(object args)
     {
-        _messenger.Publish(EventEnum.GameStateChangeRequest.ToString(), this, new GameStateChangeRequestEventArgsy("Add"));
+        _messenger.Publish(EventEnum.GameStateChangeRequest.ToString(), this, new GameStateChangeRequestEventArgsy(GameStateEnum.EntityAdding.ToString()));
         _instructor.ActiveInstruction = this;
     }
 
@@ -42,6 +43,6 @@ public class AddSphere : BaseInstruction, IInstruction
 
     public void OnEnd(object args)
     {
-        _messenger.Publish(EventEnum.GameStateChangeRequest.ToString(), this, new GameStateChangeRequestEventArgsy("Browse"));
+        _messenger.Publish(EventEnum.GameStateChangeRequest.ToString(), this, new GameStateChangeRequestEventArgsy(GameStateEnum.Browsing.ToString()));
     }
 }
