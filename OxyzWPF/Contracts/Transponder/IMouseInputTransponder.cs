@@ -9,7 +9,7 @@ public interface IMouseInputTransponder
     public Vector2 ScreenPoint { get; set; }
     public Vector3 ScenePoint { get; set; }
 
-    public void ChandgeState(object _, GameStateEventArgs e);
+    public void OnStateChanged(object _, GameStateEventArgs e);
     public void OnMouseClick(object _, OxyzMouseEventArgs e);
     public void OnMouseMove(object _, OxyzMouseEventArgs e);
 }

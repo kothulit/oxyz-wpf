@@ -1,4 +1,5 @@
-﻿using OxyzWPF.Contracts.Game.States;
+﻿using OxyzWPF.Contracts.Game;
+using OxyzWPF.Contracts.Game.States;
 using OxyzWPF.Contracts.Mailing;
 using OxyzWPF.Contracts.Mailing.Events;
 
@@ -6,7 +7,7 @@ namespace OxyzWPF.Game.States;
 
 public class BrowsingState : BaseState, IGameState
 {
-    public new string StateName => typeof(BrowsingState).ToString();
+    public new string StateName => GameStateEnum.Browsing.ToString();
     public bool IsViewPanEnable => true;
     public bool IsViewZoomEnable => true;
     public bool IsViewRotateEnable => true;
