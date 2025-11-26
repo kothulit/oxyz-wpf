@@ -7,7 +7,7 @@ using SharpDX;
 
 namespace OxyzWPF.ECS.Systems;
 
-public class CreateContourModel : ISystem
+public class CreateContourModel : IOxyzSystem
 {
     public string Name => typeof(CreateContourModel).Name;
     public bool IsEnable { get; set; } = true;

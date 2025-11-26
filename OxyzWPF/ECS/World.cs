@@ -3,16 +3,16 @@ using OxyzWPF.Contracts.Mailing;
 
 namespace OxyzWPF.ECS;
 
-public class World : IWorld
+public class World : IOxyzWorld
 {
     private List<Entity> _entities;
-    private List<ISystem> _systems;
+    private List<IOxyzSystem> _systems;
     private SystemManeger _systemManeger;
 
     public World(IMessenger messenger)
     {
         _entities = new List<Entity>();
-        _systems = new List<ISystem>();
+        _systems = new List<IOxyzSystem>();
         _systemManeger = new SystemManeger(messenger, _systems);
     }
 
@@ -68,13 +68,13 @@ public class World : IWorld
         return _entities.Where(e => e.HasComponent<T1>() && e.HasComponent<T2>() && e.HasComponent<T3>());
     }
 
-    public void AddSystem(ISystem system)
+    public void AddSystem(IOxyzSystem system)
     {
         _systems.Add(system);
         _systemManeger.Systems = _systems;
     }
 
-    public bool RemoveSystem(ISystem system)
+    public bool RemoveSystem(IOxyzSystem system)
     {
         var result = _systems.Remove(system);
         _systemManeger.Systems = _systems;

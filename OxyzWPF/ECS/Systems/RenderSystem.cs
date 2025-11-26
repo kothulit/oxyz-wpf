@@ -7,7 +7,7 @@ using OxyzWPF.ECS.Components;
 
 namespace OxyzWPF.ECS.Systems
 {
-    public class RenderSystem : ISystem
+    public class RenderSystem : IOxyzSystem
     {
         public string Name => typeof(RenderSystem).Name;
         public bool IsEnable { get; set; } = true;

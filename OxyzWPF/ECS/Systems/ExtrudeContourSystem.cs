@@ -5,7 +5,7 @@ using SharpDX;
 
 namespace OxyzWPF.ECS.Systems;
 
-public class ExtrudeContourSystem : ISystem
+public class ExtrudeContourSystem : IOxyzSystem
 {
     public string Name => typeof(ExtrudeContourSystem).Name;
     public bool IsEnable { get; set; } = true;

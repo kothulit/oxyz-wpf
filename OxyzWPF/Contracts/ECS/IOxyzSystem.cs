@@ -2,7 +2,7 @@
 
 namespace OxyzWPF.Contracts.ECS;
 
-public interface ISystem
+public interface IOxyzSystem
 {
     public string Name { get; }
     public bool IsEnable { get; set; }

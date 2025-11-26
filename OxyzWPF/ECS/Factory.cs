@@ -9,7 +9,7 @@ namespace OxyzWPF.ECS;
 
 public static class Factory
 {
-    public static Entity CreatePoint(IWorld world, Vector3 point)
+    public static Entity CreatePoint(IOxyzWorld world, Vector3 point)
     {
         Entity pointEntity = world.CreateEntity("Point");
 
@@ -26,7 +26,7 @@ public static class Factory
         return pointEntity;
     }
 
-    public static Entity CreateLine(IWorld world, Vector3 startPoint, Vector3 endPoint)
+    public static Entity CreateLine(IOxyzWorld world, Vector3 startPoint, Vector3 endPoint)
     {
         Entity lineEntity = world.CreateEntity("Line");
 
@@ -41,7 +41,7 @@ public static class Factory
         return lineEntity;
     }
 
-    public static Entity CreatSurface(IWorld world, List<Vector2> contour, Plane plane)
+    public static Entity CreatSurface(IOxyzWorld world, List<Vector2> contour, Plane plane)
     {
         if (contour == null || contour.Count < 3)
             throw new ArgumentException("Контур должен содержать минимум 3 точки", nameof(contour));

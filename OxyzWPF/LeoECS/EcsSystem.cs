@@ -318,9 +318,9 @@ namespace Leopotam.Ecs {
         }
 
         /// <summary>
-        /// Injects custom data to fields of ISystem instance.
+        /// Injects custom data to fields of IOxyzSystem instance.
         /// </summary>
-        /// <param name="system">ISystem instance.</param>
+        /// <param name="system">IOxyzSystem instance.</param>
         /// <param name="world">EcsWorld instance.</param>
         /// <param name="injections">Additional instances for injection.</param>
         public static void InjectDataToSystem (IEcsSystem system, EcsWorld world, Dictionary<Type, object> injections) {

@@ -5,7 +5,7 @@ using OxyzWPF.ECS.Components;
 
 namespace OxyzWPF.ECS.Systems;
 
-public class SelectionSystem : ISystem
+public class SelectionSystem : IOxyzSystem
 {
     private readonly World _world;
     private readonly IMessenger _messenger;

@@ -9,8 +9,8 @@ public class SystemManeger
     private readonly IMessenger _messenger;
     private Dictionary<string, bool> _permissions = new Dictionary<string, bool>();
 
-    private List<ISystem> _systems = new List<ISystem>();
-    public List<ISystem> Systems
+    private List<IOxyzSystem> _systems = new List<IOxyzSystem>();
+    public List<IOxyzSystem> Systems
     {
         get => _systems;
         set
@@ -24,7 +24,7 @@ public class SystemManeger
         }
     }
 
-    public SystemManeger(IMessenger messenger, List<ISystem> systems)
+    public SystemManeger(IMessenger messenger, List<IOxyzSystem> systems)
     {
         _messenger = messenger;
         Systems = systems;

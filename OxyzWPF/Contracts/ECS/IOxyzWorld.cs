@@ -2,7 +2,7 @@
 
 namespace OxyzWPF.Contracts.ECS;
 
-public interface IWorld
+public interface IOxyzWorld
 {
     public int EntityCount { get; }
     public int SystemCount { get; }
@@ -18,8 +18,8 @@ public interface IWorld
         where T2 : class, IOxyzComponent
         where T3 : class, IOxyzComponent;
 
-    public void AddSystem(ISystem system);
-    public bool RemoveSystem(ISystem system);
+    public void AddSystem(IOxyzSystem system);
+    public bool RemoveSystem(IOxyzSystem system);
     public void Update(double deltaTime);
     public void Clear();
 }
