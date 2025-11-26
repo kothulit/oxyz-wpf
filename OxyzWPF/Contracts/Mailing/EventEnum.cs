@@ -65,4 +65,12 @@ public enum EventEnum
     /// SelectionChangeEventArgs - тип аргументов события.
     /// </summary>
     SelectionChangeCall = 14,
+    /// <summary>
+    /// EventArgs - тип аргументов события.
+    /// </summary>
+    Apply = 15,
+    /// <summary>
+    /// EventArgs - тип аргументов события.
+    /// </summary>
+    Enter = 16,
 }

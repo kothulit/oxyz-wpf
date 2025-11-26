@@ -19,6 +19,8 @@ internal class ExtrudeContour : BaseInstruction, IInstruction
     public string Name { get; } = nameof(ExtrudeContour);
     private List<Vector2> _contourPoints = new List<Vector2>();
     private bool _isContourComplete = false;
+    private bool _isPreviosPointEnable = false;
+    private Vector3 _previosPoint;
     private float _extrusionHeight = 1.0f; // Высота выдавливания по умолчанию
 
     public ExtrudeContour(World world, IMessenger messenger, IInstructor instructor)
@@ -34,6 +36,7 @@ internal class ExtrudeContour : BaseInstruction, IInstruction
 
         _messenger.Publish(EventEnum.StatusChangedEvent.ToString(), this,
             new StatusEventArgs("Режим создания контура для выдавливания. Кликните точки контура, затем нажмите Enter для завершения."));
+        _messenger.Subscribe<EventArgs>(EventEnum.Apply.ToString(), OnApply);
     }
 
     public void Execute(object args)
@@ -43,6 +46,13 @@ internal class ExtrudeContour : BaseInstruction, IInstruction
             // Добавляем точку в контур
             Vector3 currentPoint = (args as InstructionCallEventArgs).ScenePoint;
             _contourPoints.Add(new Vector2(currentPoint.X, currentPoint.Z));
+
+            // Рисуем временные объекты
+            Factory.CreatePoint(_world, currentPoint);
+            if (_isPreviosPointEnable) Factory.CreateLine(_world, currentPoint, _previosPoint);
+
+            _previosPoint = currentPoint;
+            _isPreviosPointEnable = true;
 
             _messenger.Publish(EventEnum.StatusChangedEvent.ToString(), this,
                 new StatusEventArgs($"Добавлена точка контура: ({currentPoint.X:F2}, {currentPoint.Z:F2}). Всего точек: {_contourPoints.Count}"));
@@ -75,6 +85,11 @@ internal class ExtrudeContour : BaseInstruction, IInstruction
             _contourPoints.Clear();
             _isContourComplete = false;
         }
+    }
+
+    private void OnApply(object _,  EventArgs e)
+    {
+        _isContourComplete = true;
     }
 
     private void CreateExtrudedObject()

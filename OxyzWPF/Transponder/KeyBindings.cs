@@ -33,6 +33,7 @@ public sealed class KeyBindings
         {
             { Key.Escape, "Cancel" },
             { Key.Space , "Enter" },
+            { Key.Enter , "Apply" },
             { Key.D1, "Command:1" },
             { Key.D2, "Command:2" },
             { Key.D3, "Command:3" },

@@ -36,7 +36,10 @@ public class KeyInputTransponder : IKeyInputTransponder
                 _messenger.Publish(EventEnum.Сancellation.ToString(), this, new EventArgs());
                 break;
             case "Enter":
-                _messenger.Publish(EventEnum.Сancellation.ToString(), this, new EventArgs());
+                _messenger.Publish(EventEnum.Enter.ToString(), this, new EventArgs());
+                break;
+            case "Apply":
+                _messenger.Publish(EventEnum.Apply.ToString(), this, new EventArgs());
                 break;
             case "Command":
                 if (activity.Length > 1)
