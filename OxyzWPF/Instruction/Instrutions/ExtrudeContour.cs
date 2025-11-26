@@ -18,6 +18,7 @@ internal class ExtrudeContour : BaseInstruction, IInstruction
 {
     public string Name { get; } = nameof(ExtrudeContour);
     private List<Vector2> _contourPoints = new List<Vector2>();
+    private int _surfaceEntyId = -1;
     private bool _isContourComplete = false;
     private bool _isPreviosPointEnable = false;
     private Vector3 _previosPoint;
@@ -48,8 +49,15 @@ internal class ExtrudeContour : BaseInstruction, IInstruction
             _contourPoints.Add(new Vector2(currentPoint.X, currentPoint.Z));
 
             // Рисуем временные объекты
+            // Точку
             Factory.CreatePoint(_world, currentPoint);
+            // Линию
             if (_isPreviosPointEnable) Factory.CreateLine(_world, currentPoint, _previosPoint);
+            // Грань на нуле (пока создаются новые)
+            if (_contourPoints.Count > 2)
+            {
+                _surfaceEntyId = Factory.CreatSurface(_world, _contourPoints, new Plane(new Vector3(0, 1, 0), 0)).Id;
+            }
 
             _previosPoint = currentPoint;
             _isPreviosPointEnable = true;
@@ -59,9 +67,9 @@ internal class ExtrudeContour : BaseInstruction, IInstruction
         }
         else
         {
-            // Устанавливаем высоту выдавливания
-            Vector3 currentPoint = (args as InstructionCallEventArgs).ScenePoint;
-            _extrusionHeight = currentPoint.Y;
+            if (_isPreviosPointEnable) Factory.CreateLine(_world, new Vector3(_contourPoints[0].X, 0, _contourPoints[0].Y), _previosPoint);
+            // Устанавливаем высоту 5
+            _extrusionHeight = 5.0f;
 
             // Создаем объект с контуром и высотой
             CreateExtrudedObject();
@@ -87,9 +95,10 @@ internal class ExtrudeContour : BaseInstruction, IInstruction
         }
     }
 
-    private void OnApply(object _,  EventArgs e)
+    private void OnApply(object _, EventArgs e)
     {
         _isContourComplete = true;
+        Execute(e);
     }
 
     private void CreateExtrudedObject()

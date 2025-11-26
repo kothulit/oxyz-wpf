@@ -32,4 +32,17 @@ public static class Calculation
         }
         return isIntersects;
     }
+
+    public static Vector3 CalculateContourCenter3D(List<Vector3> points)
+    {
+        if (points == null || points.Count == 0)
+            return Vector3.Zero;
+
+        Vector3 sum = Vector3.Zero;
+        foreach (var point in points)
+        {
+            sum += point;
+        }
+        return sum / points.Count;
+    }
 }
