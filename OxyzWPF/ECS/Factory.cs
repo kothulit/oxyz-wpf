@@ -102,4 +102,13 @@ public static class Factory
 
         return surfaceEntity;
     }
+
+    public static MeshGeometry3D CreatePolygon(IList<Vector3> points)
+    {
+        var builder = new MeshBuilder();
+
+        builder.AddPolygon(points);
+
+        return builder.ToMesh();
+    }
 }

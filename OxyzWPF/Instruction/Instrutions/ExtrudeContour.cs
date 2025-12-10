@@ -6,11 +6,6 @@ using OxyzWPF.Contracts.Mailing.Events;
 using OxyzWPF.ECS;
 using OxyzWPF.ECS.Components;
 using SharpDX;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OxyzWPF.Instruction.Instrutions;
 
@@ -54,11 +49,15 @@ internal class ExtrudeContour : BaseInstruction, IInstruction
             // Линию
             if (_isPreviosPointEnable) Factory.CreateLine(_world, currentPoint, _previosPoint);
             // Грань на нуле (пока создаются новые)
-            if (_contourPoints.Count > 2)
+            if (_contourPoints.Count > 2  && _surfaceEntyId == -1)
+            {
+                
+                _surfaceEntyId = Factory.CreatSurface(_world, _contourPoints, new Plane(new Vector3(0, 1, 0), 0)).Id;
+            }
+            else if (_contourPoints.Count > 2)
             {
                 _surfaceEntyId = Factory.CreatSurface(_world, _contourPoints, new Plane(new Vector3(0, 1, 0), 0)).Id;
             }
-
             _previosPoint = currentPoint;
             _isPreviosPointEnable = true;
 

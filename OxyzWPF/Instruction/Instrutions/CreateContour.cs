@@ -13,7 +13,9 @@ public class CreateContour : BaseInstruction, IInstruction
 {
     public string Name { get; } = nameof(CreateContour);
     private bool _isPreviosPointEnable = false;
+    private List<Vector3> _points = new List<Vector3>();
     private Vector3 _previosPoint;
+    private Entity _entity;
 
     public CreateContour(World world, IMessenger messenger, IInstructor instructor) : base(world, messenger, instructor) { }
 
@@ -27,10 +29,22 @@ public class CreateContour : BaseInstruction, IInstruction
 
     public void Execute(object args)
     {
+        if (_entity == null)
+        {
+            _entity = _world.CreateEntity("Contour");
+            _entity.AddComponent(new MeshComponent());
+            _entity.AddComponent(new TransformComponent());
+        }
         Vector3 currentPoint = (args as InstructionCallEventArgs).ScenePoint;
+        _points.Add(currentPoint);
 
         Factory.CreatePoint(_world, currentPoint);
         if (_isPreviosPointEnable) Factory.CreateLine(_world, currentPoint, _previosPoint);
+
+        if (_points.Count > 2)
+        {
+            _entity.GetComponent<MeshComponent>().Geometry = Factory.CreatePolygon(_points);
+        }
 
         _previosPoint = currentPoint;
         _isPreviosPointEnable = true;
