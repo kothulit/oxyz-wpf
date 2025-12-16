@@ -1,17 +1,30 @@
-﻿namespace OxyzWPF.Game.Tree;
+﻿using OxyzWPF.Contracts.ECS;
 
-public class ModelTree
+namespace OxyzWPF.ECS;
+
+public class ModelTree : IModelTree
 {
     private Dictionary<int, ModelNode> _nodes = new();
 
     public IEnumerable<ModelNode> Nodes => _nodes.Values;
+    public int CurrentParentId { get; set; } = -1;
 
-    public ModelNode CreateNode(int entityId, int parentId)
+    public ModelNode CreateNode(int entityId)
     {
-        var newNode = new ModelNode(entityId, parentId);
+        var newNode = new ModelNode(entityId, CurrentParentId);
         _nodes[entityId] = newNode;
-        _nodes[parentId].ChildrenIds.Add(entityId);
+        if (CurrentParentId != -1) _nodes[CurrentParentId].ChildrenIds.Add(entityId);
         return newNode;
+    }
+
+    public void RemoveNode(int entityId)
+    {
+        int parentId = _nodes[entityId].ParentId;
+        _nodes[parentId].ChildrenIds.Remove(entityId);
+        foreach (ModelNode child in Traverse(entityId))
+        {
+            _nodes.Remove(child.EntityId);
+        }
     }
 
     public ModelNode? GetNode(int id)

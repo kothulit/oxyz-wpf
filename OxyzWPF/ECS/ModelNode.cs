@@ -1,4 +1,4 @@
-﻿namespace OxyzWPF.Game.Tree;
+﻿namespace OxyzWPF.ECS;
 
 public class ModelNode
 {

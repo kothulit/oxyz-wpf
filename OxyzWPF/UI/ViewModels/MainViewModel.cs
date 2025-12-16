@@ -105,7 +105,7 @@ public class MainViewModel : ViewModelBase
         {
             ToolbarButtons.Add(new ToolbarButtonViewModel()
             {
-                Content = instruction.Key.ToString(),
+                Content = instruction.Value.Name,
                 Command = new RelayCommand(instruction.Value.OnStart)
             });
         }

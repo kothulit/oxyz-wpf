@@ -7,18 +7,21 @@ public class World : IOxyzWorld
 {
     private List<Entity> _entities;
     private List<IOxyzSystem> _systems;
+    private IModelTree _modelTree;
     private SystemManeger _systemManeger;
 
     public World(IMessenger messenger)
     {
         _entities = new List<Entity>();
         _systems = new List<IOxyzSystem>();
+        _modelTree = new ModelTree();
         _systemManeger = new SystemManeger(messenger, _systems);
     }
 
     public Entity CreateEntity(string name = "")
     {
         var entity = new Entity(name);
+        _modelTree.CreateNode(entity.Id);
         _entities.Add(entity);
         return entity;
     }
